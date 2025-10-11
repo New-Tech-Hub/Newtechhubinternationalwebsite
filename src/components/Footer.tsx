@@ -91,7 +91,7 @@ const Footer = () => {
                   <a
                     key={index}
                     href={social.href}
-                    className="w-10 h-10 rounded-full bg-white/10 hover:bg-accent flex items-center justify-center transition-all duration-300 hover:scale-110"
+                    className="w-10 h-10 rounded-full bg-white/10 hover:bg-gradient-to-r hover:from-[hsl(17,100%,60%)] hover:to-[hsl(5,85%,58%)] flex items-center justify-center transition-all duration-300 hover:scale-110"
                     aria-label={`Visit our ${Icon.name} page`}
                   >
                     <Icon className="h-5 w-5" />

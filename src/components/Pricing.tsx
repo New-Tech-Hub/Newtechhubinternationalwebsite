@@ -61,7 +61,7 @@ const Pricing = () => {
               } relative overflow-hidden transition-all duration-300 hover:shadow-2xl`}
             >
               {plan.highlighted && (
-                <div className="absolute top-0 right-0 bg-gradient-to-r from-accent to-[hsl(18,100%,55%)] text-white px-4 py-1 text-sm font-semibold rounded-bl-lg">
+                <div className="absolute top-0 right-0 bg-gradient-to-r from-[hsl(17,100%,60%)] to-[hsl(5,85%,58%)] text-white px-4 py-1 text-sm font-semibold rounded-bl-lg">
                   Most Popular
                 </div>
               )}
@@ -99,7 +99,7 @@ const Pricing = () => {
               <Button
                 className={`w-full ${
                   plan.highlighted
-                    ? "bg-gradient-to-r from-accent to-[hsl(18,100%,55%)] hover:shadow-lg"
+                    ? "bg-gradient-to-r from-[hsl(17,100%,60%)] to-[hsl(5,85%,58%)] hover:shadow-lg"
                     : "bg-primary hover:bg-primary/90"
                 } text-white font-semibold py-6 transition-all duration-300`}
               >

@@ -27,7 +27,7 @@ const Hero = () => {
           <div className="flex flex-col sm:flex-row gap-4 animate-fade-in" style={{ animationDelay: "0.4s" }}>
             <Button
               size="lg"
-              className="bg-gradient-to-r from-accent to-[hsl(18,100%,55%)] hover:shadow-[0_10px_40px_-10px_hsl(24,100%,50%/0.5)] transition-all duration-300 text-white font-semibold text-lg px-8 py-6 group"
+              className="bg-gradient-to-r from-[hsl(17,100%,60%)] to-[hsl(5,85%,58%)] hover:shadow-[0_10px_40px_-10px_hsl(17,100%,60%/0.5)] transition-all duration-300 text-white font-semibold text-lg px-8 py-6 group"
             >
               Start Learning Now
               <ArrowRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform" />

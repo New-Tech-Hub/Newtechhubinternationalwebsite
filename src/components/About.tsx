@@ -20,7 +20,7 @@ const About = () => {
 
           <div className="grid md:grid-cols-2 gap-8 mt-12">
             <Card className="p-8 border-none bg-card hover:shadow-lg transition-shadow">
-              <div className="w-14 h-14 rounded-xl bg-gradient-to-br from-accent to-[hsl(18,100%,55%)] flex items-center justify-center mb-6">
+              <div className="w-14 h-14 rounded-xl bg-gradient-to-br from-[hsl(17,100%,60%)] to-[hsl(5,85%,58%)] flex items-center justify-center mb-6">
                 <Eye className="h-7 w-7 text-white" />
               </div>
               <h3 className="text-2xl font-bold text-foreground mb-4">Our Vision</h3>
@@ -30,7 +30,7 @@ const About = () => {
             </Card>
 
             <Card className="p-8 border-none bg-card hover:shadow-lg transition-shadow">
-              <div className="w-14 h-14 rounded-xl bg-gradient-to-br from-accent to-[hsl(18,100%,55%)] flex items-center justify-center mb-6">
+              <div className="w-14 h-14 rounded-xl bg-gradient-to-br from-[hsl(17,100%,60%)] to-[hsl(5,85%,58%)] flex items-center justify-center mb-6">
                 <Target className="h-7 w-7 text-white" />
               </div>
               <h3 className="text-2xl font-bold text-foreground mb-4">Our Mission</h3>

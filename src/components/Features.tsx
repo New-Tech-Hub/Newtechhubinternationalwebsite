@@ -45,7 +45,7 @@ const Features = () => {
                 key={index}
                 className="p-6 hover:shadow-lg transition-all duration-300 hover:-translate-y-1 border-none bg-card"
               >
-                <div className="w-14 h-14 rounded-xl bg-gradient-to-br from-accent to-[hsl(18,100%,55%)] flex items-center justify-center mb-4">
+                <div className="w-14 h-14 rounded-xl bg-gradient-to-br from-[hsl(17,100%,60%)] to-[hsl(5,85%,58%)] flex items-center justify-center mb-4">
                   <Icon className="h-7 w-7 text-white" />
                 </div>
                 <h3 className="text-xl font-semibold text-foreground mb-3">

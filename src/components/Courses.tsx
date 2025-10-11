@@ -97,7 +97,7 @@ const Courses = () => {
                     <span>{course.students}</span>
                   </div>
                 </div>
-                <Button className="w-full bg-gradient-to-r from-accent to-[hsl(18,100%,55%)] hover:shadow-lg transition-all duration-300">
+                <Button className="w-full bg-gradient-to-r from-[hsl(17,100%,60%)] to-[hsl(5,85%,58%)] hover:shadow-lg transition-all duration-300">
                   Enroll Now
                 </Button>
               </div>

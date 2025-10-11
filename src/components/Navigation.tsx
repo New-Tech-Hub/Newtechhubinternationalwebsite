@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Menu, X } from "lucide-react";
+import logo from "@/assets/newtech-hub-logo.jpg";
 
 const Navigation = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -12,10 +13,18 @@ const Navigation = () => {
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-20">
           {/* Logo */}
-          <div className="flex-shrink-0">
-            <h1 className="text-2xl font-bold text-white">
-              New Tech Hub <span className="text-accent">International</span>
-            </h1>
+          <div className="flex-shrink-0 flex items-center gap-3">
+            <img 
+              src={logo} 
+              alt="New Tech Hub International" 
+              className="h-12 w-auto"
+            />
+            <div className="hidden sm:block">
+              <h1 className="text-xl font-bold text-white leading-tight">
+                New Tech Hub <span className="text-accent">International</span>
+              </h1>
+              <p className="text-white/70 text-xs italic">...we breathe solutions</p>
+            </div>
           </div>
 
           {/* Desktop Navigation */}
