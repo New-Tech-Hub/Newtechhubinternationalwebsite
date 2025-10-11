@@ -1,12 +1,24 @@
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
-import { Menu, X } from "lucide-react";
+import { Menu, X, Shield } from "lucide-react";
+import { useAuth } from "@/hooks/useAuth";
+import { useNavigate } from "react-router-dom";
 import logo from "@/assets/newtech-hub-logo.jpg";
 
 const Navigation = () => {
   const [isOpen, setIsOpen] = useState(false);
+  const { user, isAdmin, signOut } = useAuth();
+  const navigate = useNavigate();
 
   const navLinks = ["Courses", "About", "Pricing", "Contact"];
+
+  const handleAuthClick = () => {
+    if (user) {
+      signOut();
+    } else {
+      navigate('/auth');
+    }
+  };
 
   return (
     <nav className="sticky top-0 z-50 bg-primary shadow-md">
@@ -28,7 +40,7 @@ const Navigation = () => {
           </div>
 
           {/* Desktop Navigation */}
-          <div className="hidden md:flex items-center gap-8">
+          <div className="hidden md:flex items-center gap-6">
             {navLinks.map((link) => (
               <a
                 key={link}
@@ -38,8 +50,22 @@ const Navigation = () => {
                 {link}
               </a>
             ))}
-            <Button className="bg-accent hover:bg-accent/90 text-white font-semibold">
-              Get Started
+            {isAdmin && (
+              <Button
+                onClick={() => navigate('/admin')}
+                variant="outline"
+                size="sm"
+                className="gap-2 bg-white/10 text-white border-white/20 hover:bg-white/20"
+              >
+                <Shield className="h-4 w-4" />
+                Admin
+              </Button>
+            )}
+            <Button 
+              onClick={handleAuthClick}
+              className="bg-accent hover:bg-accent/90 text-white font-semibold"
+            >
+              {user ? 'Sign Out' : 'Get Started'}
             </Button>
           </div>
 
@@ -67,8 +93,27 @@ const Navigation = () => {
                   {link}
                 </a>
               ))}
-              <Button className="bg-accent hover:bg-accent/90 text-white font-semibold w-full">
-                Get Started
+              {isAdmin && (
+                <Button
+                  onClick={() => {
+                    navigate('/admin');
+                    setIsOpen(false);
+                  }}
+                  variant="outline"
+                  className="gap-2 bg-white/10 text-white border-white/20 hover:bg-white/20"
+                >
+                  <Shield className="h-4 w-4" />
+                  Admin
+                </Button>
+              )}
+              <Button 
+                onClick={() => {
+                  handleAuthClick();
+                  setIsOpen(false);
+                }}
+                className="bg-accent hover:bg-accent/90 text-white font-semibold w-full"
+              >
+                {user ? 'Sign Out' : 'Get Started'}
               </Button>
             </div>
           </div>
