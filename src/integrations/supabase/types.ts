@@ -14,6 +14,201 @@ export type Database = {
   }
   public: {
     Tables: {
+      course_videos: {
+        Row: {
+          course_id: string | null
+          created_at: string | null
+          id: string
+          is_required: boolean | null
+          sequence_order: number
+          video_id: string | null
+        }
+        Insert: {
+          course_id?: string | null
+          created_at?: string | null
+          id?: string
+          is_required?: boolean | null
+          sequence_order: number
+          video_id?: string | null
+        }
+        Update: {
+          course_id?: string | null
+          created_at?: string | null
+          id?: string
+          is_required?: boolean | null
+          sequence_order?: number
+          video_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "course_videos_course_id_fkey"
+            columns: ["course_id"]
+            isOneToOne: false
+            referencedRelation: "courses"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "course_videos_video_id_fkey"
+            columns: ["video_id"]
+            isOneToOne: false
+            referencedRelation: "videos"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      courses: {
+        Row: {
+          category: Database["public"]["Enums"]["course_category"]
+          created_at: string | null
+          created_by: string | null
+          description: string | null
+          difficulty_level: Database["public"]["Enums"]["difficulty_level"]
+          estimated_hours: number | null
+          id: string
+          is_free: boolean | null
+          published: boolean | null
+          thumbnail_url: string | null
+          title: string
+          updated_at: string | null
+        }
+        Insert: {
+          category: Database["public"]["Enums"]["course_category"]
+          created_at?: string | null
+          created_by?: string | null
+          description?: string | null
+          difficulty_level: Database["public"]["Enums"]["difficulty_level"]
+          estimated_hours?: number | null
+          id?: string
+          is_free?: boolean | null
+          published?: boolean | null
+          thumbnail_url?: string | null
+          title: string
+          updated_at?: string | null
+        }
+        Update: {
+          category?: Database["public"]["Enums"]["course_category"]
+          created_at?: string | null
+          created_by?: string | null
+          description?: string | null
+          difficulty_level?: Database["public"]["Enums"]["difficulty_level"]
+          estimated_hours?: number | null
+          id?: string
+          is_free?: boolean | null
+          published?: boolean | null
+          thumbnail_url?: string | null
+          title?: string
+          updated_at?: string | null
+        }
+        Relationships: []
+      }
+      import_reports: {
+        Row: {
+          created_at: string | null
+          details: Json | null
+          id: string
+          report_date: string
+          sources_checked: string[] | null
+          summary: string | null
+          videos_added: number | null
+          videos_flagged: number | null
+        }
+        Insert: {
+          created_at?: string | null
+          details?: Json | null
+          id?: string
+          report_date: string
+          sources_checked?: string[] | null
+          summary?: string | null
+          videos_added?: number | null
+          videos_flagged?: number | null
+        }
+        Update: {
+          created_at?: string | null
+          details?: Json | null
+          id?: string
+          report_date?: string
+          sources_checked?: string[] | null
+          summary?: string | null
+          videos_added?: number | null
+          videos_flagged?: number | null
+        }
+        Relationships: []
+      }
+      learning_path_courses: {
+        Row: {
+          course_id: string | null
+          created_at: string | null
+          id: string
+          learning_path_id: string | null
+          sequence_order: number
+        }
+        Insert: {
+          course_id?: string | null
+          created_at?: string | null
+          id?: string
+          learning_path_id?: string | null
+          sequence_order: number
+        }
+        Update: {
+          course_id?: string | null
+          created_at?: string | null
+          id?: string
+          learning_path_id?: string | null
+          sequence_order?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "learning_path_courses_course_id_fkey"
+            columns: ["course_id"]
+            isOneToOne: false
+            referencedRelation: "courses"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "learning_path_courses_learning_path_id_fkey"
+            columns: ["learning_path_id"]
+            isOneToOne: false
+            referencedRelation: "learning_paths"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      learning_paths: {
+        Row: {
+          category: Database["public"]["Enums"]["course_category"]
+          created_at: string | null
+          description: string | null
+          difficulty_level: Database["public"]["Enums"]["difficulty_level"]
+          estimated_completion_time: number | null
+          id: string
+          is_free: boolean | null
+          title: string
+          updated_at: string | null
+        }
+        Insert: {
+          category: Database["public"]["Enums"]["course_category"]
+          created_at?: string | null
+          description?: string | null
+          difficulty_level: Database["public"]["Enums"]["difficulty_level"]
+          estimated_completion_time?: number | null
+          id?: string
+          is_free?: boolean | null
+          title: string
+          updated_at?: string | null
+        }
+        Update: {
+          category?: Database["public"]["Enums"]["course_category"]
+          created_at?: string | null
+          description?: string | null
+          difficulty_level?: Database["public"]["Enums"]["difficulty_level"]
+          estimated_completion_time?: number | null
+          id?: string
+          is_free?: boolean | null
+          title?: string
+          updated_at?: string | null
+        }
+        Relationships: []
+      }
       profiles: {
         Row: {
           created_at: string
@@ -38,6 +233,38 @@ export type Database = {
         }
         Relationships: []
       }
+      user_enrollments: {
+        Row: {
+          completed_at: string | null
+          course_id: string | null
+          enrolled_at: string | null
+          id: string
+          user_id: string | null
+        }
+        Insert: {
+          completed_at?: string | null
+          course_id?: string | null
+          enrolled_at?: string | null
+          id?: string
+          user_id?: string | null
+        }
+        Update: {
+          completed_at?: string | null
+          course_id?: string | null
+          enrolled_at?: string | null
+          id?: string
+          user_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "user_enrollments_course_id_fkey"
+            columns: ["course_id"]
+            isOneToOne: false
+            referencedRelation: "courses"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       user_roles: {
         Row: {
           created_at: string
@@ -59,6 +286,166 @@ export type Database = {
         }
         Relationships: []
       }
+      user_video_progress: {
+        Row: {
+          completed: boolean | null
+          created_at: string | null
+          id: string
+          last_watched_at: string | null
+          progress_seconds: number | null
+          user_id: string | null
+          video_id: string | null
+        }
+        Insert: {
+          completed?: boolean | null
+          created_at?: string | null
+          id?: string
+          last_watched_at?: string | null
+          progress_seconds?: number | null
+          user_id?: string | null
+          video_id?: string | null
+        }
+        Update: {
+          completed?: boolean | null
+          created_at?: string | null
+          id?: string
+          last_watched_at?: string | null
+          progress_seconds?: number | null
+          user_id?: string | null
+          video_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "user_video_progress_video_id_fkey"
+            columns: ["video_id"]
+            isOneToOne: false
+            referencedRelation: "videos"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      video_import_logs: {
+        Row: {
+          created_at: string | null
+          error_message: string | null
+          id: string
+          import_method: string | null
+          import_source: string | null
+          metadata: Json | null
+          success: boolean | null
+          video_id: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          error_message?: string | null
+          id?: string
+          import_method?: string | null
+          import_source?: string | null
+          metadata?: Json | null
+          success?: boolean | null
+          video_id?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          error_message?: string | null
+          id?: string
+          import_method?: string | null
+          import_source?: string | null
+          metadata?: Json | null
+          success?: boolean | null
+          video_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "video_import_logs_video_id_fkey"
+            columns: ["video_id"]
+            isOneToOne: false
+            referencedRelation: "videos"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      videos: {
+        Row: {
+          admin_notes: string | null
+          attribution: string | null
+          author_channel: string | null
+          category: Database["public"]["Enums"]["course_category"]
+          created_at: string | null
+          description: string | null
+          difficulty_level: Database["public"]["Enums"]["difficulty_level"]
+          duration_seconds: number | null
+          embed_code: string | null
+          engagement_score: number | null
+          id: string
+          imported_by: string | null
+          is_available: boolean | null
+          language: string | null
+          last_checked_at: string | null
+          license_details: string | null
+          license_type: Database["public"]["Enums"]["license_type"]
+          quality_rating: number | null
+          source_platform: string | null
+          source_url: string
+          status: Database["public"]["Enums"]["video_status"] | null
+          thumbnail_url: string | null
+          title: string
+          updated_at: string | null
+        }
+        Insert: {
+          admin_notes?: string | null
+          attribution?: string | null
+          author_channel?: string | null
+          category: Database["public"]["Enums"]["course_category"]
+          created_at?: string | null
+          description?: string | null
+          difficulty_level: Database["public"]["Enums"]["difficulty_level"]
+          duration_seconds?: number | null
+          embed_code?: string | null
+          engagement_score?: number | null
+          id?: string
+          imported_by?: string | null
+          is_available?: boolean | null
+          language?: string | null
+          last_checked_at?: string | null
+          license_details?: string | null
+          license_type: Database["public"]["Enums"]["license_type"]
+          quality_rating?: number | null
+          source_platform?: string | null
+          source_url: string
+          status?: Database["public"]["Enums"]["video_status"] | null
+          thumbnail_url?: string | null
+          title: string
+          updated_at?: string | null
+        }
+        Update: {
+          admin_notes?: string | null
+          attribution?: string | null
+          author_channel?: string | null
+          category?: Database["public"]["Enums"]["course_category"]
+          created_at?: string | null
+          description?: string | null
+          difficulty_level?: Database["public"]["Enums"]["difficulty_level"]
+          duration_seconds?: number | null
+          embed_code?: string | null
+          engagement_score?: number | null
+          id?: string
+          imported_by?: string | null
+          is_available?: boolean | null
+          language?: string | null
+          last_checked_at?: string | null
+          license_details?: string | null
+          license_type?: Database["public"]["Enums"]["license_type"]
+          quality_rating?: number | null
+          source_platform?: string | null
+          source_url?: string
+          status?: Database["public"]["Enums"]["video_status"] | null
+          thumbnail_url?: string | null
+          title?: string
+          updated_at?: string | null
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
@@ -74,6 +461,30 @@ export type Database = {
     }
     Enums: {
       app_role: "admin" | "moderator" | "user"
+      course_category:
+        | "digital_marketing"
+        | "web_development"
+        | "graphic_design"
+        | "ai_data"
+        | "cybersecurity"
+        | "video_editing"
+        | "freelancing"
+      difficulty_level: "beginner" | "intermediate" | "advanced"
+      license_type:
+        | "youtube_standard"
+        | "creative_commons_by"
+        | "creative_commons_by_sa"
+        | "creative_commons_by_nc"
+        | "creative_commons_by_nc_sa"
+        | "mit_opencourseware"
+        | "public_domain"
+        | "other"
+      video_status:
+        | "pending_review"
+        | "approved"
+        | "rejected"
+        | "broken"
+        | "removed"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -202,6 +613,33 @@ export const Constants = {
   public: {
     Enums: {
       app_role: ["admin", "moderator", "user"],
+      course_category: [
+        "digital_marketing",
+        "web_development",
+        "graphic_design",
+        "ai_data",
+        "cybersecurity",
+        "video_editing",
+        "freelancing",
+      ],
+      difficulty_level: ["beginner", "intermediate", "advanced"],
+      license_type: [
+        "youtube_standard",
+        "creative_commons_by",
+        "creative_commons_by_sa",
+        "creative_commons_by_nc",
+        "creative_commons_by_nc_sa",
+        "mit_opencourseware",
+        "public_domain",
+        "other",
+      ],
+      video_status: [
+        "pending_review",
+        "approved",
+        "rejected",
+        "broken",
+        "removed",
+      ],
     },
   },
 } as const
