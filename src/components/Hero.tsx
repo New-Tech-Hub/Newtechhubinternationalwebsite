@@ -4,12 +4,12 @@ import heroImage from "@/assets/hero-learning.jpg";
 
 const Hero = () => {
   return (
-    <section className="relative min-h-[90vh] flex items-center overflow-hidden">
+    <section className="relative min-h-[90vh] flex items-center overflow-hidden" aria-label="Hero section">
       {/* Background Image with Overlay */}
       <div className="absolute inset-0 z-0">
         <img
           src={heroImage}
-          alt="African students learning digital skills"
+          alt="African students collaborating and learning digital skills together in a modern educational setting"
           className="w-full h-full object-cover"
         />
         <div className="absolute inset-0 bg-gradient-to-r from-primary/95 via-primary/85 to-primary/70" />

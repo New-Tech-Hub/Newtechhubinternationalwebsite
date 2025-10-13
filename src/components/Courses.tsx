@@ -1,10 +1,10 @@
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Clock, Users } from "lucide-react";
-import marketingImage from "@/assets/course-marketing.jpg";
-import webdevImage from "@/assets/course-webdev.jpg";
-import aiImage from "@/assets/course-ai.jpg";
-import designImage from "@/assets/course-design.jpg";
+import marketingImage from "@/assets/course-marketing-new.jpg";
+import webdevImage from "@/assets/course-webdev-new.jpg";
+import aiImage from "@/assets/course-ai-new.jpg";
+import designImage from "@/assets/course-design-new.jpg";
 
 const courses = [
   {
@@ -51,16 +51,16 @@ const courses = [
 
 const Courses = () => {
   return (
-    <section className="py-20 bg-background">
+    <section id="courses" className="py-20 bg-background" aria-labelledby="courses-heading">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="text-center mb-16">
-          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-foreground mb-4">
+        <header className="text-center mb-16">
+          <h2 id="courses-heading" className="text-3xl sm:text-4xl lg:text-5xl font-bold text-foreground mb-4">
             Popular Course Categories
           </h2>
           <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
             Explore our most sought-after courses designed to transform your career
           </p>
-        </div>
+        </header>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-12">
           {courses.map((course) => (
@@ -71,7 +71,8 @@ const Courses = () => {
               <div className="relative h-48 overflow-hidden">
                 <img
                   src={course.image}
-                  alt={course.title}
+                  alt={`${course.title} - ${course.description}`}
+                  loading="lazy"
                   className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
                 />
                 <div className="absolute top-4 right-4">
@@ -84,7 +85,7 @@ const Courses = () => {
                 <h3 className="text-xl font-bold text-foreground mb-2 line-clamp-2">
                   {course.title}
                 </h3>
-                <p className="text-muted-foreground mb-4 text-sm line-clamp-2">
+                <p className="text-muted-foreground mb-4 text-sm line-clamp-3">
                   {course.description}
                 </p>
                 <div className="flex items-center gap-4 text-sm text-muted-foreground mb-4">

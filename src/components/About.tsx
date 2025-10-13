@@ -3,11 +3,11 @@ import { Card } from "@/components/ui/card";
 
 const About = () => {
   return (
-    <section className="py-20 bg-secondary">
+    <section id="about" className="py-20 bg-secondary" aria-labelledby="about-heading">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <div className="max-w-4xl mx-auto">
-          <div className="text-center mb-12">
-            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-foreground mb-6">
+          <header className="text-center mb-12">
+            <h2 id="about-heading" className="text-3xl sm:text-4xl lg:text-5xl font-bold text-foreground mb-6">
               About New Tech Hub International
             </h2>
             <p className="text-lg text-muted-foreground leading-relaxed mb-6">
@@ -16,7 +16,7 @@ const About = () => {
             <p className="text-lg text-muted-foreground leading-relaxed">
               From web design to AI, digital marketing to software development — we make premium education accessible, practical, and tailored for Africa's digital generation.
             </p>
-          </div>
+          </header>
 
           <div className="grid md:grid-cols-2 gap-8 mt-12">
             <Card className="p-8 border-none bg-card hover:shadow-lg transition-shadow">
