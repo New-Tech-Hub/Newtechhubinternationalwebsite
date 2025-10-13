@@ -1,9 +1,31 @@
+import { useState } from "react";
 import { Facebook, Instagram, Twitter, Linkedin, Mail, Phone, MapPin } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { toast } from "sonner";
 
 const Footer = () => {
   const currentYear = new Date().getFullYear();
+  const [email, setEmail] = useState("");
+
+  const handleSubscribe = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!email) {
+      toast.error("Please enter your email");
+      return;
+    }
+    toast.success("Successfully subscribed!", {
+      description: "You'll receive our latest updates and courses"
+    });
+    setEmail("");
+  };
+
+  const scrollToSection = (sectionId: string) => {
+    const element = document.getElementById(sectionId);
+    if (element) {
+      element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+  };
 
   return (
     <footer className="bg-primary text-white">
@@ -22,14 +44,20 @@ const Footer = () => {
           <div>
             <h3 className="text-xl font-bold mb-4">Quick Links</h3>
             <ul className="space-y-2">
-              {["About Us", "Courses", "Instructors", "Pricing", "Blog", "Contact"].map((link) => (
-                <li key={link}>
-                  <a
-                    href="#"
+              {[
+                { label: "About Us", id: "about" },
+                { label: "Courses", id: "courses" },
+                { label: "Features", id: "features" },
+                { label: "Pricing", id: "pricing" },
+                { label: "Contact", id: "contact" }
+              ].map((link) => (
+                <li key={link.label}>
+                  <button
+                    onClick={() => scrollToSection(link.id)}
                     className="text-white/80 hover:text-white transition-colors duration-200"
                   >
-                    {link}
-                  </a>
+                    {link.label}
+                  </button>
                 </li>
               ))}
             </ul>
@@ -60,16 +88,19 @@ const Footer = () => {
             <p className="text-white/80 mb-4">
               Subscribe to our newsletter for the latest courses and tech tips.
             </p>
-            <div className="flex gap-2">
+            <form onSubmit={handleSubscribe} className="flex gap-2">
               <Input
                 type="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
                 placeholder="Your email"
                 className="bg-white/10 border-white/20 text-white placeholder:text-white/50"
+                required
               />
-              <Button className="bg-accent hover:bg-accent/90 text-white flex-shrink-0">
+              <Button type="submit" className="bg-accent hover:bg-accent/90 text-white flex-shrink-0">
                 Subscribe
               </Button>
-            </div>
+            </form>
           </div>
         </div>
 

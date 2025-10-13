@@ -1,6 +1,9 @@
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Clock, Users } from "lucide-react";
+import { useNavigate } from "react-router-dom";
+import { useAuth } from "@/hooks/useAuth";
+import { toast } from "sonner";
 import marketingImage from "@/assets/course-marketing-new.jpg";
 import webdevImage from "@/assets/course-webdev-new.jpg";
 import aiImage from "@/assets/course-ai-new.jpg";
@@ -50,6 +53,29 @@ const courses = [
 ];
 
 const Courses = () => {
+  const navigate = useNavigate();
+  const { user } = useAuth();
+
+  const handleEnroll = (courseTitle: string, isFree: boolean) => {
+    if (!user) {
+      toast.info("Please sign in to enroll in courses", {
+        description: "Create an account or sign in to get started"
+      });
+      navigate('/auth');
+      return;
+    }
+
+    if (isFree) {
+      toast.success(`Successfully enrolled in ${courseTitle}!`, {
+        description: "You can now start learning"
+      });
+    } else {
+      toast.info("Premium course enrollment", {
+        description: "This is a premium course. Please upgrade your membership to access."
+      });
+    }
+  };
+
   return (
     <section id="courses" className="py-20 bg-background" aria-labelledby="courses-heading">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
@@ -98,7 +124,10 @@ const Courses = () => {
                     <span>{course.students}</span>
                   </div>
                 </div>
-                <Button className="w-full bg-gradient-to-r from-[hsl(17,100%,60%)] to-[hsl(5,85%,58%)] hover:shadow-lg transition-all duration-300">
+                <Button 
+                  onClick={() => handleEnroll(course.title, course.price === "Free")}
+                  className="w-full bg-gradient-to-r from-[hsl(17,100%,60%)] to-[hsl(5,85%,58%)] hover:shadow-lg transition-all duration-300"
+                >
                   Enroll Now
                 </Button>
               </div>
@@ -109,6 +138,15 @@ const Courses = () => {
         <div className="text-center">
           <Button
             size="lg"
+            onClick={() => {
+              if (!user) {
+                navigate('/auth');
+              } else {
+                toast.info("Coming soon!", {
+                  description: "Full course catalog will be available soon"
+                });
+              }
+            }}
             variant="outline"
             className="border-2 border-primary text-primary hover:bg-primary hover:text-white font-semibold px-8"
           >

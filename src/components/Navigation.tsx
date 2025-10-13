@@ -20,6 +20,14 @@ const Navigation = () => {
     }
   };
 
+  const scrollToSection = (sectionId: string) => {
+    const element = document.getElementById(sectionId.toLowerCase());
+    if (element) {
+      element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      setIsOpen(false);
+    }
+  };
+
   return (
     <nav className="sticky top-0 z-50 bg-primary shadow-md">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
@@ -42,13 +50,13 @@ const Navigation = () => {
           {/* Desktop Navigation */}
           <div className="hidden md:flex items-center gap-6">
             {navLinks.map((link) => (
-              <a
+              <button
                 key={link}
-                href={`#${link.toLowerCase()}`}
+                onClick={() => scrollToSection(link)}
                 className="text-white/90 hover:text-white font-medium transition-colors duration-200"
               >
                 {link}
-              </a>
+              </button>
             ))}
             {isAdmin && (
               <Button
@@ -84,14 +92,13 @@ const Navigation = () => {
           <div className="md:hidden pb-6">
             <div className="flex flex-col gap-4">
               {navLinks.map((link) => (
-                <a
+                <button
                   key={link}
-                  href={`#${link.toLowerCase()}`}
-                  className="text-white/90 hover:text-white font-medium transition-colors duration-200"
-                  onClick={() => setIsOpen(false)}
+                  onClick={() => scrollToSection(link)}
+                  className="text-white/90 hover:text-white font-medium transition-colors duration-200 text-left"
                 >
                   {link}
-                </a>
+                </button>
               ))}
               {isAdmin && (
                 <Button

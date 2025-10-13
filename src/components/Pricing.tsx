@@ -1,6 +1,9 @@
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Check } from "lucide-react";
+import { useNavigate } from "react-router-dom";
+import { useAuth } from "@/hooks/useAuth";
+import { toast } from "sonner";
 
 const plans = [
   {
@@ -38,6 +41,30 @@ const plans = [
 ];
 
 const Pricing = () => {
+  const navigate = useNavigate();
+  const { user } = useAuth();
+
+  const handlePlanClick = (planName: string, isFree: boolean) => {
+    if (!user) {
+      navigate('/auth');
+      return;
+    }
+
+    if (isFree) {
+      toast.success("You're all set!", {
+        description: "Browse our free courses and start learning"
+      });
+      const element = document.getElementById('courses');
+      if (element) {
+        element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+    } else {
+      toast.info("Premium Membership", {
+        description: "Payment integration coming soon. Contact us for early access!"
+      });
+    }
+  };
+
   return (
     <section id="pricing" className="py-20 bg-background" aria-labelledby="pricing-heading">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
@@ -97,6 +124,7 @@ const Pricing = () => {
               </ul>
 
               <Button
+                onClick={() => handlePlanClick(plan.name, plan.name === "Free Courses")}
                 className={`w-full ${
                   plan.highlighted
                     ? "bg-gradient-to-r from-[hsl(17,100%,60%)] to-[hsl(5,85%,58%)] hover:shadow-lg"
