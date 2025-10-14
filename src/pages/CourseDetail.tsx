@@ -1,0 +1,229 @@
+import { useParams, useNavigate } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { supabase } from "@/integrations/supabase/client";
+import { Button } from "@/components/ui/button";
+import { Card } from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { toast } from "sonner";
+import { Clock, Users, BarChart, ArrowLeft, Loader2 } from "lucide-react";
+import { useAuth } from "@/hooks/useAuth";
+
+const CourseDetail = () => {
+  const { id } = useParams();
+  const navigate = useNavigate();
+  const { user } = useAuth();
+  const [course, setCourse] = useState<any>(null);
+  const [loading, setLoading] = useState(true);
+  const [enrolling, setEnrolling] = useState(false);
+  const [formData, setFormData] = useState({
+    fullName: "",
+    email: "",
+    phone: "",
+  });
+
+  useEffect(() => {
+    fetchCourse();
+  }, [id]);
+
+  const fetchCourse = async () => {
+    try {
+      const { data, error } = await supabase
+        .from('courses')
+        .select('*')
+        .eq('id', id)
+        .single();
+
+      if (error) throw error;
+      setCourse(data);
+    } catch (error) {
+      console.error('Error fetching course:', error);
+      toast.error('Failed to load course details');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleEnroll = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setEnrolling(true);
+
+    try {
+      const { data, error } = await supabase.functions.invoke('initialize-payment', {
+        body: {
+          courseId: id,
+          email: formData.email,
+          fullName: formData.fullName,
+          phone: formData.phone,
+        },
+      });
+
+      if (error) throw error;
+
+      // Redirect to Paystack payment page
+      window.location.href = data.authorizationUrl;
+    } catch (error: any) {
+      console.error('Error enrolling:', error);
+      toast.error(error.message || 'Failed to process enrollment');
+      setEnrolling(false);
+    }
+  };
+
+  if (loading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <Loader2 className="h-8 w-8 animate-spin text-primary" />
+      </div>
+    );
+  }
+
+  if (!course) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="text-center">
+          <h2 className="text-2xl font-bold mb-4">Course not found</h2>
+          <Button onClick={() => navigate('/')}>Go Home</Button>
+        </div>
+      </div>
+    );
+  }
+
+  return (
+    <div className="min-h-screen bg-background py-12">
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-6xl">
+        <Button
+          variant="ghost"
+          onClick={() => navigate('/')}
+          className="mb-6"
+        >
+          <ArrowLeft className="mr-2 h-4 w-4" />
+          Back to Courses
+        </Button>
+
+        <div className="grid lg:grid-cols-3 gap-8">
+          <div className="lg:col-span-2">
+            <img
+              src={course.thumbnail_url}
+              alt={course.title}
+              className="w-full h-64 object-cover rounded-lg mb-6"
+            />
+            
+            <h1 className="text-4xl font-bold mb-4">{course.title}</h1>
+            
+            <div className="flex flex-wrap gap-4 mb-6">
+              <div className="flex items-center gap-2 text-muted-foreground">
+                <Clock className="h-5 w-5" />
+                <span>{course.estimated_hours} hours</span>
+              </div>
+              <div className="flex items-center gap-2 text-muted-foreground">
+                <BarChart className="h-5 w-5" />
+                <span className="capitalize">{course.difficulty_level}</span>
+              </div>
+              <div className="flex items-center gap-2 text-muted-foreground">
+                <Users className="h-5 w-5" />
+                <span>200+ students</span>
+              </div>
+            </div>
+
+            <div className="prose max-w-none">
+              <h2>About This Course</h2>
+              <p>{course.description}</p>
+              
+              <h2>What You'll Learn</h2>
+              <ul>
+                <li>Master the fundamentals of {course.title}</li>
+                <li>Build real-world projects and portfolios</li>
+                <li>Get lifetime access to course materials</li>
+                <li>Receive a certificate upon completion</li>
+              </ul>
+            </div>
+          </div>
+
+          <div className="lg:col-span-1">
+            <Card className="p-6 sticky top-6">
+              <div className="mb-6">
+                <div className="text-4xl font-bold text-primary mb-2">
+                  ₦{course.price?.toLocaleString()}
+                </div>
+                <div className="inline-block bg-accent/10 text-accent px-3 py-1 rounded-full text-sm font-semibold">
+                  Premium Course
+                </div>
+              </div>
+
+              <form onSubmit={handleEnroll} className="space-y-4">
+                <div>
+                  <Label htmlFor="fullName">Full Name</Label>
+                  <Input
+                    id="fullName"
+                    type="text"
+                    required
+                    value={formData.fullName}
+                    onChange={(e) => setFormData({ ...formData, fullName: e.target.value })}
+                    placeholder="Enter your full name"
+                  />
+                </div>
+
+                <div>
+                  <Label htmlFor="email">Email Address</Label>
+                  <Input
+                    id="email"
+                    type="email"
+                    required
+                    value={formData.email}
+                    onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                    placeholder="your.email@example.com"
+                  />
+                </div>
+
+                <div>
+                  <Label htmlFor="phone">Phone Number</Label>
+                  <Input
+                    id="phone"
+                    type="tel"
+                    required
+                    value={formData.phone}
+                    onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
+                    placeholder="+234 800 000 0000"
+                  />
+                </div>
+
+                <Button
+                  type="submit"
+                  className="w-full"
+                  size="lg"
+                  disabled={enrolling}
+                >
+                  {enrolling ? (
+                    <>
+                      <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                      Processing...
+                    </>
+                  ) : (
+                    'Enroll Now'
+                  )}
+                </Button>
+
+                <div className="text-xs text-center text-muted-foreground">
+                  Secure payment powered by Paystack
+                </div>
+              </form>
+
+              <div className="mt-6 pt-6 border-t space-y-3">
+                <h3 className="font-semibold mb-3">This course includes:</h3>
+                <div className="space-y-2 text-sm text-muted-foreground">
+                  <div>✓ Lifetime access</div>
+                  <div>✓ Certificate of completion</div>
+                  <div>✓ Downloadable resources</div>
+                  <div>✓ Community support</div>
+                  <div>✓ 30-day money-back guarantee</div>
+                </div>
+              </div>
+            </Card>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default CourseDetail;

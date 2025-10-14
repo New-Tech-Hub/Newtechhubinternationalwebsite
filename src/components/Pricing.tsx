@@ -7,35 +7,37 @@ import { toast } from "sonner";
 
 const plans = [
   {
-    name: "Free Courses",
-    price: "Free",
-    description: "Perfect for getting started with digital skills",
+    name: "Per-Course Payment",
+    price: "Pay per course",
+    description: "Purchase individual courses as you need them",
     features: [
-      "Access to all free courses",
-      "Watch and learn at your pace",
+      "Single course access",
+      "Lifetime course access",
+      "Certificate of completion",
+      "Downloadable resources",
       "Community forum access",
-      "Basic course materials",
-      "Mobile app access",
+      "30-day money-back guarantee",
     ],
-    cta: "Get Started Free",
+    cta: "Browse Courses",
     highlighted: false,
   },
   {
     name: "Premium Membership",
-    price: "₦3,000",
-    period: "/month",
-    description: "Unlock your full potential with premium benefits",
+    price: "₦50,000",
+    period: "/year",
+    description: "Unlock unlimited access to all courses and premium benefits",
     features: [
-      "All free courses included",
-      "Access to premium courses",
-      "Certificate of Completion",
+      "Access to ALL courses",
+      "Unlimited course enrollment",
+      "Certificates for all courses",
       "Mentorship and career support",
       "Exclusive community access",
       "Priority support",
       "Downloadable resources",
       "Live Q&A sessions",
+      "New courses added monthly",
     ],
-    cta: "Start Premium",
+    cta: "Get Premium Access",
     highlighted: true,
   },
 ];
@@ -44,23 +46,20 @@ const Pricing = () => {
   const navigate = useNavigate();
   const { user } = useAuth();
 
-  const handlePlanClick = (planName: string, isFree: boolean) => {
+  const handlePlanClick = (planName: string) => {
     if (!user) {
       navigate('/auth');
       return;
     }
 
-    if (isFree) {
-      toast.success("You're all set!", {
-        description: "Browse our free courses and start learning"
-      });
+    if (planName === "Per-Course Payment") {
       const element = document.getElementById('courses');
       if (element) {
         element.scrollIntoView({ behavior: 'smooth', block: 'start' });
       }
     } else {
       toast.info("Premium Membership", {
-        description: "Payment integration coming soon. Contact us for early access!"
+        description: "Annual membership payment coming soon. Contact us for early access!"
       });
     }
   };
@@ -73,7 +72,7 @@ const Pricing = () => {
             Choose Your Learning Path
           </h2>
           <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-            Start for free or unlock premium features to accelerate your journey
+            Pay per course or unlock unlimited access with annual membership
           </p>
         </header>
 
@@ -124,7 +123,7 @@ const Pricing = () => {
               </ul>
 
               <Button
-                onClick={() => handlePlanClick(plan.name, plan.name === "Free Courses")}
+                onClick={() => handlePlanClick(plan.name)}
                 className={`w-full ${
                   plan.highlighted
                     ? "bg-gradient-to-r from-[hsl(17,100%,60%)] to-[hsl(5,85%,58%)] hover:shadow-lg"

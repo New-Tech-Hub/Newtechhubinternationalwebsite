@@ -11,44 +11,44 @@ import designImage from "@/assets/course-design-new.jpg";
 
 const courses = [
   {
-    id: 1,
-    title: "Digital Marketing for Beginners",
-    description: "Master social media marketing, SEO, content creation, and digital advertising strategies.",
+    id: "1",
+    title: "Digital Marketing Fundamentals",
+    description: "Master the essentials of digital marketing, from SEO to social media strategies",
     image: marketingImage,
     duration: "8 weeks",
-    students: "2,450+",
+    students: "1,234+",
     level: "Beginner",
-    price: "Free",
+    price: 15000,
   },
   {
-    id: 2,
-    title: "Web Design & Development",
-    description: "Learn HTML, CSS, JavaScript, and WordPress to build stunning websites from scratch.",
+    id: "2",
+    title: "Web Development Bootcamp",
+    description: "Learn HTML, CSS, JavaScript, and React to build modern web applications",
     image: webdevImage,
     duration: "12 weeks",
-    students: "3,200+",
-    level: "Beginner",
-    price: "Free",
+    students: "2,156+",
+    level: "Intermediate",
+    price: 25000,
   },
   {
-    id: 3,
-    title: "Artificial Intelligence Essentials",
-    description: "Understand AI fundamentals, machine learning basics, and practical AI applications.",
+    id: "3",
+    title: "Artificial Intelligence Basics",
+    description: "Introduction to AI, machine learning, and practical applications in business",
     image: aiImage,
     duration: "10 weeks",
-    students: "1,850+",
-    level: "Intermediate",
-    price: "Premium",
+    students: "876+",
+    level: "Advanced",
+    price: 30000,
   },
   {
-    id: 4,
-    title: "Graphic Design Mastery",
-    description: "Create stunning visuals with Canva and Photoshop. Perfect for social media and branding.",
+    id: "4",
+    title: "UI/UX Design Principles",
+    description: "Create stunning user experiences with modern design tools and methodologies",
     image: designImage,
     duration: "6 weeks",
-    students: "2,900+",
+    students: "1,543+",
     level: "Beginner",
-    price: "Free",
+    price: 18000,
   },
 ];
 
@@ -56,24 +56,8 @@ const Courses = () => {
   const navigate = useNavigate();
   const { user } = useAuth();
 
-  const handleEnroll = (courseTitle: string, isFree: boolean) => {
-    if (!user) {
-      toast.info("Please sign in to enroll in courses", {
-        description: "Create an account or sign in to get started"
-      });
-      navigate('/auth');
-      return;
-    }
-
-    if (isFree) {
-      toast.success(`Successfully enrolled in ${courseTitle}!`, {
-        description: "You can now start learning"
-      });
-    } else {
-      toast.info("Premium course enrollment", {
-        description: "This is a premium course. Please upgrade your membership to access."
-      });
-    }
+  const handleEnroll = (courseId: string) => {
+    navigate(`/course/${courseId}`);
   };
 
   return (
@@ -102,8 +86,8 @@ const Courses = () => {
                   className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
                 />
                 <div className="absolute top-4 right-4">
-                  <span className="px-3 py-1 bg-white/90 backdrop-blur-sm text-primary text-sm font-semibold rounded-full">
-                    {course.price}
+                  <span className="px-3 py-1 bg-accent/10 backdrop-blur-sm text-accent text-sm font-semibold rounded-full">
+                    Premium
                   </span>
                 </div>
               </div>
@@ -114,44 +98,36 @@ const Courses = () => {
                 <p className="text-muted-foreground mb-4 text-sm line-clamp-3">
                   {course.description}
                 </p>
-                <div className="flex items-center gap-4 text-sm text-muted-foreground mb-4">
-                  <div className="flex items-center gap-1">
-                    <Clock className="h-4 w-4" />
-                    <span>{course.duration}</span>
+                <div className="flex items-center justify-between mb-4">
+                  <div className="flex items-center gap-4 text-sm text-muted-foreground">
+                    <div className="flex items-center gap-1">
+                      <Clock className="h-4 w-4" />
+                      <span>{course.duration}</span>
+                    </div>
+                    <div className="flex items-center gap-1">
+                      <Users className="h-4 w-4" />
+                      <span>{course.students}</span>
+                    </div>
                   </div>
-                  <div className="flex items-center gap-1">
-                    <Users className="h-4 w-4" />
-                    <span>{course.students}</span>
-                  </div>
+                  <span className="text-lg font-bold text-primary">
+                    ₦{course.price.toLocaleString()}
+                  </span>
                 </div>
-                <Button 
-                  onClick={() => handleEnroll(course.title, course.price === "Free")}
-                  className="w-full bg-gradient-to-r from-[hsl(17,100%,60%)] to-[hsl(5,85%,58%)] hover:shadow-lg transition-all duration-300"
-                >
-                  Enroll Now
-                </Button>
+                  <Button 
+                    onClick={() => handleEnroll(course.id)}
+                    className="w-full bg-gradient-to-r from-[hsl(17,100%,60%)] to-[hsl(5,85%,58%)] hover:shadow-lg transition-all duration-300"
+                  >
+                    View Course
+                  </Button>
               </div>
             </Card>
           ))}
         </div>
 
-        <div className="text-center">
-          <Button
-            size="lg"
-            onClick={() => {
-              if (!user) {
-                navigate('/auth');
-              } else {
-                toast.info("Coming soon!", {
-                  description: "Full course catalog will be available soon"
-                });
-              }
-            }}
-            variant="outline"
-            className="border-2 border-primary text-primary hover:bg-primary hover:text-white font-semibold px-8"
-          >
-            View All Courses
-          </Button>
+        <div className="text-center mt-12">
+          <p className="text-muted-foreground">
+            More premium courses coming soon!
+          </p>
         </div>
       </div>
     </section>
