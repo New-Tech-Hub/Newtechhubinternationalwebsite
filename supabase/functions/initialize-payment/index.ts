@@ -1,10 +1,19 @@
 import { serve } from "https://deno.land/std@0.190.0/http/server.ts";
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2.75.0";
+import { z } from "https://deno.land/x/zod@v3.22.4/mod.ts";
 
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
   'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
 };
+
+// Input validation schema
+const paymentSchema = z.object({
+  courseId: z.string().uuid({ message: "Invalid course ID format" }),
+  email: z.string().email({ message: "Invalid email format" }).max(255),
+  fullName: z.string().trim().min(2).max(100),
+  phone: z.string().regex(/^\+?[1-9]\d{1,14}$/, { message: "Invalid phone number format" }).max(20)
+});
 
 serve(async (req) => {
   if (req.method === 'OPTIONS') {
@@ -12,7 +21,22 @@ serve(async (req) => {
   }
 
   try {
-    const { courseId, email, fullName, phone } = await req.json();
+    const body = await req.json();
+    
+    // Validate input
+    const validationResult = paymentSchema.safeParse(body);
+    if (!validationResult.success) {
+      console.error('Validation error:', validationResult.error.errors);
+      return new Response(
+        JSON.stringify({ error: 'Invalid input data', details: validationResult.error.errors }),
+        {
+          headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+          status: 400,
+        }
+      );
+    }
+    
+    const { courseId, email, fullName, phone } = validationResult.data;
     
     const supabase = createClient(
       Deno.env.get('SUPABASE_URL') ?? '',
@@ -57,6 +81,22 @@ serve(async (req) => {
       throw new Error(paystackData.message || 'Payment initialization failed');
     }
 
+    // Store payment record
+    const { error: paymentError } = await supabase
+      .from('payments')
+      .insert({
+        reference: paystackData.data.reference,
+        course_id: courseId,
+        amount: course.price,
+        status: 'pending',
+        payment_method: 'paystack',
+        metadata: { email, fullName, phone, courseName: course.title }
+      });
+
+    if (paymentError) {
+      console.error('Error storing payment record:', paymentError);
+    }
+
     console.log('Payment initialized successfully:', paystackData.data.reference);
 
     return new Response(
@@ -71,8 +111,14 @@ serve(async (req) => {
     );
   } catch (error: any) {
     console.error('Error initializing payment:', error);
+    
+    // Return safe error messages
+    const safeMessage = error instanceof z.ZodError 
+      ? 'Invalid input data provided'
+      : 'Unable to process payment request';
+    
     return new Response(
-      JSON.stringify({ error: error.message || 'Failed to initialize payment' }),
+      JSON.stringify({ error: safeMessage }),
       {
         headers: { ...corsHeaders, 'Content-Type': 'application/json' },
         status: 400,

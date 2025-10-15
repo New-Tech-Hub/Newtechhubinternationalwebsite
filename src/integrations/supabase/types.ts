@@ -66,6 +66,7 @@ export type Database = {
           estimated_hours: number | null
           id: string
           is_free: boolean | null
+          price: number
           published: boolean | null
           thumbnail_url: string | null
           title: string
@@ -80,6 +81,7 @@ export type Database = {
           estimated_hours?: number | null
           id?: string
           is_free?: boolean | null
+          price?: number
           published?: boolean | null
           thumbnail_url?: string | null
           title: string
@@ -94,6 +96,7 @@ export type Database = {
           estimated_hours?: number | null
           id?: string
           is_free?: boolean | null
+          price?: number
           published?: boolean | null
           thumbnail_url?: string | null
           title?: string
@@ -208,6 +211,56 @@ export type Database = {
           updated_at?: string | null
         }
         Relationships: []
+      }
+      payments: {
+        Row: {
+          amount: number
+          course_id: string | null
+          created_at: string
+          id: string
+          metadata: Json | null
+          payment_method: string | null
+          reference: string
+          status: string
+          updated_at: string
+          user_id: string | null
+          verified_at: string | null
+        }
+        Insert: {
+          amount: number
+          course_id?: string | null
+          created_at?: string
+          id?: string
+          metadata?: Json | null
+          payment_method?: string | null
+          reference: string
+          status?: string
+          updated_at?: string
+          user_id?: string | null
+          verified_at?: string | null
+        }
+        Update: {
+          amount?: number
+          course_id?: string | null
+          created_at?: string
+          id?: string
+          metadata?: Json | null
+          payment_method?: string | null
+          reference?: string
+          status?: string
+          updated_at?: string
+          user_id?: string | null
+          verified_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "payments_course_id_fkey"
+            columns: ["course_id"]
+            isOneToOne: false
+            referencedRelation: "courses"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       profiles: {
         Row: {

@@ -1,64 +1,76 @@
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Clock, Users } from "lucide-react";
+import { Clock, Users, Loader2 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "@/hooks/useAuth";
 import { toast } from "sonner";
+import { useState, useEffect } from "react";
+import { supabase } from "@/integrations/supabase/client";
 import marketingImage from "@/assets/course-marketing-new.jpg";
 import webdevImage from "@/assets/course-webdev-new.jpg";
 import aiImage from "@/assets/course-ai-new.jpg";
 import designImage from "@/assets/course-design-new.jpg";
 
-const courses = [
-  {
-    id: "1",
-    title: "Digital Marketing Fundamentals",
-    description: "Master the essentials of digital marketing, from SEO to social media strategies",
-    image: marketingImage,
-    duration: "8 weeks",
-    students: "1,234+",
-    level: "Beginner",
-    price: 15000,
-  },
-  {
-    id: "2",
-    title: "Web Development Bootcamp",
-    description: "Learn HTML, CSS, JavaScript, and React to build modern web applications",
-    image: webdevImage,
-    duration: "12 weeks",
-    students: "2,156+",
-    level: "Intermediate",
-    price: 25000,
-  },
-  {
-    id: "3",
-    title: "Artificial Intelligence Basics",
-    description: "Introduction to AI, machine learning, and practical applications in business",
-    image: aiImage,
-    duration: "10 weeks",
-    students: "876+",
-    level: "Advanced",
-    price: 30000,
-  },
-  {
-    id: "4",
-    title: "UI/UX Design Principles",
-    description: "Create stunning user experiences with modern design tools and methodologies",
-    image: designImage,
-    duration: "6 weeks",
-    students: "1,543+",
-    level: "Beginner",
-    price: 18000,
-  },
-];
-
 const Courses = () => {
   const navigate = useNavigate();
   const { user } = useAuth();
+  const [courses, setCourses] = useState<any[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchCourses = async () => {
+      try {
+        const { data, error } = await supabase
+          .from('courses')
+          .select('*')
+          .eq('published', true);
+
+        if (error) throw error;
+
+        // Map to course format with images
+        const imageMap: Record<string, any> = {
+          'marketing': marketingImage,
+          'web_development': webdevImage,
+          'ai_ml': aiImage,
+          'design': designImage,
+        };
+
+        const coursesWithImages = (data || []).map(course => ({
+          id: course.id,
+          title: course.title,
+          description: course.description,
+          image: imageMap[course.category] || webdevImage,
+          duration: `${course.estimated_hours || 8} weeks`,
+          students: "Coming soon",
+          level: course.difficulty_level,
+          price: course.price,
+        }));
+
+        setCourses(coursesWithImages);
+      } catch (error) {
+        console.error('Error fetching courses:', error);
+        toast.error('Failed to load courses');
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchCourses();
+  }, []);
 
   const handleEnroll = (courseId: string) => {
     navigate(`/course/${courseId}`);
   };
+
+  if (loading) {
+    return (
+      <section id="courses" className="py-20 bg-background">
+        <div className="container mx-auto px-4 flex items-center justify-center min-h-[400px]">
+          <Loader2 className="h-8 w-8 animate-spin text-primary" />
+        </div>
+      </section>
+    );
+  }
 
   return (
     <section id="courses" className="py-20 bg-background" aria-labelledby="courses-heading">

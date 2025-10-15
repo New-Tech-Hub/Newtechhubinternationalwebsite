@@ -1,10 +1,16 @@
 import { serve } from "https://deno.land/std@0.190.0/http/server.ts";
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2.75.0";
+import { z } from "https://deno.land/x/zod@v3.22.4/mod.ts";
 
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
   'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
 };
+
+// Input validation schema
+const verifySchema = z.object({
+  reference: z.string().min(1).max(100)
+});
 
 serve(async (req) => {
   if (req.method === 'OPTIONS') {
@@ -12,7 +18,21 @@ serve(async (req) => {
   }
 
   try {
-    const { reference } = await req.json();
+    const body = await req.json();
+    
+    // Validate input
+    const validationResult = verifySchema.safeParse(body);
+    if (!validationResult.success) {
+      return new Response(
+        JSON.stringify({ error: 'Invalid payment reference' }),
+        {
+          headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+          status: 400,
+        }
+      );
+    }
+    
+    const { reference } = validationResult.data;
     
     // Verify payment with Paystack
     const paystackResponse = await fetch(
@@ -35,8 +55,16 @@ serve(async (req) => {
       Deno.env.get('SUPABASE_SERVICE_ROLE_KEY') ?? ''
     );
 
-    const { courseId, fullName, phone } = paystackData.data.metadata;
-    const email = paystackData.data.customer.email;
+    // Sanitize metadata
+    const metadata = paystackData.data.metadata || {};
+    const courseId = String(metadata.courseId || '').trim();
+    const fullName = String(metadata.fullName || '').slice(0, 100).trim();
+    const phone = String(metadata.phone || '').slice(0, 20).trim();
+    const email = String(paystackData.data.customer?.email || '').slice(0, 255).trim();
+
+    if (!courseId || !email) {
+      throw new Error('Missing required payment metadata');
+    }
 
     // Check if user exists
     const { data: existingUser } = await supabase
@@ -62,7 +90,17 @@ serve(async (req) => {
       userId = authData.user.id;
     }
 
-    // Enroll user in course
+    // Update payment record
+    await supabase
+      .from('payments')
+      .update({
+        status: 'success',
+        user_id: userId,
+        verified_at: new Date().toISOString()
+      })
+      .eq('reference', reference);
+
+    // Enroll user in course (idempotent)
     const { error: enrollError } = await supabase
       .from('user_enrollments')
       .insert({
@@ -89,8 +127,12 @@ serve(async (req) => {
     );
   } catch (error: any) {
     console.error('Error verifying payment:', error);
+    
+    // Return safe error message
+    const safeMessage = 'Unable to verify payment. Please contact support.';
+    
     return new Response(
-      JSON.stringify({ error: error.message || 'Failed to verify payment' }),
+      JSON.stringify({ error: safeMessage }),
       {
         headers: { ...corsHeaders, 'Content-Type': 'application/json' },
         status: 400,
