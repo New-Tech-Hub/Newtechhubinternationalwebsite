@@ -38,16 +38,16 @@ const Hero = () => {
             <Button
               size="lg"
               onClick={() => navigate('/auth')}
-              className="bg-gradient-to-r from-[hsl(17,100%,60%)] to-[hsl(5,85%,58%)] hover:shadow-[0_10px_40px_-10px_hsl(17,100%,60%/0.5)] transition-all duration-300 text-white font-semibold text-lg px-8 py-6 group"
+              className="bg-gradient-to-r from-[hsl(17,100%,60%)] to-[hsl(5,85%,58%)] shadow-[0_10px_40px_-10px_hsl(17,100%,60%/0.5)] text-white font-semibold text-lg px-8 py-6 group"
             >
               Start Learning Now
-              <ArrowRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform" />
+              <ArrowRight className="ml-2 h-5 w-5" />
             </Button>
             <Button
               size="lg"
               onClick={scrollToCourses}
               variant="outline"
-              className="border-2 border-white text-white hover:bg-white hover:text-primary font-semibold text-lg px-8 py-6 transition-all duration-300"
+              className="border-2 border-white bg-white text-primary font-semibold text-lg px-8 py-6"
             >
               Explore Free Courses
             </Button>

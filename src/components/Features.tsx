@@ -43,7 +43,7 @@ const Features = () => {
             return (
               <Card
                 key={index}
-                className="p-6 hover:shadow-lg transition-all duration-300 hover:-translate-y-1 border-none bg-card"
+                className="p-6 shadow-lg border-none bg-card"
               >
                 <div className="w-14 h-14 rounded-xl bg-gradient-to-br from-[hsl(17,100%,60%)] to-[hsl(5,85%,58%)] flex items-center justify-center mb-4">
                   <Icon className="h-7 w-7 text-white" />

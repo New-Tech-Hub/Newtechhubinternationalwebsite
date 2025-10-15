@@ -53,7 +53,7 @@ const Contact = () => {
             </div>
 
             <div className="space-y-6">
-              <Card className="p-6 border-none bg-card hover:shadow-lg transition-shadow">
+              <Card className="p-6 border-none bg-card shadow-lg">
                 <div className="flex items-start gap-4">
                   <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-[hsl(17,100%,60%)] to-[hsl(5,85%,58%)] flex items-center justify-center flex-shrink-0">
                     <Mail className="h-6 w-6 text-white" />
@@ -65,7 +65,7 @@ const Contact = () => {
                 </div>
               </Card>
 
-              <Card className="p-6 border-none bg-card hover:shadow-lg transition-shadow">
+              <Card className="p-6 border-none bg-card shadow-lg">
                 <div className="flex items-start gap-4">
                   <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-[hsl(17,100%,60%)] to-[hsl(5,85%,58%)] flex items-center justify-center flex-shrink-0">
                     <Phone className="h-6 w-6 text-white" />
@@ -77,7 +77,7 @@ const Contact = () => {
                 </div>
               </Card>
 
-              <Card className="p-6 border-none bg-card hover:shadow-lg transition-shadow">
+              <Card className="p-6 border-none bg-card shadow-lg">
                 <div className="flex items-start gap-4">
                   <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-[hsl(17,100%,60%)] to-[hsl(5,85%,58%)] flex items-center justify-center flex-shrink-0">
                     <MapPin className="h-6 w-6 text-white" />

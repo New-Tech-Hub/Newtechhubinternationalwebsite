@@ -82,9 +82,9 @@ const Pricing = () => {
               key={index}
               className={`p-8 ${
                 plan.highlighted
-                  ? "border-2 border-accent shadow-xl scale-105"
-                  : "border-none"
-              } relative overflow-hidden transition-all duration-300 hover:shadow-2xl`}
+                  ? "border-2 border-accent shadow-2xl scale-105"
+                  : "border-none shadow-2xl"
+              } relative overflow-hidden`}
             >
               {plan.highlighted && (
                 <div className="absolute top-0 right-0 bg-gradient-to-r from-[hsl(17,100%,60%)] to-[hsl(5,85%,58%)] text-white px-4 py-1 text-sm font-semibold rounded-bl-lg">

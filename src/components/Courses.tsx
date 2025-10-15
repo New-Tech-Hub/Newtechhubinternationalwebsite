@@ -88,14 +88,14 @@ const Courses = () => {
           {courses.map((course) => (
             <Card
               key={course.id}
-              className="overflow-hidden hover:shadow-xl transition-all duration-300 hover:-translate-y-2 border-none group"
+              className="overflow-hidden shadow-xl -translate-y-2 border-none group"
             >
               <div className="relative h-48 overflow-hidden">
                 <img
                   src={course.image}
                   alt={`${course.title} - ${course.description}`}
                   loading="lazy"
-                  className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
+                  className="w-full h-full object-cover scale-110"
                 />
                 <div className="absolute top-4 right-4">
                   <span className="px-3 py-1 bg-accent/10 backdrop-blur-sm text-accent text-sm font-semibold rounded-full">
