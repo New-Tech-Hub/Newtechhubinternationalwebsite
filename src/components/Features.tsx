@@ -45,10 +45,10 @@ const Features = () => {
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <header className="text-center mb-16">
           <h2 id="features-heading" className="text-3xl sm:text-4xl lg:text-5xl font-bold text-foreground mb-4">
-            Popular Course Categories
+            Browse by Category
           </h2>
           <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-            Explore our most sought-after courses and start your learning journey today
+            Choose your learning path and discover courses tailored to your goals
           </p>
         </header>
 
