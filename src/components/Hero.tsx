@@ -12,6 +12,10 @@ const Hero = () => {
       element.scrollIntoView({ behavior: 'smooth', block: 'start' });
     }
   };
+
+  const showCourseVideos = () => {
+    navigate('/courses-preview');
+  };
   return (
     <section className="relative min-h-[90vh] flex items-center overflow-hidden" aria-label="Hero section">
       {/* Background Image with Overlay */}
@@ -37,7 +41,7 @@ const Hero = () => {
           <div className="flex flex-col sm:flex-row gap-4 animate-fade-in" style={{ animationDelay: "0.4s" }}>
             <Button
               size="lg"
-              onClick={() => navigate('/auth')}
+              onClick={scrollToCourses}
               className="bg-gradient-to-r from-[hsl(17,100%,60%)] to-[hsl(5,85%,58%)] shadow-[0_10px_40px_-10px_hsl(17,100%,60%/0.5)] text-white font-semibold text-lg px-8 py-6 group"
             >
               Start Learning Now
@@ -45,7 +49,7 @@ const Hero = () => {
             </Button>
             <Button
               size="lg"
-              onClick={scrollToCourses}
+              onClick={showCourseVideos}
               variant="outline"
               className="border-2 border-white bg-white text-primary font-semibold text-lg px-8 py-6"
             >
