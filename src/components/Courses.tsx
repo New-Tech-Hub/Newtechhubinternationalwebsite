@@ -29,10 +29,13 @@ const Courses = () => {
 
         // Map to course format with images
         const imageMap: Record<string, any> = {
-          'marketing': marketingImage,
+          'digital_marketing': marketingImage,
           'web_development': webdevImage,
-          'ai_ml': aiImage,
-          'design': designImage,
+          'ai_data': aiImage,
+          'graphic_design': designImage,
+          'cybersecurity': webdevImage,
+          'freelancing': marketingImage,
+          'video_editing': designImage,
         };
 
         const coursesWithImages = (data || []).map(course => ({
