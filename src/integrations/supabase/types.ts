@@ -71,6 +71,7 @@ export type Database = {
           thumbnail_url: string | null
           title: string
           updated_at: string | null
+          video_preview_url: string | null
         }
         Insert: {
           category: Database["public"]["Enums"]["course_category"]
@@ -86,6 +87,7 @@ export type Database = {
           thumbnail_url?: string | null
           title: string
           updated_at?: string | null
+          video_preview_url?: string | null
         }
         Update: {
           category?: Database["public"]["Enums"]["course_category"]
@@ -101,6 +103,7 @@ export type Database = {
           thumbnail_url?: string | null
           title?: string
           updated_at?: string | null
+          video_preview_url?: string | null
         }
         Relationships: []
       }
