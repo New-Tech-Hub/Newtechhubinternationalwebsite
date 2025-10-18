@@ -21,6 +21,12 @@ const Navigation = () => {
   };
 
   const scrollToSection = (sectionId: string) => {
+    // If not on home page, navigate to home first
+    if (window.location.pathname !== '/') {
+      navigate('/', { state: { scrollTo: sectionId.toLowerCase() } });
+      return;
+    }
+    
     const element = document.getElementById(sectionId.toLowerCase());
     if (element) {
       element.scrollIntoView({ behavior: 'smooth', block: 'start' });
@@ -33,7 +39,18 @@ const Navigation = () => {
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-20">
           {/* Logo */}
-          <div className="flex-shrink-0 flex items-center gap-3">
+          <div 
+            className="flex-shrink-0 flex items-center gap-3 cursor-pointer" 
+            onClick={() => navigate('/')}
+            role="button"
+            tabIndex={0}
+            onKeyDown={(e) => {
+              if (e.key === 'Enter' || e.key === ' ') {
+                navigate('/');
+              }
+            }}
+            aria-label="Go to home page"
+          >
             <img 
               src={logo} 
               alt="New Tech Hub International" 

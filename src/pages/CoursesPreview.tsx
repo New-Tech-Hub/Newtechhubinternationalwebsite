@@ -1,43 +1,60 @@
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { ArrowLeft, Play } from "lucide-react";
+import { ArrowLeft, Play, Loader2 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import Navigation from "@/components/Navigation";
 import Footer from "@/components/Footer";
-
-const coursesData = [
-  {
-    id: 1,
-    title: "Web Development Fundamentals",
-    description: "Master HTML, CSS, JavaScript, and modern web development practices",
-    videoUrl: "https://www.youtube.com/embed/UB1O30fR-EE",
-    duration: "12 weeks"
-  },
-  {
-    id: 2,
-    title: "Digital Marketing Mastery",
-    description: "Learn SEO, social media marketing, content strategy, and analytics",
-    videoUrl: "https://www.youtube.com/embed/nU-IIXBWlS4",
-    duration: "10 weeks"
-  },
-  {
-    id: 3,
-    title: "UI/UX Design Principles",
-    description: "Create beautiful, user-friendly designs using industry-standard tools",
-    videoUrl: "https://www.youtube.com/embed/c9Wg6Cb_YlU",
-    duration: "8 weeks"
-  },
-  {
-    id: 4,
-    title: "Artificial Intelligence & Machine Learning",
-    description: "Dive into AI fundamentals, neural networks, and practical applications",
-    videoUrl: "https://www.youtube.com/embed/ad79nYk2keg",
-    duration: "14 weeks"
-  }
-];
+import { useState, useEffect } from "react";
+import { supabase } from "@/integrations/supabase/client";
+import { toast } from "sonner";
 
 const CoursesPreview = () => {
   const navigate = useNavigate();
+  const [courses, setCourses] = useState<any[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchCourses = async () => {
+      try {
+        const { data, error } = await supabase
+          .from('courses')
+          .select('*')
+          .eq('published', true)
+          .not('video_preview_url', 'is', null);
+
+        if (error) throw error;
+
+        const coursesWithVideos = (data || []).map(course => ({
+          id: course.id,
+          title: course.title,
+          description: course.description,
+          videoUrl: course.video_preview_url,
+          duration: `${course.estimated_hours || 8} weeks`,
+        }));
+
+        setCourses(coursesWithVideos);
+      } catch (error) {
+        console.error('Error fetching courses:', error);
+        toast.error('Failed to load course previews');
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchCourses();
+  }, []);
+
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-background">
+        <Navigation />
+        <main className="container mx-auto px-4 flex items-center justify-center min-h-[70vh]">
+          <Loader2 className="h-8 w-8 animate-spin text-primary" />
+        </main>
+        <Footer />
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-background">
@@ -48,7 +65,7 @@ const CoursesPreview = () => {
           <Button
             variant="ghost"
             onClick={() => navigate('/')}
-            className="mb-4"
+            className="mb-4 hover:bg-primary/10"
           >
             <ArrowLeft className="mr-2 h-4 w-4" />
             Back to Home
@@ -62,39 +79,52 @@ const CoursesPreview = () => {
           </p>
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-          {coursesData.map((course) => (
-            <Card key={course.id} className="shadow-lg">
-              <CardHeader>
-                <CardTitle className="flex items-center gap-2">
-                  <Play className="h-5 w-5 text-primary" />
-                  {course.title}
-                </CardTitle>
-                <CardDescription>{course.description}</CardDescription>
-              </CardHeader>
-              <CardContent>
-                <div className="aspect-video w-full mb-4 rounded-lg overflow-hidden bg-muted">
-                  <iframe
-                    width="100%"
-                    height="100%"
-                    src={course.videoUrl}
-                    title={course.title}
-                    frameBorder="0"
-                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                    allowFullScreen
-                    className="w-full h-full"
-                  />
-                </div>
-                <div className="flex justify-between items-center">
-                  <span className="text-sm text-muted-foreground">Duration: {course.duration}</span>
-                  <Button onClick={() => navigate(`/course/${course.id}`)}>
-                    View Full Course
-                  </Button>
-                </div>
-              </CardContent>
-            </Card>
-          ))}
-        </div>
+        {courses.length === 0 ? (
+          <div className="text-center py-12">
+            <p className="text-muted-foreground text-lg">No video previews available yet. Check back soon!</p>
+            <Button onClick={() => navigate('/')} className="mt-6">
+              Browse Courses
+            </Button>
+          </div>
+        ) : (
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+            {courses.map((course) => (
+              <Card key={course.id} className="shadow-lg hover:shadow-xl transition-shadow">
+                <CardHeader>
+                  <CardTitle className="flex items-center gap-2">
+                    <Play className="h-5 w-5 text-primary" />
+                    {course.title}
+                  </CardTitle>
+                  <CardDescription>{course.description}</CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <div className="aspect-video w-full mb-4 rounded-lg overflow-hidden bg-muted">
+                    <iframe
+                      width="100%"
+                      height="100%"
+                      src={course.videoUrl}
+                      title={`${course.title} preview`}
+                      frameBorder="0"
+                      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                      allowFullScreen
+                      className="w-full h-full"
+                      loading="lazy"
+                    />
+                  </div>
+                  <div className="flex justify-between items-center">
+                    <span className="text-sm text-muted-foreground">Duration: {course.duration}</span>
+                    <Button 
+                      onClick={() => navigate(`/course/${course.id}`)}
+                      className="bg-gradient-to-r from-[hsl(17,100%,60%)] to-[hsl(5,85%,58%)] hover:shadow-lg transition-all duration-300"
+                    >
+                      View Full Course
+                    </Button>
+                  </div>
+                </CardContent>
+              </Card>
+            ))}
+          </div>
+        )}
       </main>
 
       <Footer />
