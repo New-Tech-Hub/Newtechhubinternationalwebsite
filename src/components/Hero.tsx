@@ -40,6 +40,7 @@ const Hero = () => {
           </p>
           <div className="flex flex-col sm:flex-row gap-4 animate-fade-in" style={{ animationDelay: "0.4s" }}>
             <Button
+              type="button"
               size="lg"
               onClick={scrollToCourses}
               className="bg-gradient-to-r from-[hsl(17,100%,60%)] to-[hsl(5,85%,58%)] shadow-[0_10px_40px_-10px_hsl(17,100%,60%/0.5)] text-white font-semibold text-lg px-8 py-6 group hover:scale-105 active:bg-transparent active:border-2 active:border-[hsl(17,100%,60%)] active:shadow-none transition-all duration-200"
@@ -48,6 +49,7 @@ const Hero = () => {
               <ArrowRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform" />
             </Button>
             <Button
+              type="button"
               size="lg"
               onClick={showCourseVideos}
               variant="outline"
