@@ -8,6 +8,7 @@ import { Label } from "@/components/ui/label";
 import { toast } from "sonner";
 import { Clock, Users, BarChart, ArrowLeft, Loader2 } from "lucide-react";
 import { useAuth } from "@/hooks/useAuth";
+import { Analytics } from "@/lib/analytics";
 
 const CourseDetail = () => {
   const { id } = useParams();
@@ -25,6 +26,12 @@ const CourseDetail = () => {
   useEffect(() => {
     fetchCourse();
   }, [id]);
+
+  useEffect(() => {
+    if (course) {
+      Analytics.courseDetailView(course.id, course.title, course.price);
+    }
+  }, [course]);
 
   const fetchCourse = async () => {
     try {
@@ -44,11 +51,23 @@ const CourseDetail = () => {
     }
   };
 
+  const handleFormFocus = () => {
+    if (course && !enrolling) {
+      Analytics.leadCaptureStart(course.id);
+    }
+  };
+
   const handleEnroll = async (e: React.FormEvent) => {
     e.preventDefault();
     setEnrolling(true);
 
     try {
+      // Track lead capture completion
+      Analytics.leadCaptureComplete(course.id, formData.email);
+      
+      // Track payment initiation
+      Analytics.paymentInitiated(course.id, course.price);
+
       const { data, error } = await supabase.functions.invoke('initialize-payment', {
         body: {
           courseId: id,
@@ -150,7 +169,7 @@ const CourseDetail = () => {
                 </div>
               </div>
 
-              <form onSubmit={handleEnroll} className="space-y-4">
+              <form onSubmit={handleEnroll} className="space-y-4" onFocus={handleFormFocus}>
                 <div>
                   <Label htmlFor="fullName">Full Name</Label>
                   <Input

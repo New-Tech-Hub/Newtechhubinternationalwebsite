@@ -2,11 +2,13 @@ import { Button } from "@/components/ui/button";
 import { ArrowRight } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import heroImage from "@/assets/hero-learning.jpg";
+import { Analytics } from "@/lib/analytics";
 
 const Hero = () => {
   const navigate = useNavigate();
 
   const scrollToCourses = () => {
+    Analytics.heroCtaClick('Start Learning Now');
     const element = document.getElementById('courses');
     if (element) {
       element.scrollIntoView({ behavior: 'smooth', block: 'start' });
@@ -14,6 +16,7 @@ const Hero = () => {
   };
 
   const showCourseVideos = () => {
+    Analytics.heroCtaClick('Explore Free Courses');
     navigate('/courses-preview');
   };
   return (

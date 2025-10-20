@@ -6,6 +6,7 @@ import { useAuth } from "@/hooks/useAuth";
 import { toast } from "sonner";
 import { useState, useEffect } from "react";
 import { supabase } from "@/integrations/supabase/client";
+import { Analytics } from "@/lib/analytics";
 import marketingImage from "@/assets/course-marketing-new.jpg";
 import webdevImage from "@/assets/course-webdev-new.jpg";
 import aiImage from "@/assets/course-ai-new.jpg";
@@ -62,9 +63,16 @@ const Courses = () => {
     fetchCourses();
   }, []);
 
-  const handleEnroll = (courseId: string) => {
+  const handleEnroll = (courseId: string, courseTitle: string) => {
+    Analytics.courseCardClick(courseId, courseTitle);
     navigate(`/course/${courseId}`);
   };
+
+  useEffect(() => {
+    if (courses.length > 0) {
+      Analytics.courseListView();
+    }
+  }, [courses]);
 
   if (loading) {
     return (
@@ -149,7 +157,7 @@ const Courses = () => {
                 </div>
                   <Button 
                     type="button"
-                    onClick={() => handleEnroll(course.id)}
+                    onClick={() => handleEnroll(course.id, course.title)}
                     className="w-full bg-gradient-to-r from-[hsl(17,100%,60%)] to-[hsl(5,85%,58%)] hover:shadow-lg transition-all duration-300"
                   >
                     View Course
