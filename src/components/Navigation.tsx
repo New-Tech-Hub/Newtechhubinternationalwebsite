@@ -11,6 +11,10 @@ const Navigation = () => {
   const navigate = useNavigate();
 
   const navLinks = ["Courses", "About", "Pricing", "Contact"];
+  const externalLinks = [
+    { label: "Community", path: "/community" },
+    ...(user ? [{ label: "Certificates", path: "/my-certificates" }] : []),
+  ];
 
   const handleAuthClick = () => {
     if (user) {
@@ -77,6 +81,15 @@ const Navigation = () => {
                 {link}
               </button>
             ))}
+            {externalLinks.map((link) => (
+              <button
+                key={link.label}
+                onClick={() => navigate(link.path)}
+                className="text-white/90 hover:text-white font-medium transition-colors duration-200"
+              >
+                {link.label}
+              </button>
+            ))}
             {isAdmin && (
               <Button
                 onClick={() => navigate('/admin')}
@@ -117,6 +130,18 @@ const Navigation = () => {
                   className="text-white/90 hover:text-white font-medium transition-colors duration-200 text-left"
                 >
                   {link}
+                </button>
+              ))}
+              {externalLinks.map((link) => (
+                <button
+                  key={link.label}
+                  onClick={() => {
+                    navigate(link.path);
+                    setIsOpen(false);
+                  }}
+                  className="text-white/90 hover:text-white font-medium transition-colors duration-200 text-left"
+                >
+                  {link.label}
                 </button>
               ))}
               {isAdmin && (
