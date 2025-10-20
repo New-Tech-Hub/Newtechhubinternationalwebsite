@@ -123,6 +123,7 @@ const Pricing = () => {
               </ul>
 
               <Button
+                type="button"
                 onClick={() => handlePlanClick(plan.name)}
                 className={`w-full ${
                   plan.highlighted

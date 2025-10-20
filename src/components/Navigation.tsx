@@ -74,6 +74,7 @@ const Navigation = () => {
           <div className="hidden lg:flex items-center gap-4 xl:gap-6">
             {navLinks.map((link) => (
               <button
+                type="button"
                 key={link}
                 onClick={() => scrollToSection(link)}
                 className="text-white/90 hover:text-white text-sm font-medium transition-colors duration-200 whitespace-nowrap"
@@ -83,6 +84,7 @@ const Navigation = () => {
             ))}
             {externalLinks.map((link) => (
               <button
+                type="button"
                 key={link.label}
                 onClick={() => navigate(link.path)}
                 className="text-white/90 hover:text-white text-sm font-medium transition-colors duration-200 whitespace-nowrap"
@@ -92,6 +94,7 @@ const Navigation = () => {
             ))}
             {isAdmin && (
               <Button
+                type="button"
                 onClick={() => navigate('/admin')}
                 variant="outline"
                 size="sm"
@@ -102,6 +105,7 @@ const Navigation = () => {
               </Button>
             )}
             <Button 
+              type="button"
               onClick={handleAuthClick}
               size="sm"
               className="bg-accent hover:bg-accent/90 text-white font-semibold text-xs px-4 whitespace-nowrap"
@@ -112,6 +116,7 @@ const Navigation = () => {
 
           {/* Mobile Menu Button */}
           <button
+            type="button"
             className="lg:hidden text-white"
             onClick={() => setIsOpen(!isOpen)}
             aria-label="Toggle menu"
@@ -126,6 +131,7 @@ const Navigation = () => {
             <div className="flex flex-col gap-4">
               {navLinks.map((link) => (
                 <button
+                  type="button"
                   key={link}
                   onClick={() => scrollToSection(link)}
                   className="text-white/90 hover:text-white font-medium transition-colors duration-200 text-left"
@@ -135,6 +141,7 @@ const Navigation = () => {
               ))}
               {externalLinks.map((link) => (
                 <button
+                  type="button"
                   key={link.label}
                   onClick={() => {
                     navigate(link.path);
@@ -147,6 +154,7 @@ const Navigation = () => {
               ))}
               {isAdmin && (
                 <Button
+                  type="button"
                   onClick={() => {
                     navigate('/admin');
                     setIsOpen(false);
@@ -159,6 +167,7 @@ const Navigation = () => {
                 </Button>
               )}
               <Button 
+                type="button"
                 onClick={() => {
                   handleAuthClick();
                   setIsOpen(false);

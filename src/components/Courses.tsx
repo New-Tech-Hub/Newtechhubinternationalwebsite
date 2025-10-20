@@ -148,6 +148,7 @@ const Courses = () => {
                   </span>
                 </div>
                   <Button 
+                    type="button"
                     onClick={() => handleEnroll(course.id)}
                     className="w-full bg-gradient-to-r from-[hsl(17,100%,60%)] to-[hsl(5,85%,58%)] hover:shadow-lg transition-all duration-300"
                   >

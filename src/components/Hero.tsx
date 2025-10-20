@@ -43,7 +43,7 @@ const Hero = () => {
               type="button"
               size="lg"
               onClick={scrollToCourses}
-              className="bg-gradient-to-r from-[hsl(17,100%,60%)] to-[hsl(5,85%,58%)] shadow-[0_10px_40px_-10px_hsl(17,100%,60%/0.5)] text-white font-semibold text-lg px-8 py-6 group hover:scale-105 active:bg-transparent active:border-2 active:border-[hsl(17,100%,60%)] active:shadow-none transition-all duration-200"
+              className="bg-gradient-to-r from-[hsl(17,100%,60%)] to-[hsl(5,85%,58%)] shadow-[0_10px_40px_-10px_hsl(17,100%,60%/0.5)] text-white font-semibold text-lg px-8 py-6 group hover:scale-105 transition-all duration-200"
             >
               Start Learning Now
               <ArrowRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform" />
@@ -53,7 +53,7 @@ const Hero = () => {
               size="lg"
               onClick={showCourseVideos}
               variant="outline"
-              className="border-2 border-white bg-white/10 backdrop-blur-sm text-white font-semibold text-lg px-8 py-6 hover:bg-white hover:text-primary hover:scale-105 active:bg-transparent active:backdrop-blur-none active:shadow-inner transition-all duration-200"
+              className="border-2 border-white bg-white/10 backdrop-blur-sm text-white font-semibold text-lg px-8 py-6 hover:bg-white hover:text-primary hover:scale-105 transition-all duration-200"
             >
               Explore Free Courses
             </Button>
