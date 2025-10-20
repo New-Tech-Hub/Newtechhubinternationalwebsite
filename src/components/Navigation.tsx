@@ -71,12 +71,12 @@ const Navigation = () => {
           </div>
 
           {/* Desktop Navigation */}
-          <div className="hidden md:flex items-center gap-6">
+          <div className="hidden lg:flex items-center gap-4 xl:gap-6">
             {navLinks.map((link) => (
               <button
                 key={link}
                 onClick={() => scrollToSection(link)}
-                className="text-white/90 hover:text-white font-medium transition-colors duration-200"
+                className="text-white/90 hover:text-white text-sm font-medium transition-colors duration-200 whitespace-nowrap"
               >
                 {link}
               </button>
@@ -85,7 +85,7 @@ const Navigation = () => {
               <button
                 key={link.label}
                 onClick={() => navigate(link.path)}
-                className="text-white/90 hover:text-white font-medium transition-colors duration-200"
+                className="text-white/90 hover:text-white text-sm font-medium transition-colors duration-200 whitespace-nowrap"
               >
                 {link.label}
               </button>
@@ -95,15 +95,16 @@ const Navigation = () => {
                 onClick={() => navigate('/admin')}
                 variant="outline"
                 size="sm"
-                className="gap-2 bg-white/10 text-white border-white/20 hover:bg-white/20"
+                className="gap-1 bg-white/10 text-white border-white/20 hover:bg-white/20 text-xs px-3"
               >
-                <Shield className="h-4 w-4" />
+                <Shield className="h-3 w-3" />
                 Admin
               </Button>
             )}
             <Button 
               onClick={handleAuthClick}
-              className="bg-accent hover:bg-accent/90 text-white font-semibold"
+              size="sm"
+              className="bg-accent hover:bg-accent/90 text-white font-semibold text-xs px-4 whitespace-nowrap"
             >
               {user ? 'Sign Out' : 'Get Started'}
             </Button>
@@ -111,7 +112,7 @@ const Navigation = () => {
 
           {/* Mobile Menu Button */}
           <button
-            className="md:hidden text-white"
+            className="lg:hidden text-white"
             onClick={() => setIsOpen(!isOpen)}
             aria-label="Toggle menu"
           >
@@ -121,7 +122,7 @@ const Navigation = () => {
 
         {/* Mobile Navigation */}
         {isOpen && (
-          <div className="md:hidden pb-6">
+          <div className="lg:hidden pb-6">
             <div className="flex flex-col gap-4">
               {navLinks.map((link) => (
                 <button
