@@ -72,7 +72,19 @@ const Contact = () => {
                   </div>
                   <div>
                     <h4 className="font-semibold text-foreground mb-1">Phone</h4>
-                    <p className="text-muted-foreground">+234 (0) 800 000 0000</p>
+                    <p className="text-muted-foreground">+2348159153454</p>
+                  </div>
+                </div>
+              </Card>
+
+              <Card className="p-6 border-none bg-card shadow-lg">
+                <div className="flex items-start gap-4">
+                  <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-[hsl(17,100%,60%)] to-[hsl(5,85%,58%)] flex items-center justify-center flex-shrink-0">
+                    <Phone className="h-6 w-6 text-white" />
+                  </div>
+                  <div>
+                    <h4 className="font-semibold text-foreground mb-1">WhatsApp</h4>
+                    <p className="text-muted-foreground">08087404084</p>
                   </div>
                 </div>
               </Card>
@@ -84,7 +96,7 @@ const Contact = () => {
                   </div>
                   <div>
                     <h4 className="font-semibold text-foreground mb-1">Location</h4>
-                    <p className="text-muted-foreground">Lagos, Nigeria</p>
+                    <p className="text-muted-foreground">5 Dalaba Street, Wuse Zone 5, Abuja</p>
                   </div>
                 </div>
               </Card>
