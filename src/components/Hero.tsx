@@ -27,7 +27,7 @@ const Hero = () => {
           src={heroImage}
           alt="African students collaborating and learning digital skills together in a modern educational setting"
           className="w-full h-full object-cover"
-          fetchPriority="high"
+          loading="eager"
         />
         <div className="absolute inset-0 bg-gradient-to-r from-primary/95 via-primary/85 to-primary/70" />
       </div>
