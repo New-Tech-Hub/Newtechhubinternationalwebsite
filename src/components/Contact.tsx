@@ -84,7 +84,14 @@ const Contact = () => {
                   </div>
                   <div>
                     <h4 className="font-semibold text-foreground mb-1">WhatsApp</h4>
-                    <p className="text-muted-foreground">08087404084</p>
+                    <a 
+                      href="https://wa.link/ch2ad1" 
+                      target="_blank" 
+                      rel="noopener noreferrer"
+                      className="text-muted-foreground hover:text-primary transition-colors"
+                    >
+                      08087404084
+                    </a>
                   </div>
                 </div>
               </Card>
