@@ -16,7 +16,7 @@ const Chatbot = () => {
   const [messages, setMessages] = useState<Message[]>([
     {
       role: "assistant",
-      content: "Hi! I'm your NewTech Hub assistant. How can I help you today?\n\nWhatsApp: +2348087404084\nCall: +2348159153454",
+      content: "Hi! Welcome to NewTech Hub Support 👋\n\nHow would you like to get help?\n\n📞 CALL US\n+2348159153454\n\n💬 WHATSAPP\n+2348087404084\nhttps://wa.link/ch2ad1\n\n📧 EMAIL\ninfo@newtechhub.com\n\n🤖 AI CHAT\nAsk me anything about our courses!\n\n👤 LIVE SUPPORT\nConnect with a support agent",
     },
   ]);
   const [input, setInput] = useState("");
@@ -150,10 +150,13 @@ const Chatbot = () => {
       {isOpen && (
         <Card className="fixed bottom-6 right-6 w-96 h-[500px] shadow-2xl z-50 flex flex-col">
           {/* Header */}
-          <div className="flex items-center justify-between p-4 border-b">
+          <div className="flex items-center justify-between p-4 border-b bg-gradient-to-r from-primary/10 to-primary/5">
             <div className="flex items-center gap-2">
               <MessageCircle className="h-5 w-5 text-primary" />
-              <h3 className="font-semibold">Customer Care</h3>
+              <div>
+                <h3 className="font-semibold">NewTech Hub Support</h3>
+                <p className="text-xs text-muted-foreground">We're here to help!</p>
+              </div>
             </div>
             <Button
               onClick={() => setIsOpen(false)}
