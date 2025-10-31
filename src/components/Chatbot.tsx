@@ -1,10 +1,11 @@
 import { useState, useRef, useEffect } from "react";
-import { MessageCircle, X, Send, Loader2 } from "lucide-react";
+import { MessageCircle, X, Send, Loader2, Phone } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Card } from "@/components/ui/card";
 import { toast } from "sonner";
+import { supabase } from "@/integrations/supabase/client";
 
 interface Message {
   role: "user" | "assistant";
@@ -21,6 +22,8 @@ const Chatbot = () => {
   ]);
   const [input, setInput] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+  const [sessionId] = useState(() => `session_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`);
+  const [conversationId, setConversationId] = useState<string | null>(null);
   const scrollRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -28,6 +31,47 @@ const Chatbot = () => {
       scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
     }
   }, [messages]);
+
+  // Save conversation to database
+  const saveConversation = async (updatedMessages: Message[]) => {
+    try {
+      const { data: { user } } = await supabase.auth.getUser();
+      
+      const messagesJson = updatedMessages.map(msg => ({
+        role: msg.role,
+        content: msg.content
+      }));
+      
+      if (conversationId) {
+        // Update existing conversation
+        await supabase
+          .from('chat_conversations')
+          .update({ 
+            messages: messagesJson as any,
+            updated_at: new Date().toISOString()
+          })
+          .eq('id', conversationId);
+      } else {
+        // Create new conversation
+        const { data, error } = await supabase
+          .from('chat_conversations')
+          .insert({
+            user_id: user?.id || null,
+            session_id: sessionId,
+            messages: messagesJson as any,
+            status: 'active'
+          })
+          .select()
+          .single();
+        
+        if (data && !error) {
+          setConversationId(data.id);
+        }
+      }
+    } catch (error) {
+      console.error('Error saving conversation:', error);
+    }
+  };
 
   const streamChat = async (userMessages: Message[]) => {
     const CHAT_URL = `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/chatbot`;
@@ -110,20 +154,40 @@ const Chatbot = () => {
     setInput("");
     setIsLoading(true);
 
+    // Save conversation after user message
+    await saveConversation(newMessages);
+
     try {
       await streamChat(newMessages);
     } catch (error) {
       console.error("Error:", error);
-      setMessages((prev) => [
-        ...prev,
+      const errorMessages: Message[] = [
+        ...newMessages,
         {
-          role: "assistant",
+          role: "assistant" as const,
           content: "Sorry, I encountered an error. Please try again.",
         },
-      ]);
+      ];
+      setMessages(errorMessages);
+      await saveConversation(errorMessages);
     } finally {
       setIsLoading(false);
     }
+  };
+
+  const handleConnectToAgent = () => {
+    const conversationText = messages
+      .map(msg => `${msg.role === 'user' ? 'Me' : 'Bot'}: ${msg.content}`)
+      .join('\n\n');
+    
+    const whatsappMessage = `Hello! I need help with my inquiry.\n\nMy conversation so far:\n\n${conversationText}`;
+    const encodedMessage = encodeURIComponent(whatsappMessage);
+    const whatsappUrl = `https://wa.me/2348087404084?text=${encodedMessage}`;
+    
+    window.open(whatsappUrl, '_blank');
+    toast.success("Opening WhatsApp...", {
+      description: "You'll be connected to our support team"
+    });
   };
 
   const handleKeyPress = (e: React.KeyboardEvent) => {
@@ -200,7 +264,16 @@ const Chatbot = () => {
           </ScrollArea>
 
           {/* Input */}
-          <div className="p-4 border-t">
+          <div className="p-4 border-t space-y-2">
+            <Button
+              onClick={handleConnectToAgent}
+              variant="outline"
+              className="w-full"
+              size="sm"
+            >
+              <Phone className="h-4 w-4 mr-2" />
+              Connect to Live Agent via WhatsApp
+            </Button>
             <div className="flex gap-2">
               <Input
                 value={input}
