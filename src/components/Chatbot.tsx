@@ -16,7 +16,7 @@ const Chatbot = () => {
   const [messages, setMessages] = useState<Message[]>([
     {
       role: "assistant",
-      content: "Hi! Welcome to NewTech Hub Support 👋\n\nHow would you like to get help?\n\n📞 CALL US\n+2348159153454\n\n💬 WHATSAPP\n+2348087404084\nhttps://wa.link/ch2ad1\n\n📧 EMAIL\ninfo@newtechhub.com\n\n🤖 AI CHAT\nAsk me anything about our courses!\n\n👤 LIVE SUPPORT\nConnect with a support agent",
+      content: "Hi! Welcome to NewTech Hub Support 👋\n\nI'm here to help you with:\n- Course information and enrollment\n- Technical support\n- Payment inquiries\n- General questions about our programs\n\nHow can I assist you today?",
     },
   ]);
   const [input, setInput] = useState("");
