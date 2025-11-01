@@ -5,7 +5,7 @@ import { Globe, MapPin, Briefcase } from "lucide-react";
 const Localization = () => {
   const africanSuccessStories = [
     {
-      name: "Chidinma Okafor",
+      name: "Mercy Guma",
       location: "Lagos, Nigeria",
       course: "Full Stack Web Development",
       outcome: "Now a Senior Developer at Andela, earning ₦850k/month",
