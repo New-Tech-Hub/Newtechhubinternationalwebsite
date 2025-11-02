@@ -32,7 +32,7 @@ const Index = () => {
   }, [location]);
 
   return (
-    <div className="min-h-screen">
+    <div className="min-h-screen scroll-smooth snap-y snap-mandatory overflow-y-auto">
       <Navigation />
       <main id="main-content">
         <Hero />
