@@ -23,7 +23,7 @@ const plans = [
   },
   {
     name: "Premium Membership",
-    price: "₦50,000",
+    price: "₦500,000",
     period: "/year",
     description: "Unlock unlimited access to all courses and premium benefits",
     features: [
