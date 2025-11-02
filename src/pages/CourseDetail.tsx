@@ -107,24 +107,57 @@ const CourseDetail = () => {
     );
   }
 
+  // Generate JSON-LD structured data for course detail
+  const courseSchema = {
+    "@context": "https://schema.org",
+    "@type": "Course",
+    "name": course.title,
+    "description": course.description,
+    "provider": {
+      "@type": "Organization",
+      "name": "New Tech Hub International",
+      "sameAs": "https://newtechhub.lovable.app"
+    },
+    "offers": {
+      "@type": "Offer",
+      "price": course.price,
+      "priceCurrency": "NGN",
+      "availability": "https://schema.org/InStock"
+    },
+    "hasCourseInstance": {
+      "@type": "CourseInstance",
+      "courseMode": "online",
+      "courseWorkload": `PT${course.estimated_hours}H`
+    },
+    "educationalLevel": course.difficulty_level
+  };
+
   return (
-    <div className="min-h-screen bg-background py-12">
-      <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-6xl">
-        <Button
-          variant="ghost"
-          onClick={() => navigate('/')}
-          className="mb-6"
-        >
-          <ArrowLeft className="mr-2 h-4 w-4" />
-          Back to Courses
-        </Button>
+    <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(courseSchema) }}
+      />
+      <div className="min-h-screen bg-background py-12">
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-6xl">
+          <Button
+            variant="ghost"
+            onClick={() => navigate('/')}
+            className="mb-6"
+            aria-label="Go back to courses page"
+          >
+            <ArrowLeft className="mr-2 h-4 w-4" />
+            Back to Courses
+          </Button>
 
         <div className="grid lg:grid-cols-3 gap-8">
-          <div className="lg:col-span-2">
+          <article className="lg:col-span-2">
             <img
               src={course.thumbnail_url}
-              alt={course.title}
+              alt={`${course.title} - Complete ${course.difficulty_level} level course covering ${course.description}`}
               className="w-full h-64 object-cover rounded-lg mb-6"
+              width="800"
+              height="400"
             />
             
             <h1 className="text-4xl font-bold mb-4">{course.title}</h1>
@@ -145,18 +178,18 @@ const CourseDetail = () => {
             </div>
 
             <div className="prose max-w-none">
-              <h2>About This Course</h2>
-              <p>{course.description}</p>
+              <h2 className="text-2xl font-semibold mb-4">About This Course</h2>
+              <p className="text-lg mb-6">{course.description}</p>
               
-              <h2>What You'll Learn</h2>
-              <ul>
+              <h2 className="text-2xl font-semibold mb-4">What You'll Learn</h2>
+              <ul className="space-y-2 mb-6">
                 <li>Master the fundamentals of {course.title}</li>
                 <li>Build real-world projects and portfolios</li>
                 <li>Get lifetime access to course materials</li>
                 <li>Receive a certificate upon completion</li>
               </ul>
             </div>
-          </div>
+          </article>
 
           <div className="lg:col-span-1">
             <Card className="p-6 sticky top-6">
@@ -240,8 +273,9 @@ const CourseDetail = () => {
             </Card>
           </div>
         </div>
+        </div>
       </div>
-    </div>
+    </>
   );
 };
 

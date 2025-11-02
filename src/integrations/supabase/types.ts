@@ -374,6 +374,7 @@ export type Database = {
           id: string
           is_public: boolean | null
           job_title: string | null
+          privacy_consent_given: boolean | null
           salary_range: string | null
           skills_gained: string[] | null
           updated_at: string
@@ -387,6 +388,7 @@ export type Database = {
           id?: string
           is_public?: boolean | null
           job_title?: string | null
+          privacy_consent_given?: boolean | null
           salary_range?: string | null
           skills_gained?: string[] | null
           updated_at?: string
@@ -400,6 +402,7 @@ export type Database = {
           id?: string
           is_public?: boolean | null
           job_title?: string | null
+          privacy_consent_given?: boolean | null
           salary_range?: string | null
           skills_gained?: string[] | null
           updated_at?: string
@@ -603,6 +606,7 @@ export type Database = {
       testimonials: {
         Row: {
           company: string | null
+          consent_to_publish: boolean | null
           content: string
           course_id: string | null
           created_at: string
@@ -620,6 +624,7 @@ export type Database = {
         }
         Insert: {
           company?: string | null
+          consent_to_publish?: boolean | null
           content: string
           course_id?: string | null
           created_at?: string
@@ -637,6 +642,7 @@ export type Database = {
         }
         Update: {
           company?: string | null
+          consent_to_publish?: boolean | null
           content?: string
           course_id?: string | null
           created_at?: string

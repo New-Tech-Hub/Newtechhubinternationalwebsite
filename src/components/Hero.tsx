@@ -19,18 +19,45 @@ const Hero = () => {
     Analytics.heroCtaClick('Explore Free Courses');
     navigate('/courses-preview');
   };
+  // Generate JSON-LD structured data for organization
+  const organizationSchema = {
+    "@context": "https://schema.org",
+    "@type": "EducationalOrganization",
+    "name": "New Tech Hub International",
+    "description": "Premier African digital skills education platform offering courses in Web Development, AI, Digital Marketing, Cybersecurity, and Graphic Design",
+    "url": "https://newtechhub.lovable.app",
+    "logo": "https://newtechhub.lovable.app/assets/newtech-hub-logo.jpg",
+    "sameAs": [
+      "https://twitter.com/newtechhub",
+      "https://facebook.com/newtechhub",
+      "https://linkedin.com/company/newtechhub"
+    ],
+    "address": {
+      "@type": "PostalAddress",
+      "addressCountry": "NG"
+    }
+  };
+
   return (
-    <section className="relative min-h-screen flex items-center overflow-hidden scroll-smooth snap-start" aria-label="Hero section">
-      {/* Background Image with Overlay */}
-      <div className="absolute inset-0 z-0 transition-transform duration-700 hover:scale-105">
-        <img
-          src={heroImage}
-          alt="African students collaborating and learning digital skills together in a modern educational setting"
-          className="w-full h-full object-cover"
-          loading="eager"
-        />
-        <div className="absolute inset-0 bg-gradient-to-r from-primary/95 via-primary/85 to-primary/70 transition-opacity duration-500 hover:opacity-90" />
-      </div>
+    <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationSchema) }}
+      />
+      <section className="relative min-h-screen flex items-center overflow-hidden scroll-smooth snap-start" aria-label="Hero section">
+        {/* Background Image with Overlay */}
+        <div className="absolute inset-0 z-0 transition-transform duration-700 hover:scale-105">
+          <img
+            src={heroImage}
+            alt="African students collaborating and learning digital technology skills together in modern educational setting - Web Development, AI, and Digital Marketing courses"
+            className="w-full h-full object-cover"
+            loading="eager"
+            width="1920"
+            height="1080"
+            fetchPriority="high"
+          />
+          <div className="absolute inset-0 bg-gradient-to-r from-primary/95 via-primary/85 to-primary/70 transition-opacity duration-500 hover:opacity-90" />
+        </div>
 
       {/* Content */}
       <div className="container relative z-10 mx-auto px-4 sm:px-6 lg:px-8">
@@ -73,7 +100,8 @@ const Hero = () => {
 
       {/* Decorative Elements */}
       <div className="absolute bottom-0 left-0 right-0 h-24 bg-gradient-to-t from-background to-transparent z-10 pointer-events-none" />
-    </section>
+      </section>
+    </>
   );
 };
 

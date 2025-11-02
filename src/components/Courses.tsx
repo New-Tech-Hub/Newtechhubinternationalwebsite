@@ -84,17 +84,44 @@ const Courses = () => {
     );
   }
 
+  // Generate JSON-LD structured data for courses
+  const courseSchema = {
+    "@context": "https://schema.org",
+    "@type": "ItemList",
+    "itemListElement": courses.map((course, index) => ({
+      "@type": "Course",
+      "position": index + 1,
+      "name": course.title,
+      "description": course.description,
+      "provider": {
+        "@type": "Organization",
+        "name": "New Tech Hub International",
+        "url": "https://newtechhub.lovable.app"
+      },
+      "offers": {
+        "@type": "Offer",
+        "price": course.price,
+        "priceCurrency": "NGN"
+      }
+    }))
+  };
+
   return (
-    <section id="courses" className="py-20 bg-background" aria-labelledby="courses-heading">
-      <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-        <header className="text-center mb-16">
-          <h2 id="courses-heading" className="text-3xl sm:text-4xl lg:text-5xl font-bold text-foreground mb-4">
-            Featured Courses
-          </h2>
-          <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-            Explore our most sought-after courses designed to transform your career
-          </p>
-        </header>
+    <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(courseSchema) }}
+      />
+      <section id="courses" className="py-20 bg-background" aria-labelledby="courses-heading">
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+          <header className="text-center mb-16">
+            <h1 id="courses-heading" className="text-3xl sm:text-4xl lg:text-5xl font-bold text-foreground mb-4">
+              Premium Digital Skills Courses for African Tech Professionals
+            </h1>
+            <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
+              Master in-demand tech skills with our expert-led courses in Web Development, AI, Cybersecurity, Digital Marketing, and Graphic Design
+            </p>
+          </header>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-12">
           {courses.map((course) => (
@@ -122,8 +149,10 @@ const Courses = () => {
                 ) : (
                   <img
                     src={course.image}
-                    alt={`${course.title} - ${course.description}`}
+                    alt={`Learn ${course.title} - ${course.level} level course for African tech professionals covering ${course.description}`}
                     loading="lazy"
+                    width="400"
+                    height="300"
                     className="w-full h-full object-cover scale-110"
                   />
                 )}
@@ -172,8 +201,9 @@ const Courses = () => {
             More premium courses coming soon!
           </p>
         </div>
-      </div>
-    </section>
+        </div>
+      </section>
+    </>
   );
 };
 
