@@ -82,6 +82,50 @@ export type Database = {
         }
         Relationships: []
       }
+      course_access_codes: {
+        Row: {
+          access_code: string
+          course_id: string
+          created_at: string
+          created_by: string | null
+          current_uses: number | null
+          expires_at: string | null
+          id: string
+          is_active: boolean | null
+          max_uses: number | null
+        }
+        Insert: {
+          access_code: string
+          course_id: string
+          created_at?: string
+          created_by?: string | null
+          current_uses?: number | null
+          expires_at?: string | null
+          id?: string
+          is_active?: boolean | null
+          max_uses?: number | null
+        }
+        Update: {
+          access_code?: string
+          course_id?: string
+          created_at?: string
+          created_by?: string | null
+          current_uses?: number | null
+          expires_at?: string | null
+          id?: string
+          is_active?: boolean | null
+          max_uses?: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "course_access_codes_course_id_fkey"
+            columns: ["course_id"]
+            isOneToOne: false
+            referencedRelation: "courses"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       course_videos: {
         Row: {
           course_id: string | null
@@ -668,6 +712,48 @@ export type Database = {
           },
         ]
       }
+      user_course_access: {
+        Row: {
+          access_code_id: string | null
+          course_id: string
+          granted_at: string
+          granted_by: string | null
+          id: string
+          user_id: string
+        }
+        Insert: {
+          access_code_id?: string | null
+          course_id: string
+          granted_at?: string
+          granted_by?: string | null
+          id?: string
+          user_id: string
+        }
+        Update: {
+          access_code_id?: string | null
+          course_id?: string
+          granted_at?: string
+          granted_by?: string | null
+          id?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "user_course_access_access_code_id_fkey"
+            columns: ["access_code_id"]
+            isOneToOne: false
+            referencedRelation: "course_access_codes"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "user_course_access_course_id_fkey"
+            columns: ["course_id"]
+            isOneToOne: false
+            referencedRelation: "courses"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       user_enrollments: {
         Row: {
           completed_at: string | null
@@ -891,6 +977,10 @@ export type Database = {
           _role: Database["public"]["Enums"]["app_role"]
           _user_id: string
         }
+        Returns: boolean
+      }
+      verify_course_access: {
+        Args: { _course_id: string; _user_id: string }
         Returns: boolean
       }
     }

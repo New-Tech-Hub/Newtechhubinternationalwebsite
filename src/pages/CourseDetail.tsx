@@ -9,11 +9,15 @@ import { toast } from "sonner";
 import { Clock, Users, BarChart, ArrowLeft, Loader2 } from "lucide-react";
 import { useAuth } from "@/hooks/useAuth";
 import { Analytics } from "@/lib/analytics";
+import { useCourseAccess } from "@/hooks/useCourseAccess";
+import { LockedVideoPlayer } from "@/components/LockedVideoPlayer";
+import { VideoPlayer } from "@/components/VideoPlayer";
 
 const CourseDetail = () => {
   const { id } = useParams();
   const navigate = useNavigate();
   const { user } = useAuth();
+  const { hasAccess, isAdmin, loading: accessLoading } = useCourseAccess(id);
   const [course, setCourse] = useState<any>(null);
   const [loading, setLoading] = useState(true);
   const [enrolling, setEnrolling] = useState(false);
@@ -88,7 +92,7 @@ const CourseDetail = () => {
     }
   };
 
-  if (loading) {
+  if (loading || accessLoading) {
     return (
       <div className="min-h-screen flex items-center justify-center">
         <Loader2 className="h-8 w-8 animate-spin text-primary" />
@@ -152,13 +156,34 @@ const CourseDetail = () => {
 
         <div className="grid lg:grid-cols-3 gap-8">
           <article className="lg:col-span-2">
-            <img
-              src={course.thumbnail_url}
-              alt={`${course.title} - Complete ${course.difficulty_level} level course covering ${course.description}`}
-              className="w-full h-64 object-cover rounded-lg mb-6"
-              width="800"
-              height="400"
-            />
+            {/* Video or locked video player */}
+            {course.video_preview_url && (
+              <div className="mb-6">
+                {hasAccess || isAdmin ? (
+                  <VideoPlayer 
+                    videoUrl={course.video_preview_url}
+                    title={course.title}
+                  />
+                ) : (
+                  <LockedVideoPlayer
+                    courseId={course.id}
+                    courseTitle={course.title}
+                    thumbnailUrl={course.thumbnail_url}
+                    isLoggedIn={!!user}
+                  />
+                )}
+              </div>
+            )}
+            
+            {course.thumbnail_url && !course.video_preview_url && (
+              <img
+                src={course.thumbnail_url}
+                alt={`${course.title} - Complete ${course.difficulty_level} level course covering ${course.description}`}
+                className="w-full h-64 object-cover rounded-lg mb-6"
+                width="800"
+                height="400"
+              />
+            )}
             
             <h1 className="text-4xl font-bold mb-4">{course.title}</h1>
             
@@ -192,7 +217,7 @@ const CourseDetail = () => {
           </article>
 
           <div className="lg:col-span-1">
-            <Card className="p-6 sticky top-6">
+            <Card className="p-6 sticky top-6" id="enrollment">
               <div className="mb-6">
                 <div className="text-4xl font-bold text-primary mb-2">
                   ₦{course.price?.toLocaleString()}
@@ -202,7 +227,24 @@ const CourseDetail = () => {
                 </div>
               </div>
 
-              <form onSubmit={handleEnroll} className="space-y-4" onFocus={handleFormFocus}>
+              {hasAccess || isAdmin ? (
+                <div className="space-y-4">
+                  <div className="bg-primary/10 text-primary p-4 rounded-lg text-center">
+                    <p className="font-semibold">✓ You have full access to this course</p>
+                  </div>
+                  {!isAdmin && (
+                    <Button
+                      onClick={() => navigate(`/redeem-access/${course.id}`)}
+                      variant="outline"
+                      className="w-full"
+                    >
+                      Enter Another Access Code
+                    </Button>
+                  )}
+                </div>
+              ) : (
+                <>
+                  <form onSubmit={handleEnroll} className="space-y-4" onFocus={handleFormFocus}>
                 <div>
                   <Label htmlFor="fullName">Full Name</Label>
                   <Input
@@ -259,6 +301,12 @@ const CourseDetail = () => {
                   Secure payment powered by Paystack
                 </div>
               </form>
+
+              <div className="mt-6 text-center text-sm text-muted-foreground">
+                After payment, you'll receive an access code from the admin to unlock the course.
+              </div>
+              </>
+              )}
 
               <div className="mt-6 pt-6 border-t space-y-3">
                 <h3 className="font-semibold mb-3">This course includes:</h3>

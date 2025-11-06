@@ -43,9 +43,9 @@ const PaymentSuccess = () => {
       Analytics.paymentCompleted(data.courseId, data.amount || 0, reference);
       Analytics.courseAccessGranted(data.courseId);
       
-      // Redirect to auth after 10 seconds (time to see upsell)
+      // Redirect to access code redemption after 10 seconds
       setTimeout(() => {
-        navigate('/auth');
+        navigate(`/redeem-access/${data.courseId}`);
       }, 10000);
     } catch (error: any) {
       console.error('Payment verification error:', error);
@@ -75,17 +75,17 @@ const PaymentSuccess = () => {
               <div className="bg-accent/10 border border-accent/20 rounded-lg p-4 mb-6">
                 <h3 className="font-semibold text-sm mb-2">What happens next?</h3>
                 <ul className="text-sm text-muted-foreground space-y-1 text-left">
-                  <li>✓ You'll receive a confirmation email with login details</li>
-                  <li>✓ Access all course materials immediately</li>
-                  <li>✓ Join our exclusive community of learners</li>
-                  <li>✓ Start learning at your own pace</li>
+                  <li>✓ Payment confirmed successfully</li>
+                  <li>✓ The admin will provide you with an access code</li>
+                  <li>✓ Use the access code to unlock your course content</li>
+                  <li>✓ Start learning immediately after code verification</li>
                 </ul>
               </div>
-              <Button onClick={() => navigate('/auth')} className="w-full" size="lg">
-                Go to Dashboard
+              <Button onClick={() => navigate(`/redeem-access/${courseId}`)} className="w-full" size="lg">
+                Enter Access Code
               </Button>
               <p className="text-xs text-muted-foreground mt-3">
-                Redirecting automatically in 10 seconds...
+                Redirecting to access code page in 10 seconds...
               </p>
             </>
           ) : (

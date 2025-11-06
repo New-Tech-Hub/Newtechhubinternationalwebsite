@@ -25,8 +25,9 @@ import { Textarea } from '@/components/ui/textarea';
 import { Label } from '@/components/ui/label';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import { toast } from 'sonner';
-import { Shield, Users, LogOut, BookOpen, Plus, Pencil, Trash2 } from 'lucide-react';
+import { Shield, Users, LogOut, BookOpen, Plus, Pencil, Trash2, Key } from 'lucide-react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { AccessCodeManagement } from '@/components/admin/AccessCodeManagement';
 
 type UserProfile = {
   id: string;
@@ -245,11 +246,19 @@ const Admin = () => {
               <BookOpen className="h-4 w-4" />
               Courses
             </TabsTrigger>
+            <TabsTrigger value="access-codes" className="gap-2">
+              <Key className="h-4 w-4" />
+              Access Codes
+            </TabsTrigger>
             <TabsTrigger value="users" className="gap-2">
               <Users className="h-4 w-4" />
               Users
             </TabsTrigger>
           </TabsList>
+
+          <TabsContent value="access-codes">
+            <AccessCodeManagement />
+          </TabsContent>
 
           <TabsContent value="courses">
             <Card>

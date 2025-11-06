@@ -12,6 +12,7 @@ import PaymentSuccess from "./pages/PaymentSuccess";
 import CoursesPreview from "./pages/CoursesPreview";
 import Community from "./pages/Community";
 import MyCertificates from "./pages/MyCertificates";
+import RedeemAccessCode from "./pages/RedeemAccessCode";
 
 const queryClient = new QueryClient();
 
@@ -30,6 +31,7 @@ const App = () => (
           <Route path="/courses-preview" element={<CoursesPreview />} />
           <Route path="/community" element={<Community />} />
           <Route path="/my-certificates" element={<MyCertificates />} />
+          <Route path="/redeem-access/:courseId" element={<RedeemAccessCode />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>

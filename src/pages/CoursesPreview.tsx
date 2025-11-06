@@ -98,16 +98,25 @@ const CoursesPreview = () => {
                   <CardDescription>{course.description}</CardDescription>
                 </CardHeader>
                 <CardContent>
-                  <div className="aspect-video w-full mb-4 rounded-lg overflow-hidden bg-muted">
+                  <div className="aspect-video w-full mb-4 rounded-lg overflow-hidden bg-muted relative group cursor-pointer"
+                    onClick={() => navigate(`/course/${course.id}`)}
+                  >
+                    <div className="absolute inset-0 bg-background/80 backdrop-blur-sm flex items-center justify-center z-10 group-hover:bg-background/90 transition-all">
+                      <div className="text-center">
+                        <div className="bg-primary/10 p-6 rounded-full mb-4 inline-block">
+                          <Play className="h-12 w-12 text-primary" />
+                        </div>
+                        <p className="text-lg font-semibold">Click to unlock full course</p>
+                        <p className="text-sm text-muted-foreground mt-2">Payment required</p>
+                      </div>
+                    </div>
                     <iframe
                       width="100%"
                       height="100%"
-                      src={course.videoUrl}
+                      src={`${course.videoUrl}?modestbranding=1&rel=0&showinfo=0&fs=0&controls=0`}
                       title={`${course.title} preview`}
                       frameBorder="0"
-                      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                      allowFullScreen
-                      className="w-full h-full"
+                      className="w-full h-full pointer-events-none"
                       loading="lazy"
                     />
                   </div>
