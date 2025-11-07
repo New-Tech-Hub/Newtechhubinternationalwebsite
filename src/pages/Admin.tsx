@@ -25,9 +25,10 @@ import { Textarea } from '@/components/ui/textarea';
 import { Label } from '@/components/ui/label';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import { toast } from 'sonner';
-import { Shield, Users, LogOut, BookOpen, Plus, Pencil, Trash2, Key } from 'lucide-react';
+import { Shield, Users, LogOut, BookOpen, Plus, Pencil, Trash2, Key, LayoutDashboard } from 'lucide-react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { AccessCodeManagement } from '@/components/admin/AccessCodeManagement';
+import { DashboardMetrics } from '@/components/admin/DashboardMetrics';
 
 type UserProfile = {
   id: string;
@@ -240,8 +241,12 @@ const Admin = () => {
       </div>
 
       <div className="container mx-auto px-4 py-8">
-        <Tabs defaultValue="courses" className="space-y-6">
+        <Tabs defaultValue="dashboard" className="space-y-6">
           <TabsList>
+            <TabsTrigger value="dashboard" className="gap-2">
+              <LayoutDashboard className="h-4 w-4" />
+              Dashboard
+            </TabsTrigger>
             <TabsTrigger value="courses" className="gap-2">
               <BookOpen className="h-4 w-4" />
               Courses
@@ -255,6 +260,10 @@ const Admin = () => {
               Users
             </TabsTrigger>
           </TabsList>
+
+          <TabsContent value="dashboard">
+            <DashboardMetrics />
+          </TabsContent>
 
           <TabsContent value="access-codes">
             <AccessCodeManagement />
