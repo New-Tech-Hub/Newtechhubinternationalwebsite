@@ -129,7 +129,10 @@ const Courses = () => {
               key={course.id}
               className="overflow-hidden shadow-xl -translate-y-2 border-none group"
             >
-              <div className="relative h-48 overflow-hidden group/video">
+              <div 
+                className="relative h-48 overflow-hidden group/video cursor-pointer"
+                onClick={() => handleEnroll(course.id, course.title)}
+              >
                 {course.videoUrl ? (
                   <>
                     <iframe
@@ -138,11 +141,11 @@ const Courses = () => {
                       frameBorder="0"
                       allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                       allowFullScreen
-                      className="w-full h-full object-cover"
+                      className="w-full h-full object-cover pointer-events-none"
                     />
-                    <div className="absolute inset-0 bg-black/20 flex items-center justify-center opacity-0 group-hover/video:opacity-100 transition-opacity pointer-events-none">
-                      <div className="bg-white/90 rounded-full p-3">
-                        <Play className="h-6 w-6 text-primary" />
+                    <div className="absolute inset-0 bg-black/40 flex items-center justify-center group-hover/video:bg-black/50 transition-all">
+                      <div className="bg-white/90 rounded-full p-4 group-hover/video:scale-110 transition-transform">
+                        <Play className="h-8 w-8 text-primary" />
                       </div>
                     </div>
                   </>
@@ -156,7 +159,7 @@ const Courses = () => {
                     className="w-full h-full object-cover scale-110"
                   />
                 )}
-                <div className="absolute top-4 right-4">
+                <div className="absolute top-4 right-4 z-10">
                   <span className="px-3 py-1 bg-accent/10 backdrop-blur-sm text-accent text-sm font-semibold rounded-full">
                     Premium
                   </span>
