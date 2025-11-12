@@ -1,7 +1,13 @@
 import { Button } from "@/components/ui/button";
 import { ArrowRight } from "lucide-react";
 import { useNavigate } from "react-router-dom";
+import { useState, useEffect } from "react";
 import heroImage from "@/assets/hero-learning.jpg";
+import heroWebDev from "@/assets/hero-webdev-training.jpg";
+import heroAI from "@/assets/hero-ai-training.jpg";
+import heroMarketing from "@/assets/hero-marketing-training.jpg";
+import heroDesign from "@/assets/hero-design-training.jpg";
+import heroCybersecurity from "@/assets/hero-cybersecurity-training.jpg";
 import { Analytics } from "@/lib/analytics";
 
 const Hero = () => {
