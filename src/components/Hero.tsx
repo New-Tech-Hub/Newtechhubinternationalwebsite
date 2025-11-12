@@ -12,6 +12,43 @@ import { Analytics } from "@/lib/analytics";
 
 const Hero = () => {
   const navigate = useNavigate();
+  const [currentImageIndex, setCurrentImageIndex] = useState(0);
+  const [isHovering, setIsHovering] = useState(false);
+
+  const trainingImages = [
+    { 
+      src: heroImage, 
+      alt: "African students collaborating and learning digital technology skills together in modern educational setting" 
+    },
+    { 
+      src: heroWebDev, 
+      alt: "African lecturer teaching web development programming to engaged students in modern computer lab" 
+    },
+    { 
+      src: heroAI, 
+      alt: "African students collaborating on AI and machine learning projects with data visualizations" 
+    },
+    { 
+      src: heroMarketing, 
+      alt: "Young African female instructor teaching digital marketing with social media analytics" 
+    },
+    { 
+      src: heroDesign, 
+      alt: "African students in UI/UX design workshop working with design software" 
+    },
+    { 
+      src: heroCybersecurity, 
+      alt: "African cybersecurity instructor demonstrating network security concepts to focused students" 
+    }
+  ];
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCurrentImageIndex((prev) => (prev + 1) % trainingImages.length);
+    }, 3000);
+
+    return () => clearInterval(interval);
+  }, [trainingImages.length]);
 
   const scrollToCourses = () => {
     Analytics.heroCtaClick('Start Learning Now');
