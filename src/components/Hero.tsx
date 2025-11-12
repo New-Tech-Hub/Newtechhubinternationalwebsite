@@ -88,17 +88,28 @@ const Hero = () => {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationSchema) }}
       />
       <section className="relative min-h-screen flex items-center overflow-hidden scroll-smooth snap-start" aria-label="Hero section">
-        {/* Background Image with Overlay */}
-        <div className="absolute inset-0 z-0 transition-transform duration-700 hover:scale-105">
-          <img
-            src={heroImage}
-            alt="African students collaborating and learning digital technology skills together in modern educational setting - Web Development, AI, and Digital Marketing courses"
-            className="w-full h-full object-cover"
-            loading="eager"
-            width="1920"
-            height="1080"
-            fetchPriority="high"
-          />
+        {/* Background Image with Overlay - Auto-rotating training scenes */}
+        <div 
+          className="absolute inset-0 z-0 transition-all duration-700 hover:scale-105"
+          onMouseEnter={() => setIsHovering(true)}
+          onMouseLeave={() => setIsHovering(false)}
+        >
+          <div className="relative w-full h-full">
+            {trainingImages.map((image, index) => (
+              <img
+                key={index}
+                src={image.src}
+                alt={image.alt}
+                className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-1000 ${
+                  index === currentImageIndex ? 'opacity-100' : 'opacity-0'
+                }`}
+                loading={index === 0 ? "eager" : "lazy"}
+                width="1920"
+                height="1080"
+                fetchPriority={index === 0 ? "high" : "low"}
+              />
+            ))}
+          </div>
           <div className="absolute inset-0 bg-gradient-to-r from-primary/95 via-primary/85 to-primary/70 transition-opacity duration-500 hover:opacity-90" />
         </div>
 
