@@ -1,11 +1,54 @@
 import { Button } from "@/components/ui/button";
 import { ArrowRight } from "lucide-react";
 import { useNavigate } from "react-router-dom";
+import { useState, useEffect } from "react";
 import heroImage from "@/assets/hero-learning.jpg";
+import heroWebDev from "@/assets/hero-webdev-training.jpg";
+import heroAI from "@/assets/hero-ai-training.jpg";
+import heroMarketing from "@/assets/hero-marketing-training.jpg";
+import heroDesign from "@/assets/hero-design-training.jpg";
+import heroCybersecurity from "@/assets/hero-cybersecurity-training.jpg";
 import { Analytics } from "@/lib/analytics";
 
 const Hero = () => {
   const navigate = useNavigate();
+  const [currentImageIndex, setCurrentImageIndex] = useState(0);
+  const [isHovering, setIsHovering] = useState(false);
+
+  const trainingImages = [
+    { 
+      src: heroImage, 
+      alt: "African students collaborating and learning digital technology skills together in modern educational setting" 
+    },
+    { 
+      src: heroWebDev, 
+      alt: "African lecturer teaching web development programming to engaged students in modern computer lab" 
+    },
+    { 
+      src: heroAI, 
+      alt: "African students collaborating on AI and machine learning projects with data visualizations" 
+    },
+    { 
+      src: heroMarketing, 
+      alt: "Young African female instructor teaching digital marketing with social media analytics" 
+    },
+    { 
+      src: heroDesign, 
+      alt: "African students in UI/UX design workshop working with design software" 
+    },
+    { 
+      src: heroCybersecurity, 
+      alt: "African cybersecurity instructor demonstrating network security concepts to focused students" 
+    }
+  ];
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCurrentImageIndex((prev) => (prev + 1) % trainingImages.length);
+    }, 3000);
+
+    return () => clearInterval(interval);
+  }, [trainingImages.length]);
 
   const scrollToCourses = () => {
     Analytics.heroCtaClick('Start Learning Now');
@@ -45,17 +88,28 @@ const Hero = () => {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationSchema) }}
       />
       <section className="relative min-h-screen flex items-center overflow-hidden scroll-smooth snap-start" aria-label="Hero section">
-        {/* Background Image with Overlay */}
-        <div className="absolute inset-0 z-0 transition-transform duration-700 hover:scale-105">
-          <img
-            src={heroImage}
-            alt="African students collaborating and learning digital technology skills together in modern educational setting - Web Development, AI, and Digital Marketing courses"
-            className="w-full h-full object-cover"
-            loading="eager"
-            width="1920"
-            height="1080"
-            fetchPriority="high"
-          />
+        {/* Background Image with Overlay - Auto-rotating training scenes */}
+        <div 
+          className="absolute inset-0 z-0 transition-all duration-700 hover:scale-105"
+          onMouseEnter={() => setIsHovering(true)}
+          onMouseLeave={() => setIsHovering(false)}
+        >
+          <div className="relative w-full h-full">
+            {trainingImages.map((image, index) => (
+              <img
+                key={index}
+                src={image.src}
+                alt={image.alt}
+                className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-1000 ${
+                  index === currentImageIndex ? 'opacity-100' : 'opacity-0'
+                }`}
+                loading={index === 0 ? "eager" : "lazy"}
+                width="1920"
+                height="1080"
+                fetchPriority={index === 0 ? "high" : "low"}
+              />
+            ))}
+          </div>
           <div className="absolute inset-0 bg-gradient-to-r from-primary/95 via-primary/85 to-primary/70 transition-opacity duration-500 hover:opacity-90" />
         </div>
 
