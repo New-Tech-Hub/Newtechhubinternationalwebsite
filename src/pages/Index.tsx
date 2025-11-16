@@ -1,19 +1,22 @@
-import { useEffect } from "react";
+import { useEffect, lazy, Suspense } from "react";
 import { useLocation } from "react-router-dom";
 import Navigation from "@/components/Navigation";
 import Hero from "@/components/Hero";
-import Features from "@/components/Features";
-import Courses from "@/components/Courses";
-import Testimonials from "@/components/Testimonials";
-import Impact from "@/components/Impact";
-import Localization from "@/components/Localization";
-import About from "@/components/About";
-import Partnerships from "@/components/Partnerships";
-import BusinessModel from "@/components/BusinessModel";
-import Pricing from "@/components/Pricing";
-import Contact from "@/components/Contact";
-import Footer from "@/components/Footer";
-import Chatbot from "@/components/Chatbot";
+import { Loader2 } from "lucide-react";
+
+// Lazy load heavy components below the fold
+const Features = lazy(() => import("@/components/Features"));
+const Courses = lazy(() => import("@/components/Courses"));
+const Testimonials = lazy(() => import("@/components/Testimonials"));
+const Impact = lazy(() => import("@/components/Impact"));
+const Localization = lazy(() => import("@/components/Localization"));
+const About = lazy(() => import("@/components/About"));
+const Partnerships = lazy(() => import("@/components/Partnerships"));
+const BusinessModel = lazy(() => import("@/components/BusinessModel"));
+const Pricing = lazy(() => import("@/components/Pricing"));
+const Contact = lazy(() => import("@/components/Contact"));
+const Footer = lazy(() => import("@/components/Footer"));
+const Chatbot = lazy(() => import("@/components/Chatbot"));
 
 const Index = () => {
   const location = useLocation();
@@ -36,19 +39,23 @@ const Index = () => {
       <Navigation />
       <main id="main-content">
         <Hero />
-        <Features />
-        <Courses />
-        <Testimonials />
-        <Impact />
-        <Localization />
-        <About />
-        <Partnerships />
-        <BusinessModel />
-        <Pricing />
-        <Contact />
+        <Suspense fallback={<div className="flex justify-center py-20"><Loader2 className="h-8 w-8 animate-spin text-primary" /></div>}>
+          <Features />
+          <Courses />
+          <Testimonials />
+          <Impact />
+          <Localization />
+          <About />
+          <Partnerships />
+          <BusinessModel />
+          <Pricing />
+          <Contact />
+        </Suspense>
       </main>
-      <Footer />
-      <Chatbot />
+      <Suspense fallback={null}>
+        <Footer />
+        <Chatbot />
+      </Suspense>
     </div>
   );
 };

@@ -61,6 +61,7 @@ const Navigation = () => {
               className="h-12 w-auto"
               width="48"
               height="48"
+              loading="eager"
             />
             <div className="hidden sm:block">
               <h1 className="text-xl font-bold text-white leading-tight">
