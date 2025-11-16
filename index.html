@@ -8,10 +8,16 @@
     <meta name="description" content="Transform your future with free & premium digital skills courses in Web Development, AI, Digital Marketing, and Graphic Design. Join 10,000+ African learners building tech careers." />
     <meta name="keywords" content="African tech education, free online courses Nigeria, digital skills training Africa, web development courses, AI courses Africa, digital marketing training, graphic design courses, tech skills certification, online learning Africa, New Tech Hub" />
     <meta name="author" content="New Tech Hub International" />
+    <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
+    <meta name="language" content="English" />
+    <meta name="geo.region" content="NG" />
+    <meta name="geo.placename" content="Nigeria" />
     
     <!-- Preconnect for performance -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preconnect" href="https://zpeojjvfkszfhmrhbogd.supabase.co">
+    <link rel="dns-prefetch" href="https://zpeojjvfkszfhmrhbogd.supabase.co">
     
     <!-- Preload critical font files to break dependency chain -->
     <link rel="preload" as="font" type="font/woff2" href="https://fonts.gstatic.com/s/poppins/v24/pxiEyp8kv8JHgFVrJJfecnFHGPc.woff2" crossorigin>
@@ -53,5 +59,29 @@
   <body>
     <div id="root"></div>
     <script type="module" src="/src/main.tsx"></script>
+    
+    <!-- JSON-LD Structured Data for Organization -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "EducationalOrganization",
+      "name": "New Tech Hub International",
+      "description": "Empowering Africa's Digital Generation with world-class digital skills courses",
+      "url": "https://newtechhub.lovable.app",
+      "logo": "https://newtechhub.lovable.app/favicon.png",
+      "sameAs": [
+        "https://newtechhub.lovable.app"
+      ],
+      "contactPoint": {
+        "@type": "ContactPoint",
+        "contactType": "Customer Support",
+        "email": "newtechhubinternational@gmail.com"
+      },
+      "address": {
+        "@type": "PostalAddress",
+        "addressCountry": "NG"
+      }
+    }
+    </script>
   </body>
 </html>
