@@ -78,9 +78,10 @@ const Navigation = () => {
                 type="button"
                 key={link}
                 onClick={() => scrollToSection(link)}
-                className="text-white/90 hover:text-white text-sm font-medium transition-colors duration-200 whitespace-nowrap"
+                className="text-white/90 hover:text-white text-sm font-medium transition-all duration-300 whitespace-nowrap relative group"
               >
                 {link}
+                <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-accent transition-all duration-300 group-hover:w-full"></span>
               </button>
             ))}
             {externalLinks.map((link) => (
@@ -88,9 +89,10 @@ const Navigation = () => {
                 type="button"
                 key={link.label}
                 onClick={() => navigate(link.path)}
-                className="text-white/90 hover:text-white text-sm font-medium transition-colors duration-200 whitespace-nowrap"
+                className="text-white/90 hover:text-white text-sm font-medium transition-all duration-300 whitespace-nowrap relative group"
               >
                 {link.label}
+                <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-accent transition-all duration-300 group-hover:w-full"></span>
               </button>
             ))}
             {isAdmin && (
@@ -99,7 +101,7 @@ const Navigation = () => {
                 onClick={() => navigate('/admin')}
                 variant="outline"
                 size="sm"
-                className="gap-1 bg-white/10 text-white border-white/20 hover:bg-white/20 text-xs px-3"
+                className="gap-1 bg-white/10 text-white border-white/20 hover:bg-white/20 text-xs px-3 transition-all duration-300 hover:scale-105"
               >
                 <Shield className="h-3 w-3" />
                 Admin
@@ -109,7 +111,7 @@ const Navigation = () => {
               type="button"
               onClick={handleAuthClick}
               size="sm"
-              className="bg-accent hover:bg-accent/90 text-white font-semibold text-xs px-4 whitespace-nowrap"
+              className="bg-accent hover:bg-accent/90 text-white font-semibold text-xs px-4 whitespace-nowrap transition-all duration-300 hover:shadow-lg hover:scale-105"
             >
               {user ? 'Sign Out' : 'Get Started'}
             </Button>

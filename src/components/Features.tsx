@@ -1,5 +1,6 @@
 import { Code, TrendingUp, Palette, BrainCircuit } from "lucide-react";
 import { Card } from "@/components/ui/card";
+import { useScrollAnimation } from "@/hooks/useScrollAnimation";
 
 const categories = [
   {
@@ -33,6 +34,8 @@ const categories = [
 ];
 
 const Features = () => {
+  const { elementRef, isVisible } = useScrollAnimation();
+
   const scrollToCourses = () => {
     const coursesSection = document.getElementById('courses');
     if (coursesSection) {
@@ -44,21 +47,24 @@ const Features = () => {
     <section id="features" className="py-20 bg-secondary" aria-labelledby="features-heading">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <header className="text-center mb-16">
-          <h2 id="features-heading" className="text-3xl sm:text-4xl lg:text-5xl font-bold text-foreground mb-4">
+          <h2 id="features-heading" className="text-3xl sm:text-4xl lg:text-5xl font-bold text-foreground mb-4 animate-fade-in">
             Browse by Category
           </h2>
-          <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
+          <p className="text-lg text-muted-foreground max-w-2xl mx-auto animate-fade-in" style={{ animationDelay: '100ms' }}>
             Choose your learning path and discover courses tailored to your goals
           </p>
         </header>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+        <div ref={elementRef} className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
           {categories.map((category, index) => {
             const Icon = category.icon;
             return (
               <Card
                 key={index}
-                className="p-6 shadow-lg border-none bg-card cursor-pointer transition-all duration-300 hover:shadow-xl hover:-translate-y-1"
+                className={`p-6 shadow-lg border-none bg-card cursor-pointer transition-all duration-500 hover:shadow-xl hover:-translate-y-2 group ${
+                  isVisible ? 'animate-fade-in' : 'opacity-0'
+                }`}
+                style={{ animationDelay: `${index * 100}ms` }}
                 onClick={scrollToCourses}
                 role="button"
                 tabIndex={0}
@@ -69,17 +75,17 @@ const Features = () => {
                 }}
                 aria-label={`View ${category.title} courses`}
               >
-                <div className="w-14 h-14 rounded-xl bg-gradient-to-br from-[hsl(17,100%,60%)] to-[hsl(5,85%,58%)] flex items-center justify-center mb-4">
-                  <Icon className="h-7 w-7 text-white" />
+                <div className="w-14 h-14 rounded-xl bg-gradient-to-br from-[hsl(17,100%,60%)] to-[hsl(5,85%,58%)] flex items-center justify-center mb-4 transition-transform duration-300 group-hover:scale-110 group-hover:rotate-6">
+                  <Icon className="h-7 w-7 text-white transition-transform duration-300 group-hover:scale-110" />
                 </div>
-                <h3 className="text-xl font-semibold text-foreground mb-3">
+                <h3 className="text-xl font-semibold text-foreground mb-3 transition-colors duration-300 group-hover:text-primary">
                   {category.title}
                 </h3>
                 <p className="text-muted-foreground leading-relaxed mb-4">
                   {category.description}
                 </p>
-                <p className="text-sm font-medium text-primary">
-                  {category.courseCount}
+                <p className="text-sm font-medium text-primary transition-transform duration-300 group-hover:translate-x-2">
+                  {category.courseCount} →
                 </p>
               </Card>
             );
