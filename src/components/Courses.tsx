@@ -7,6 +7,7 @@ import { toast } from "sonner";
 import { useState, useEffect } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { Analytics } from "@/lib/analytics";
+import { useScrollAnimation } from "@/hooks/useScrollAnimation";
 import marketingImage from "@/assets/course-marketing-new.jpg";
 import webdevImage from "@/assets/course-webdev-new.jpg";
 import aiImage from "@/assets/course-ai-new.jpg";
@@ -17,6 +18,7 @@ const Courses = () => {
   const { user } = useAuth();
   const [courses, setCourses] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
+  const { elementRef, isVisible } = useScrollAnimation();
 
   useEffect(() => {
     const fetchCourses = async () => {
@@ -123,11 +125,14 @@ const Courses = () => {
             </p>
           </header>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-12">
-          {courses.map((course) => (
+        <div ref={elementRef} className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-12">
+          {courses.map((course, index) => (
             <Card
               key={course.id}
-              className="overflow-hidden shadow-xl -translate-y-2 border-none group"
+              className={`overflow-hidden shadow-xl border-none group transition-all duration-500 hover:-translate-y-2 hover:shadow-2xl ${
+                isVisible ? 'animate-fade-in' : 'opacity-0'
+              }`}
+              style={{ animationDelay: `${index * 100}ms` }}
             >
               <div 
                 className="relative h-48 overflow-hidden group/video cursor-pointer"
@@ -141,10 +146,10 @@ const Courses = () => {
                       frameBorder="0"
                       allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                       allowFullScreen
-                      className="w-full h-full object-cover pointer-events-none"
+                      className="w-full h-full object-cover pointer-events-none transition-transform duration-300 group-hover/video:scale-105"
                     />
-                    <div className="absolute inset-0 bg-black/40 flex items-center justify-center group-hover/video:bg-black/50 transition-all">
-                      <div className="bg-white/90 rounded-full p-4 group-hover/video:scale-110 transition-transform">
+                    <div className="absolute inset-0 bg-black/40 flex items-center justify-center group-hover/video:bg-black/50 transition-all duration-300">
+                      <div className="bg-white/90 rounded-full p-4 group-hover/video:scale-110 transition-transform duration-300">
                         <Play className="h-8 w-8 text-primary" />
                       </div>
                     </div>
@@ -156,17 +161,17 @@ const Courses = () => {
                     loading="lazy"
                     width="400"
                     height="300"
-                    className="w-full h-full object-cover scale-110"
+                    className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
                   />
                 )}
                 <div className="absolute top-4 right-4 z-10">
-                  <span className="px-3 py-1 bg-accent/10 backdrop-blur-sm text-accent text-sm font-semibold rounded-full">
+                  <span className="px-3 py-1 bg-accent/10 backdrop-blur-sm text-accent text-sm font-semibold rounded-full transition-all duration-300 group-hover:bg-accent/20 group-hover:scale-105">
                     Premium
                   </span>
                 </div>
               </div>
               <div className="p-6">
-                <h3 className="text-xl font-bold text-foreground mb-2 line-clamp-2">
+                <h3 className="text-xl font-bold text-foreground mb-2 line-clamp-2 transition-colors duration-300 group-hover:text-primary">
                   {course.title}
                 </h3>
                 <p className="text-muted-foreground mb-4 text-sm line-clamp-3">
@@ -190,7 +195,7 @@ const Courses = () => {
                   <Button 
                     type="button"
                     onClick={() => handleEnroll(course.id, course.title)}
-                    className="w-full bg-gradient-to-r from-[hsl(17,100%,60%)] to-[hsl(5,85%,58%)] hover:shadow-lg transition-all duration-300"
+                    className="w-full bg-gradient-to-r from-[hsl(17,100%,60%)] to-[hsl(5,85%,58%)] hover:shadow-lg transition-all duration-300 hover:scale-105"
                   >
                     View Course
                   </Button>
