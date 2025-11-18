@@ -5,9 +5,9 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { lazy, Suspense } from "react";
 import { Loader2 } from "lucide-react";
+import Index from "./pages/Index";
 
-// Lazy load route components for better performance
-const Index = lazy(() => import("./pages/Index"));
+// Lazy load route components for better performance (Index is loaded normally as it uses router hooks)
 const Auth = lazy(() => import("./pages/Auth"));
 const Admin = lazy(() => import("./pages/Admin"));
 const NotFound = lazy(() => import("./pages/NotFound"));
