@@ -1,10 +1,11 @@
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Clock, Users, Loader2, Play } from "lucide-react";
+import { Input } from "@/components/ui/input";
+import { Clock, Users, Loader2, Play, Search, Filter } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "@/hooks/useAuth";
 import { toast } from "sonner";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { Analytics } from "@/lib/analytics";
 import { useScrollAnimation } from "@/hooks/useScrollAnimation";
@@ -18,7 +19,20 @@ const Courses = () => {
   const { user } = useAuth();
   const [courses, setCourses] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
+  const [searchTerm, setSearchTerm] = useState("");
+  const [selectedCategory, setSelectedCategory] = useState<string>("all");
   const { elementRef, isVisible } = useScrollAnimation();
+
+  const categories = [
+    { value: "all", label: "All Courses" },
+    { value: "digital_marketing", label: "Digital Marketing" },
+    { value: "web_development", label: "Web Development" },
+    { value: "graphic_design", label: "Graphic Design" },
+    { value: "ai_data", label: "AI & Data" },
+    { value: "cybersecurity", label: "Cybersecurity" },
+    { value: "video_editing", label: "Video Editing" },
+    { value: "freelancing", label: "Freelancing" },
+  ];
 
   useEffect(() => {
     const fetchCourses = async () => {
@@ -70,6 +84,16 @@ const Courses = () => {
     navigate(`/course/${courseId}`);
   };
 
+  // Filter courses based on search and category
+  const filteredCourses = useMemo(() => {
+    return courses.filter(course => {
+      const matchesSearch = course.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        course.description.toLowerCase().includes(searchTerm.toLowerCase());
+      const matchesCategory = selectedCategory === "all" || course.id.includes(selectedCategory);
+      return matchesSearch && matchesCategory;
+    });
+  }, [courses, searchTerm, selectedCategory]);
+
   useEffect(() => {
     if (courses.length > 0) {
       Analytics.courseListView();
@@ -90,7 +114,7 @@ const Courses = () => {
   const courseSchema = {
     "@context": "https://schema.org",
     "@type": "ItemList",
-    "itemListElement": courses.map((course, index) => ({
+    "itemListElement": filteredCourses.map((course, index) => ({
       "@type": "Course",
       "position": index + 1,
       "name": course.title,
@@ -116,7 +140,7 @@ const Courses = () => {
       />
       <section id="courses" className="py-20 bg-background" aria-labelledby="courses-heading">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          <header className="text-center mb-16">
+          <header className="text-center mb-12">
             <h1 id="courses-heading" className="text-3xl sm:text-4xl lg:text-5xl font-bold text-foreground mb-4">
               Premium Digital Skills Courses for African Tech Professionals
             </h1>
@@ -125,8 +149,53 @@ const Courses = () => {
             </p>
           </header>
 
-        <div ref={elementRef} className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-12">
-          {courses.map((course, index) => (
+          {/* Search and Filter Section */}
+          <div className="max-w-4xl mx-auto mb-12 space-y-6">
+            {/* Search Bar */}
+            <div className="relative">
+              <Search className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground" />
+              <Input
+                type="text"
+                placeholder="Search courses by name or description..."
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+                className="pl-12 pr-4 py-6 text-lg border-2 focus:border-primary transition-all duration-300 rounded-xl"
+              />
+            </div>
+
+            {/* Category Filter Buttons */}
+            <div className="flex flex-wrap gap-3 justify-center items-center">
+              <div className="flex items-center gap-2 text-sm font-medium text-muted-foreground">
+                <Filter className="h-4 w-4" />
+                <span>Filter:</span>
+              </div>
+              {categories.map((category) => (
+                <Button
+                  key={category.value}
+                  variant={selectedCategory === category.value ? "default" : "outline"}
+                  size="sm"
+                  onClick={() => setSelectedCategory(category.value)}
+                  className="transition-all duration-300 hover:scale-105"
+                >
+                  {category.label}
+                </Button>
+              ))}
+            </div>
+
+            {/* Results Count */}
+            <div className="text-center text-sm text-muted-foreground">
+              Showing {filteredCourses.length} of {courses.length} courses
+            </div>
+          </div>
+
+        {filteredCourses.length === 0 ? (
+          <div className="text-center py-16">
+            <p className="text-lg text-muted-foreground mb-2">No courses found</p>
+            <p className="text-sm text-muted-foreground">Try adjusting your search or filter criteria</p>
+          </div>
+        ) : (
+          <div ref={elementRef} className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-12">
+            {filteredCourses.map((course, index) => (
             <Card
               key={course.id}
               className={`overflow-hidden shadow-xl border-none group transition-all duration-500 hover:-translate-y-2 hover:shadow-2xl ${
@@ -201,8 +270,9 @@ const Courses = () => {
                   </Button>
               </div>
             </Card>
-          ))}
-        </div>
+            ))}
+          </div>
+        )}
 
         <div className="text-center mt-12">
           <p className="text-muted-foreground">
