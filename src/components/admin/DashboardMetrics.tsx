@@ -77,8 +77,8 @@ export const DashboardMetrics = () => {
           granted_at,
           user_id,
           course_id,
-          profiles!inner(email, full_name),
-          courses!inner(title)
+          profiles!user_id(email, full_name),
+          courses!course_id(title)
         `)
         .order('granted_at', { ascending: false })
         .limit(10);
