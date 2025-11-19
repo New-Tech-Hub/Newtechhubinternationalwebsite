@@ -18,27 +18,33 @@ const Hero = () => {
   const trainingImages = [
     { 
       src: heroImage, 
-      alt: "African students collaborating and learning digital technology skills together in modern educational setting" 
+      alt: "African students collaborating and learning digital technology skills together in modern educational setting",
+      loading: "eager" as const
     },
     { 
       src: heroWebDev, 
-      alt: "African lecturer teaching web development programming to engaged students in modern computer lab" 
+      alt: "African lecturer teaching web development programming to engaged students in modern computer lab",
+      loading: "lazy" as const
     },
     { 
       src: heroAI, 
-      alt: "African students collaborating on AI and machine learning projects with data visualizations" 
+      alt: "African students collaborating on AI and machine learning projects with data visualizations",
+      loading: "lazy" as const
     },
     { 
       src: heroMarketing, 
-      alt: "Young African female instructor teaching digital marketing with social media analytics" 
+      alt: "Young African female instructor teaching digital marketing with social media analytics",
+      loading: "lazy" as const
     },
     { 
       src: heroDesign, 
-      alt: "African students in UI/UX design workshop working with design software" 
+      alt: "African students in UI/UX design workshop working with design software",
+      loading: "lazy" as const
     },
     { 
       src: heroCybersecurity, 
-      alt: "African cybersecurity instructor demonstrating network security concepts to focused students" 
+      alt: "African cybersecurity instructor demonstrating network security concepts to focused students",
+      loading: "lazy" as const
     }
   ];
 
@@ -100,13 +106,13 @@ const Hero = () => {
                 key={index}
                 src={image.src}
                 alt={image.alt}
+                loading={image.loading}
+                fetchPriority={index === 0 ? "high" : "low"}
                 className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-1000 ${
                   index === currentImageIndex ? 'opacity-100' : 'opacity-0'
                 }`}
-                loading={index === 0 ? "eager" : "lazy"}
                 width="1920"
                 height="1080"
-                fetchPriority={index === 0 ? "high" : "low"}
               />
             ))}
           </div>
