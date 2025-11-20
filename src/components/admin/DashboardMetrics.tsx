@@ -33,6 +33,43 @@ export const DashboardMetrics = () => {
 
   useEffect(() => {
     fetchDashboardData();
+
+    // Subscribe to realtime changes on payments table
+    const paymentsChannel = supabase
+      .channel('payments-changes')
+      .on(
+        'postgres_changes',
+        {
+          event: '*',
+          schema: 'public',
+          table: 'payments'
+        },
+        () => {
+          fetchDashboardData();
+        }
+      )
+      .subscribe();
+
+    // Subscribe to realtime changes on user_course_access table
+    const enrollmentsChannel = supabase
+      .channel('enrollments-changes')
+      .on(
+        'postgres_changes',
+        {
+          event: '*',
+          schema: 'public',
+          table: 'user_course_access'
+        },
+        () => {
+          fetchDashboardData();
+        }
+      )
+      .subscribe();
+
+    return () => {
+      supabase.removeChannel(paymentsChannel);
+      supabase.removeChannel(enrollmentsChannel);
+    };
   }, []);
 
   const fetchDashboardData = async () => {
