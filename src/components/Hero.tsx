@@ -106,8 +106,7 @@ const Hero = () => {
                 key={index}
                 src={image.src}
                 alt={image.alt}
-                loading={image.loading}
-                fetchPriority={index === 0 ? "high" : "low"}
+                loading={index === 0 ? "eager" : "lazy"}
                 className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-1000 ${
                   index === currentImageIndex ? 'opacity-100' : 'opacity-0'
                 }`}
