@@ -59,6 +59,7 @@ const Courses = () => {
           id: course.id,
           title: course.title,
           description: course.description,
+          category: course.category,
           image: imageMap[course.category] || webdevImage,
           videoUrl: course.video_preview_url,
           duration: `${course.estimated_hours || 8} weeks`,
@@ -89,7 +90,7 @@ const Courses = () => {
     return courses.filter(course => {
       const matchesSearch = course.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
         course.description.toLowerCase().includes(searchTerm.toLowerCase());
-      const matchesCategory = selectedCategory === "all" || course.id.includes(selectedCategory);
+      const matchesCategory = selectedCategory === "all" || course.category === selectedCategory;
       return matchesSearch && matchesCategory;
     });
   }, [courses, searchTerm, selectedCategory]);
