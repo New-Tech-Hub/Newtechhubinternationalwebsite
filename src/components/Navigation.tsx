@@ -39,7 +39,7 @@ const Navigation = () => {
   };
 
   return (
-    <nav className="sticky top-0 z-50 bg-primary shadow-md">
+    <nav className="sticky top-0 z-50 bg-white shadow-sm border-b">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-20">
           {/* Logo */}
@@ -58,69 +58,82 @@ const Navigation = () => {
             <img 
               src={logo} 
               alt="New Tech Hub International" 
-              className="h-12 w-auto"
+              className="h-14 w-auto"
               width="48"
               height="48"
               loading="eager"
             />
             <div className="hidden sm:block">
-              <h1 className="text-xl font-bold text-white leading-tight">
-                New Tech Hub <span className="text-accent">International</span>
+              <h1 className="text-xl font-bold text-primary leading-tight">
+                New Tech Hub
               </h1>
-              <p className="text-white/70 text-xs italic">...we breathe solutions</p>
+              <p className="text-muted-foreground text-xs italic">...we breathe solutions</p>
             </div>
           </div>
 
           {/* Desktop Navigation */}
-          <div className="hidden lg:flex items-center gap-4 xl:gap-6">
+          <div className="hidden lg:flex items-center gap-6 xl:gap-8">
             {navLinks.map((link) => (
               <button
                 type="button"
                 key={link}
                 onClick={() => scrollToSection(link)}
-                className="text-white/90 hover:text-white text-sm font-medium transition-all duration-300 whitespace-nowrap relative group"
+                className="text-foreground hover:text-primary font-medium transition-colors duration-200 relative group"
               >
                 {link}
-                <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-accent transition-all duration-300 group-hover:w-full"></span>
+                <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-primary transition-all duration-300 group-hover:w-full"></span>
               </button>
             ))}
+            
             {externalLinks.map((link) => (
               <button
                 type="button"
-                key={link.label}
+                key={link.path}
                 onClick={() => navigate(link.path)}
-                className="text-white/90 hover:text-white text-sm font-medium transition-all duration-300 whitespace-nowrap relative group"
+                className="text-foreground hover:text-primary font-medium transition-colors duration-200 relative group"
               >
                 {link.label}
-                <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-accent transition-all duration-300 group-hover:w-full"></span>
+                <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-primary transition-all duration-300 group-hover:w-full"></span>
               </button>
             ))}
+
             {isAdmin && (
               <Button
                 type="button"
                 onClick={() => navigate('/admin')}
                 variant="outline"
                 size="sm"
-                className="gap-1 bg-white/10 text-white border-white/20 hover:bg-white/20 text-xs px-3 transition-all duration-300 hover:scale-105"
+                className="gap-2 border-primary text-primary hover:bg-primary hover:text-white transition-all duration-300"
               >
-                <Shield className="h-3 w-3" />
+                <Shield className="h-4 w-4" />
                 Admin
               </Button>
             )}
+
             <Button 
               type="button"
               onClick={handleAuthClick}
+              variant="outline"
               size="sm"
-              className="bg-accent hover:bg-accent/90 text-white font-semibold text-xs px-4 whitespace-nowrap transition-all duration-300 hover:shadow-lg hover:scale-105"
+              className="border-primary text-primary hover:bg-primary hover:text-white transition-all duration-300 font-medium"
             >
-              {user ? 'Sign Out' : 'Get Started'}
+              {user ? 'Sign Out' : 'Sign In'}
+            </Button>
+            
+            <Button 
+              type="button"
+              onClick={() => scrollToSection('courses')}
+              size="sm"
+              className="bg-primary hover:bg-primary/90 text-white font-bold shadow-md hover:shadow-lg transition-all duration-300 px-6"
+            >
+              Apply Now
             </Button>
           </div>
 
           {/* Mobile Menu Button */}
           <button
             type="button"
-            className="lg:hidden text-white"
+            className="lg:hidden text-primary"
             onClick={() => setIsOpen(!isOpen)}
             aria-label="Toggle menu"
           >
@@ -130,14 +143,14 @@ const Navigation = () => {
 
         {/* Mobile Navigation */}
         {isOpen && (
-          <div className="lg:hidden pb-6">
-            <div className="flex flex-col gap-4">
+          <div className="lg:hidden pb-6 bg-white border-t">
+            <div className="flex flex-col gap-4 pt-4">
               {navLinks.map((link) => (
                 <button
                   type="button"
                   key={link}
                   onClick={() => scrollToSection(link)}
-                  className="text-white/90 hover:text-white font-medium transition-colors duration-200 text-left"
+                  className="text-foreground hover:text-primary font-medium transition-colors duration-200 text-left px-2"
                 >
                   {link}
                 </button>
@@ -150,7 +163,7 @@ const Navigation = () => {
                     navigate(link.path);
                     setIsOpen(false);
                   }}
-                  className="text-white/90 hover:text-white font-medium transition-colors duration-200 text-left"
+                  className="text-foreground hover:text-primary font-medium transition-colors duration-200 text-left px-2"
                 >
                   {link.label}
                 </button>
@@ -163,7 +176,7 @@ const Navigation = () => {
                     setIsOpen(false);
                   }}
                   variant="outline"
-                  className="gap-2 bg-white/10 text-white border-white/20 hover:bg-white/20"
+                  className="gap-2 border-primary text-primary hover:bg-primary hover:text-white"
                 >
                   <Shield className="h-4 w-4" />
                   Admin
@@ -175,9 +188,20 @@ const Navigation = () => {
                   handleAuthClick();
                   setIsOpen(false);
                 }}
-                className="bg-accent hover:bg-accent/90 text-white font-semibold w-full"
+                className="bg-primary hover:bg-primary/90 text-white font-bold w-full"
               >
-                {user ? 'Sign Out' : 'Get Started'}
+                {user ? 'Sign Out' : 'Sign In'}
+              </Button>
+              
+              <Button 
+                type="button"
+                onClick={() => {
+                  scrollToSection('courses');
+                  setIsOpen(false);
+                }}
+                className="bg-primary hover:bg-primary/90 text-white font-bold w-full"
+              >
+                Apply Now
               </Button>
             </div>
           </div>

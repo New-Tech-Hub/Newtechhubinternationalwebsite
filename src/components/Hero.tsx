@@ -93,14 +93,14 @@ const Hero = () => {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationSchema) }}
       />
-      <section className="relative min-h-screen flex items-center overflow-hidden scroll-smooth snap-start" aria-label="Hero section">
+      <section className="relative min-h-screen flex items-center overflow-hidden scroll-smooth snap-start bg-gradient-to-br from-primary via-primary to-primary/90" aria-label="Hero section">
         {/* Background Image with Overlay - Auto-rotating training scenes */}
         <div 
-          className="absolute inset-0 z-0 transition-all duration-700 hover:scale-105"
+          className="absolute inset-0 z-0 transition-all duration-700"
           onMouseEnter={() => setIsHovering(true)}
           onMouseLeave={() => setIsHovering(false)}
         >
-          <div className="relative w-full h-full">
+          <div className="relative w-full h-full opacity-20">
             {trainingImages.map((image, index) => (
               <img
                 key={index}
@@ -115,26 +115,25 @@ const Hero = () => {
               />
             ))}
           </div>
-          <div className="absolute inset-0 bg-gradient-to-r from-primary/95 via-primary/85 to-primary/70 transition-opacity duration-500 hover:opacity-90" />
         </div>
 
       {/* Content */}
-      <div className="container relative z-10 mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="container relative z-10 mx-auto px-4 sm:px-6 lg:px-8 py-20">
         <div className="max-w-3xl">
           <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-white mb-6 leading-tight animate-fade-in">
-            Empowering Africa's Digital Generation — Learn, Build, and Succeed.
+            Master Tech Skills and Launch Your Career with Real-World Experience
           </h1>
-          <p className="text-lg sm:text-xl text-white/90 mb-8 leading-relaxed animate-fade-in" style={{ animationDelay: "0.2s" }}>
-            Join thousands of learners transforming their future with world-class digital skills courses curated by experts and powered by New Tech Hub International.
+          <p className="text-lg sm:text-xl text-white/95 mb-8 leading-relaxed animate-fade-in font-medium" style={{ animationDelay: "0.2s" }}>
+            Learn. Intern. Work. With New Tech Hub International, you're not learning theories—you get real work experience and opportunities to land tech jobs across Africa.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 animate-fade-in" style={{ animationDelay: "0.4s" }}>
             <Button
               type="button"
               size="lg"
               onClick={scrollToCourses}
-              className="bg-gradient-to-r from-[hsl(17,100%,60%)] to-[hsl(5,85%,58%)] shadow-[0_10px_40px_-10px_hsl(17,100%,60%/0.5)] text-white font-semibold text-lg px-8 py-6 group hover:scale-110 hover:shadow-[0_20px_60px_-10px_hsl(17,100%,60%/0.7)] transition-all duration-300"
+              className="bg-white text-primary shadow-[0_10px_40px_-10px_rgba(255,255,255,0.5)] font-bold text-lg px-10 py-7 group hover:scale-105 hover:shadow-[0_20px_60px_-10px_rgba(255,255,255,0.7)] transition-all duration-300"
             >
-              Start Learning Now
+              Apply Now
               <ArrowRight className="ml-2 h-5 w-5 group-hover:translate-x-2 transition-transform" />
             </Button>
             <Button
@@ -142,9 +141,9 @@ const Hero = () => {
               size="lg"
               onClick={showCourseVideos}
               variant="outline"
-              className="border-2 border-white bg-white/10 backdrop-blur-sm text-white font-semibold text-lg px-8 py-6 hover:bg-white hover:text-primary hover:scale-110 hover:shadow-[0_20px_40px_-10px_rgba(255,255,255,0.3)] transition-all duration-300"
+              className="border-2 border-white bg-transparent backdrop-blur-sm text-white font-bold text-lg px-10 py-7 hover:bg-white hover:text-primary hover:scale-105 hover:shadow-[0_20px_40px_-10px_rgba(255,255,255,0.3)] transition-all duration-300"
             >
-              Explore Free Courses
+              View Courses
             </Button>
           </div>
         </div>
