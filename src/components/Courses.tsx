@@ -9,6 +9,7 @@ import { useState, useEffect, useMemo } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { Analytics } from "@/lib/analytics";
 import { useScrollAnimation } from "@/hooks/useScrollAnimation";
+import { CourseCardSkeleton } from "@/components/SkeletonLoader";
 import marketingImage from "@/assets/course-marketing-new.jpg";
 import webdevImage from "@/assets/course-webdev-new.jpg";
 import aiImage from "@/assets/course-ai-new.jpg";
@@ -104,8 +105,16 @@ const Courses = () => {
   if (loading) {
     return (
       <section id="courses" className="py-20 bg-background">
-        <div className="container mx-auto px-4 flex items-center justify-center min-h-[400px]">
-          <Loader2 className="h-8 w-8 animate-spin text-primary" />
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+          <header className="text-center mb-12">
+            <div className="h-12 bg-muted animate-pulse rounded w-3/4 mx-auto mb-4" />
+            <div className="h-6 bg-muted animate-pulse rounded w-1/2 mx-auto" />
+          </header>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+            {[1, 2, 3, 4, 5, 6, 7, 8].map((i) => (
+              <CourseCardSkeleton key={i} />
+            ))}
+          </div>
         </div>
       </section>
     );
@@ -229,6 +238,7 @@ const Courses = () => {
                     src={course.image}
                     alt={`Learn ${course.title} - ${course.level} level course for African tech professionals covering ${course.description}`}
                     loading="lazy"
+                    decoding="async"
                     width="400"
                     height="300"
                     className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
