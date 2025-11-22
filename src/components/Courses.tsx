@@ -67,6 +67,7 @@ const Courses = () => {
           students: "Coming soon",
           level: course.difficulty_level,
           price: course.price,
+          isPremium: course.price >= 400000,
         }));
 
         setCourses(coursesWithImages);
@@ -208,8 +209,12 @@ const Courses = () => {
             {filteredCourses.map((course, index) => (
             <Card
               key={course.id}
-              className={`overflow-hidden shadow-xl border-none group transition-all duration-500 hover:-translate-y-2 hover:shadow-2xl ${
+              className={`overflow-hidden shadow-xl group transition-all duration-500 hover:-translate-y-2 hover:shadow-2xl ${
                 isVisible ? 'animate-fade-in' : 'opacity-0'
+              } ${
+                course.isPremium 
+                  ? 'border-2 border-primary/50 bg-gradient-to-br from-background via-background to-primary/5' 
+                  : 'border-none'
               }`}
               style={{ animationDelay: `${index * 100}ms` }}
             >
@@ -245,8 +250,12 @@ const Courses = () => {
                   />
                 )}
                 <div className="absolute top-4 right-4 z-10">
-                  <span className="px-3 py-1 bg-accent/10 backdrop-blur-sm text-accent text-sm font-semibold rounded-full transition-all duration-300 group-hover:bg-accent/20 group-hover:scale-105">
-                    Premium
+                  <span className={`px-3 py-1 backdrop-blur-sm text-sm font-semibold rounded-full transition-all duration-300 group-hover:scale-105 ${
+                    course.isPremium 
+                      ? 'bg-primary/20 text-primary border border-primary/40 group-hover:bg-primary/30' 
+                      : 'bg-accent/10 text-accent group-hover:bg-accent/20'
+                  }`}>
+                    {course.isPremium ? '⭐ Premium Bootcamp' : 'Standard'}
                   </span>
                 </div>
               </div>
@@ -268,7 +277,9 @@ const Courses = () => {
                       <span>{course.students}</span>
                     </div>
                   </div>
-                  <span className="text-lg font-bold text-primary">
+                   <span className={`text-lg font-bold ${
+                     course.isPremium ? 'text-primary' : 'text-foreground'
+                   }`}>
                     ₦{course.price.toLocaleString()}
                   </span>
                 </div>
