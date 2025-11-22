@@ -3,7 +3,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Building2, GraduationCap, Landmark, Wifi, Globe } from "lucide-react";
-import { Loader2 } from "lucide-react";
+import { PartnershipSkeleton } from "@/components/SkeletonLoader";
 
 interface Partnership {
   id: string;
@@ -47,15 +47,42 @@ const Partnerships = () => {
   if (loading) {
     return (
       <section className="py-20">
-        <div className="container mx-auto px-4 flex justify-center">
-          <Loader2 className="h-8 w-8 animate-spin text-primary" />
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-12">
+            <div className="h-10 bg-muted animate-pulse rounded w-64 mx-auto mb-4" />
+            <div className="h-6 bg-muted animate-pulse rounded w-96 mx-auto" />
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {[1, 2, 3].map((i) => (
+              <PartnershipSkeleton key={i} />
+            ))}
+          </div>
         </div>
       </section>
     );
   }
 
   if (partnerships.length === 0) {
-    return null;
+    return (
+      <section id="partnerships" className="py-20">
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-12">
+            <h2 className="text-3xl sm:text-4xl font-bold mb-4">
+              Our Strategic Partners
+            </h2>
+            <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
+              Building partnerships across Africa to expand opportunities
+            </p>
+          </div>
+          <div className="bg-card rounded-xl p-12 text-center shadow-lg">
+            <Building2 className="h-16 w-16 text-primary mx-auto mb-4 opacity-50" />
+            <p className="text-lg text-muted-foreground">
+              We're actively building partnerships with leading organizations
+            </p>
+          </div>
+        </div>
+      </section>
+    );
   }
 
   return (
