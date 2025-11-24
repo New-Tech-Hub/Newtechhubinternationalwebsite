@@ -7,6 +7,7 @@ import { Loader2 } from "lucide-react";
 // Lazy load heavy components below the fold
 const Features = lazy(() => import("@/components/Features"));
 const Courses = lazy(() => import("@/components/Courses"));
+const CourseComparison = lazy(() => import("@/components/CourseComparison"));
 const Testimonials = lazy(() => import("@/components/Testimonials"));
 const Impact = lazy(() => import("@/components/Impact"));
 const Localization = lazy(() => import("@/components/Localization"));
@@ -49,6 +50,7 @@ const Index = () => {
         }>
           <Features />
           <Courses />
+          <CourseComparison />
           <Testimonials />
           <Impact />
           <Localization />
