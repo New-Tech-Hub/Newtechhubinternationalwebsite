@@ -12,7 +12,9 @@ const paymentSchema = z.object({
   courseId: z.string().uuid({ message: "Invalid course ID format" }),
   email: z.string().email({ message: "Invalid email format" }).max(255),
   fullName: z.string().trim().min(2).max(100),
-  phone: z.string().regex(/^\+?[1-9]\d{1,14}$/, { message: "Invalid phone number format" }).max(20)
+  phone: z.string().regex(/^\+?[1-9]\d{1,14}$/, { message: "Invalid phone number format" }).max(20),
+  paymentType: z.enum(['full', 'installment']).optional().default('full'),
+  planId: z.string().uuid().optional()
 });
 
 serve(async (req) => {
@@ -36,7 +38,7 @@ serve(async (req) => {
       );
     }
     
-    const { courseId, email, fullName, phone } = validationResult.data;
+    const { courseId, email, fullName, phone, paymentType, planId } = validationResult.data;
     
     const supabase = createClient(
       Deno.env.get('SUPABASE_URL') ?? '',
@@ -54,6 +56,32 @@ serve(async (req) => {
       throw new Error('Course not found');
     }
 
+    let paymentAmount = course.price;
+    let installmentInfo = null;
+
+    // Handle installment payment
+    if (paymentType === 'installment' && planId) {
+      const { data: plan, error: planError } = await supabase
+        .from('payment_plans')
+        .select('*')
+        .eq('id', planId)
+        .eq('course_id', courseId)
+        .eq('is_active', true)
+        .single();
+
+      if (planError || !plan) {
+        throw new Error('Invalid payment plan');
+      }
+
+      paymentAmount = plan.installment_amount;
+      installmentInfo = {
+        planId: plan.id,
+        totalInstallments: plan.installment_count,
+        installmentAmount: plan.installment_amount,
+        totalAmount: plan.total_amount
+      };
+    }
+
     // Initialize Paystack payment
     const paystackResponse = await fetch('https://api.paystack.co/transaction/initialize', {
       method: 'POST',
@@ -63,13 +91,15 @@ serve(async (req) => {
       },
       body: JSON.stringify({
         email,
-        amount: course.price * 100, // Paystack expects amount in kobo (smallest unit)
+        amount: paymentAmount * 100, // Paystack expects amount in kobo (smallest unit)
         currency: 'NGN',
         metadata: {
           courseId,
           fullName,
           phone,
           courseName: course.title,
+          paymentType,
+          ...(installmentInfo && { installmentInfo })
         },
         callback_url: `${req.headers.get('origin')}/payment-success`,
       }),
@@ -87,10 +117,17 @@ serve(async (req) => {
       .insert({
         reference: paystackData.data.reference,
         course_id: courseId,
-        amount: course.price,
+        amount: paymentAmount,
         status: 'pending',
         payment_method: 'paystack',
-        metadata: { email, fullName, phone, courseName: course.title }
+        metadata: { 
+          email, 
+          fullName, 
+          phone, 
+          courseName: course.title,
+          paymentType,
+          ...(installmentInfo && { installmentInfo })
+        }
       });
 
     if (paymentError) {

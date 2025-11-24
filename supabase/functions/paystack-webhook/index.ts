@@ -128,14 +128,110 @@ serve(async (req) => {
       }
 
       // Update payment record
-      await supabase
+      const { data: paymentData } = await supabase
         .from('payments')
         .update({
           status: 'success',
           user_id: userId,
           verified_at: new Date().toISOString()
         })
-        .eq('reference', reference);
+        .eq('reference', reference)
+        .select()
+        .single();
+
+      // Check if this is an installment payment
+      const paymentMetadata = paymentData?.metadata as any;
+      const paymentType = paymentMetadata?.paymentType;
+      const installmentInfo = paymentMetadata?.installmentInfo;
+
+      if (paymentType === 'installment' && installmentInfo) {
+        // Check if installment record exists
+        const { data: existingInstallment } = await supabase
+          .from('payment_installments')
+          .select('*')
+          .eq('user_id', userId)
+          .eq('course_id', courseId)
+          .eq('plan_id', installmentInfo.planId)
+          .single();
+
+        let installmentId;
+        let currentInstallmentNum = 1;
+
+        if (existingInstallment) {
+          // Update existing installment record
+          currentInstallmentNum = existingInstallment.current_installment + 1;
+          const totalPaid = existingInstallment.total_paid + installmentInfo.installmentAmount;
+          const nextPaymentDate = new Date();
+          nextPaymentDate.setMonth(nextPaymentDate.getMonth() + 1);
+
+          await supabase
+            .from('payment_installments')
+            .update({
+              current_installment: currentInstallmentNum,
+              total_paid: totalPaid,
+              next_payment_date: currentInstallmentNum < installmentInfo.totalInstallments 
+                ? nextPaymentDate.toISOString() 
+                : null,
+              status: currentInstallmentNum >= installmentInfo.totalInstallments ? 'completed' : 'active'
+            })
+            .eq('id', existingInstallment.id);
+
+          installmentId = existingInstallment.id;
+        } else {
+          // Create new installment record
+          const nextPaymentDate = new Date();
+          nextPaymentDate.setMonth(nextPaymentDate.getMonth() + 1);
+
+          const { data: newInstallment } = await supabase
+            .from('payment_installments')
+            .insert({
+              user_id: userId,
+              course_id: courseId,
+              plan_id: installmentInfo.planId,
+              total_installments: installmentInfo.totalInstallments,
+              current_installment: 1,
+              installment_amount: installmentInfo.installmentAmount,
+              total_paid: installmentInfo.installmentAmount,
+              total_amount: installmentInfo.totalAmount,
+              next_payment_date: nextPaymentDate.toISOString(),
+              status: 'active'
+            })
+            .select()
+            .single();
+
+          installmentId = newInstallment.id;
+        }
+
+        // Record this installment payment
+        await supabase
+          .from('installment_payment_records')
+          .insert({
+            installment_id: installmentId,
+            payment_id: paymentData.id,
+            installment_number: currentInstallmentNum,
+            amount: installmentInfo.installmentAmount,
+            status: 'paid',
+            paid_at: new Date().toISOString()
+          });
+
+        // Grant course access on first installment payment
+        if (currentInstallmentNum === 1) {
+          await supabase
+            .from('user_course_access')
+            .insert({
+              user_id: userId,
+              course_id: courseId
+            });
+        }
+      } else {
+        // Full payment - grant immediate access
+        await supabase
+          .from('user_course_access')
+          .insert({
+            user_id: userId,
+            course_id: courseId
+          });
+      }
 
       // Enroll user in course (idempotent)
       const { error: enrollError } = await supabase
