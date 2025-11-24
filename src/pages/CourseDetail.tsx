@@ -12,6 +12,7 @@ import { Analytics } from "@/lib/analytics";
 import { useCourseAccess } from "@/hooks/useCourseAccess";
 import { LockedVideoPlayer } from "@/components/LockedVideoPlayer";
 import { VideoPlayer } from "@/components/VideoPlayer";
+import { InstallmentPlanSelector } from "@/components/InstallmentPlanSelector";
 
 const CourseDetail = () => {
   const { id } = useParams();
@@ -21,6 +22,8 @@ const CourseDetail = () => {
   const [course, setCourse] = useState<any>(null);
   const [loading, setLoading] = useState(true);
   const [enrolling, setEnrolling] = useState(false);
+  const [paymentPlans, setPaymentPlans] = useState<any[]>([]);
+  const [selectedPlanId, setSelectedPlanId] = useState<string | null>(null);
   const [formData, setFormData] = useState({
     fullName: "",
     email: "",
@@ -47,6 +50,20 @@ const CourseDetail = () => {
 
       if (error) throw error;
       setCourse(data);
+
+      // Fetch payment plans for premium courses (400k+)
+      if (data && data.price >= 400000) {
+        const { data: plans, error: plansError } = await supabase
+          .from('payment_plans')
+          .select('*')
+          .eq('course_id', id)
+          .eq('is_active', true)
+          .order('installment_count', { ascending: true });
+
+        if (!plansError && plans) {
+          setPaymentPlans(plans);
+        }
+      }
     } catch (error) {
       console.error('Error fetching course:', error);
       toast.error('Failed to load course details');
@@ -78,6 +95,8 @@ const CourseDetail = () => {
           email: formData.email,
           fullName: formData.fullName,
           phone: formData.phone,
+          paymentType: selectedPlanId ? 'installment' : 'full',
+          ...(selectedPlanId && { planId: selectedPlanId })
         },
       });
 
@@ -280,6 +299,15 @@ const CourseDetail = () => {
                     placeholder="+234 800 000 0000"
                   />
                 </div>
+
+                {paymentPlans.length > 0 && (
+                  <InstallmentPlanSelector
+                    plans={paymentPlans}
+                    selectedPlanId={selectedPlanId}
+                    onSelectPlan={setSelectedPlanId}
+                    coursePrice={course.price}
+                  />
+                )}
 
                 <Button
                   type="submit"

@@ -364,6 +364,54 @@ export type Database = {
         }
         Relationships: []
       }
+      installment_payment_records: {
+        Row: {
+          amount: number
+          created_at: string | null
+          id: string
+          installment_id: string
+          installment_number: number
+          paid_at: string | null
+          payment_id: string | null
+          status: string
+        }
+        Insert: {
+          amount: number
+          created_at?: string | null
+          id?: string
+          installment_id: string
+          installment_number: number
+          paid_at?: string | null
+          payment_id?: string | null
+          status?: string
+        }
+        Update: {
+          amount?: number
+          created_at?: string | null
+          id?: string
+          installment_id?: string
+          installment_number?: number
+          paid_at?: string | null
+          payment_id?: string | null
+          status?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "installment_payment_records_installment_id_fkey"
+            columns: ["installment_id"]
+            isOneToOne: false
+            referencedRelation: "payment_installments"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "installment_payment_records_payment_id_fkey"
+            columns: ["payment_id"]
+            isOneToOne: false
+            referencedRelation: "payments"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       instructor_profiles: {
         Row: {
           bio: string | null
@@ -572,6 +620,113 @@ export type Database = {
           website_url?: string | null
         }
         Relationships: []
+      }
+      payment_installments: {
+        Row: {
+          course_id: string
+          created_at: string | null
+          current_installment: number
+          id: string
+          installment_amount: number
+          next_payment_date: string | null
+          plan_id: string | null
+          status: string
+          total_amount: number
+          total_installments: number
+          total_paid: number
+          updated_at: string | null
+          user_id: string
+        }
+        Insert: {
+          course_id: string
+          created_at?: string | null
+          current_installment?: number
+          id?: string
+          installment_amount: number
+          next_payment_date?: string | null
+          plan_id?: string | null
+          status?: string
+          total_amount: number
+          total_installments: number
+          total_paid?: number
+          updated_at?: string | null
+          user_id: string
+        }
+        Update: {
+          course_id?: string
+          created_at?: string | null
+          current_installment?: number
+          id?: string
+          installment_amount?: number
+          next_payment_date?: string | null
+          plan_id?: string | null
+          status?: string
+          total_amount?: number
+          total_installments?: number
+          total_paid?: number
+          updated_at?: string | null
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "payment_installments_course_id_fkey"
+            columns: ["course_id"]
+            isOneToOne: false
+            referencedRelation: "courses"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "payment_installments_plan_id_fkey"
+            columns: ["plan_id"]
+            isOneToOne: false
+            referencedRelation: "payment_plans"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      payment_plans: {
+        Row: {
+          course_id: string
+          created_at: string | null
+          id: string
+          installment_amount: number
+          installment_count: number
+          is_active: boolean | null
+          plan_name: string
+          total_amount: number
+          updated_at: string | null
+        }
+        Insert: {
+          course_id: string
+          created_at?: string | null
+          id?: string
+          installment_amount: number
+          installment_count: number
+          is_active?: boolean | null
+          plan_name: string
+          total_amount: number
+          updated_at?: string | null
+        }
+        Update: {
+          course_id?: string
+          created_at?: string | null
+          id?: string
+          installment_amount?: number
+          installment_count?: number
+          is_active?: boolean | null
+          plan_name?: string
+          total_amount?: number
+          updated_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "payment_plans_course_id_fkey"
+            columns: ["course_id"]
+            isOneToOne: false
+            referencedRelation: "courses"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       payments: {
         Row: {
