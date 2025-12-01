@@ -17,6 +17,7 @@ const CoursesPreview = lazy(() => import("./pages/CoursesPreview"));
 const Community = lazy(() => import("./pages/Community"));
 const MyCertificates = lazy(() => import("./pages/MyCertificates"));
 const RedeemAccessCode = lazy(() => import("./pages/RedeemAccessCode"));
+const MyPayments = lazy(() => import("./pages/MyPayments"));
 
 const LoadingSpinner = () => (
   <div className="flex items-center justify-center min-h-screen">
@@ -43,6 +44,7 @@ const App = () => (
             <Route path="/community" element={<Community />} />
             <Route path="/my-certificates" element={<MyCertificates />} />
             <Route path="/redeem-access/:courseId" element={<RedeemAccessCode />} />
+            <Route path="/my-payments" element={<MyPayments />} />
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
             <Route path="*" element={<NotFound />} />
           </Routes>
