@@ -13,7 +13,10 @@ const Navigation = () => {
   const navLinks = ["Courses", "About", "Pricing", "Contact"];
   const externalLinks = [
     { label: "Community", path: "/community" },
-    ...(user ? [{ label: "Certificates", path: "/my-certificates" }] : []),
+    ...(user ? [
+      { label: "Certificates", path: "/my-certificates" },
+      { label: "My Payments", path: "/my-payments" }
+    ] : []),
   ];
 
   const handleAuthClick = () => {
