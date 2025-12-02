@@ -6,10 +6,11 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
 import { Button } from "@/components/ui/button";
-import { Loader2, CreditCard, Calendar, CheckCircle, Clock, AlertCircle } from "lucide-react";
+import { Loader2, CreditCard, Calendar, CheckCircle, Clock, AlertCircle, Download } from "lucide-react";
 import { format } from "date-fns";
 import { toast } from "sonner";
 import Navigation from "@/components/Navigation";
+import { generatePaymentReceipt } from "@/lib/receiptGenerator";
 
 interface InstallmentPlan {
   id: string;
@@ -135,6 +136,26 @@ const MyPayments = () => {
       (new Date(nextDate).getTime() - new Date().getTime()) / (1000 * 60 * 60 * 24)
     );
     return daysUntil <= 7 && daysUntil >= 0;
+  };
+
+  const handleDownloadReceipt = (
+    record: PaymentRecord,
+    plan: InstallmentPlan
+  ) => {
+    generatePaymentReceipt({
+      receiptNumber: `NTH-${record.id.slice(0, 8).toUpperCase()}`,
+      paymentDate: record.paid_at
+        ? format(new Date(record.paid_at), "MMMM dd, yyyy")
+        : format(new Date(record.created_at), "MMMM dd, yyyy"),
+      courseName: plan.courses.title,
+      installmentNumber: record.installment_number,
+      totalInstallments: plan.total_installments,
+      amount: record.amount,
+      totalPaid: plan.total_paid,
+      totalAmount: plan.total_amount,
+      customerEmail: user?.email,
+    });
+    toast.success("Receipt downloaded successfully");
   };
 
   if (authLoading || loading) {
@@ -317,22 +338,35 @@ const MyPayments = () => {
                                       </p>
                                     </div>
                                   </div>
-                                  <div className="text-right">
-                                    <p className="font-semibold">
-                                      ₦{record.amount.toLocaleString()}
-                                    </p>
-                                    <Badge
-                                      variant={
-                                        record.status === "paid"
-                                          ? "default"
-                                          : record.status === "overdue"
-                                          ? "destructive"
-                                          : "secondary"
-                                      }
-                                      className="text-xs"
-                                    >
-                                      {record.status}
-                                    </Badge>
+                                  <div className="flex items-center gap-3">
+                                    <div className="text-right">
+                                      <p className="font-semibold">
+                                        ₦{record.amount.toLocaleString()}
+                                      </p>
+                                      <Badge
+                                        variant={
+                                          record.status === "paid"
+                                            ? "default"
+                                            : record.status === "overdue"
+                                            ? "destructive"
+                                            : "secondary"
+                                        }
+                                        className="text-xs"
+                                      >
+                                        {record.status}
+                                      </Badge>
+                                    </div>
+                                    {record.status === "paid" && (
+                                      <Button
+                                        variant="outline"
+                                        size="sm"
+                                        onClick={() => handleDownloadReceipt(record, plan)}
+                                        className="flex items-center gap-1"
+                                      >
+                                        <Download className="h-3 w-3" />
+                                        Receipt
+                                      </Button>
+                                    )}
                                   </div>
                                 </div>
                               ))
