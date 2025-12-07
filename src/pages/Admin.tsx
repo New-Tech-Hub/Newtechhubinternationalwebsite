@@ -25,10 +25,11 @@ import { Textarea } from '@/components/ui/textarea';
 import { Label } from '@/components/ui/label';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import { toast } from 'sonner';
-import { Shield, Users, LogOut, BookOpen, Plus, Pencil, Trash2, Key, LayoutDashboard } from 'lucide-react';
+import { Shield, Users, LogOut, BookOpen, Plus, Pencil, Trash2, Key, LayoutDashboard, CreditCard } from 'lucide-react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { AccessCodeManagement } from '@/components/admin/AccessCodeManagement';
 import { DashboardMetrics } from '@/components/admin/DashboardMetrics';
+import { InstallmentPaymentsManagement } from '@/components/admin/InstallmentPaymentsManagement';
 
 type UserProfile = {
   id: string;
@@ -255,6 +256,10 @@ const Admin = () => {
               <Key className="h-4 w-4" />
               Access Codes
             </TabsTrigger>
+            <TabsTrigger value="installments" className="gap-2">
+              <CreditCard className="h-4 w-4" />
+              Installments
+            </TabsTrigger>
             <TabsTrigger value="users" className="gap-2">
               <Users className="h-4 w-4" />
               Users
@@ -267,6 +272,10 @@ const Admin = () => {
 
           <TabsContent value="access-codes">
             <AccessCodeManagement />
+          </TabsContent>
+
+          <TabsContent value="installments">
+            <InstallmentPaymentsManagement />
           </TabsContent>
 
           <TabsContent value="courses">
