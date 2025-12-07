@@ -106,27 +106,41 @@ export const DashboardMetrics = () => {
 
       if (enrollmentsError) throw enrollmentsError;
 
-      // Fetch recent enrollments with user and course info
+      // Fetch recent enrollments with course info
       const { data: enrollments, error: recentError } = await supabase
         .from('user_course_access')
         .select(`
           id,
           granted_at,
           user_id,
-          course_id,
-          profiles!user_id(email, full_name),
-          courses!course_id(title)
+          courses:course_id(title)
         `)
         .order('granted_at', { ascending: false })
         .limit(10);
 
       if (recentError) throw recentError;
 
+      // Fetch profiles separately for the user_ids
+      const userIds = enrollments?.map(e => e.user_id).filter(Boolean) || [];
+      let profilesMap: Record<string, { email: string; full_name: string | null }> = {};
+      
+      if (userIds.length > 0) {
+        const { data: profiles } = await supabase
+          .from('profiles')
+          .select('id, email, full_name')
+          .in('id', userIds);
+        
+        profilesMap = (profiles || []).reduce((acc, profile) => {
+          acc[profile.id] = { email: profile.email, full_name: profile.full_name };
+          return acc;
+        }, {} as Record<string, { email: string; full_name: string | null }>);
+      }
+
       const formattedEnrollments = enrollments?.map((enrollment: any) => ({
         id: enrollment.id,
-        user_email: enrollment.profiles.email,
-        user_name: enrollment.profiles.full_name,
-        course_title: enrollment.courses.title,
+        user_email: profilesMap[enrollment.user_id]?.email || 'Unknown',
+        user_name: profilesMap[enrollment.user_id]?.full_name || null,
+        course_title: enrollment.courses?.title || 'Unknown Course',
         granted_at: enrollment.granted_at,
       })) || [];
 
