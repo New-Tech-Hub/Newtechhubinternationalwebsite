@@ -27,7 +27,7 @@ export const VideoPlayer = ({ videoUrl, title }: VideoPlayerProps) => {
   };
 
   return (
-    <div className="relative aspect-video w-full rounded-lg overflow-hidden bg-muted">
+    <div className="relative aspect-video w-full rounded-lg overflow-hidden bg-muted shadow-lg">
       <iframe
         width="100%"
         height="100%"
@@ -35,6 +35,7 @@ export const VideoPlayer = ({ videoUrl, title }: VideoPlayerProps) => {
         title={title}
         frameBorder="0"
         allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+        allowFullScreen
         className="w-full h-full"
         loading="lazy"
       />

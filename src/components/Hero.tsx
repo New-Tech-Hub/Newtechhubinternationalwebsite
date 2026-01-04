@@ -93,7 +93,7 @@ const Hero = () => {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationSchema) }}
       />
-      <section className="relative min-h-screen flex items-center overflow-hidden scroll-smooth snap-start bg-gradient-to-br from-primary via-primary to-primary/90" aria-label="Hero section">
+      <section className="relative min-h-[90vh] flex items-center overflow-hidden scroll-smooth bg-gradient-to-br from-primary via-primary to-primary/90" aria-label="Hero section">
         {/* Background Image with Overlay - Auto-rotating training scenes */}
         <div 
           className="absolute inset-0 z-0 transition-all duration-700"

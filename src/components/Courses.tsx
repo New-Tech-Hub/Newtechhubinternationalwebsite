@@ -149,9 +149,9 @@ const Courses = () => {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(courseSchema) }}
       />
-      <section id="courses" className="py-20 bg-background" aria-labelledby="courses-heading">
+      <section id="courses" className="py-16 bg-muted/30" aria-labelledby="courses-heading">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          <header className="text-center mb-12">
+          <header className="text-center mb-10">
             <h1 id="courses-heading" className="text-3xl sm:text-4xl lg:text-5xl font-bold text-foreground mb-4">
               Premium Digital Skills Courses for African Tech Professionals
             </h1>

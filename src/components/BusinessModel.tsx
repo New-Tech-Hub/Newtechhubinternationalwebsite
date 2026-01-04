@@ -4,9 +4,9 @@ import { Zap, Users, Award, Lock } from "lucide-react";
 
 const BusinessModel = () => {
   return (
-    <section id="business-model" className="py-20 bg-muted/30">
+    <section id="business-model" className="py-16 bg-background">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="text-center mb-12">
+        <div className="text-center mb-10">
           <h2 className="text-3xl sm:text-4xl font-bold mb-4">
             How We Make Learning Sustainable
           </h2>
