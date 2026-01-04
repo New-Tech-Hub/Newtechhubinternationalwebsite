@@ -44,9 +44,9 @@ const Features = () => {
   };
 
   return (
-    <section id="features" className="py-20 bg-secondary" aria-labelledby="features-heading">
+    <section id="features" className="py-16 bg-secondary" aria-labelledby="features-heading">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-        <header className="text-center mb-16">
+        <header className="text-center mb-12">
           <h2 id="features-heading" className="text-3xl sm:text-4xl lg:text-5xl font-bold text-foreground mb-4 animate-fade-in">
             Browse by Category
           </h2>

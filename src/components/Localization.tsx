@@ -53,9 +53,9 @@ const Localization = () => {
   ];
 
   return (
-    <section id="localization" className="py-20">
+    <section id="localization" className="py-16 bg-background">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="text-center mb-12">
+        <div className="text-center mb-10">
           <h2 className="text-3xl sm:text-4xl font-bold mb-4">
             Built for Africa, By Africans
           </h2>
@@ -65,7 +65,7 @@ const Localization = () => {
         </div>
 
         {/* Local Features */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10">
           {localFeatures.map((feature, index) => {
             const Icon = feature.icon;
             return (
@@ -112,7 +112,7 @@ const Localization = () => {
         </div>
 
         {/* Language Support */}
-        <div className="mt-12 text-center">
+        <div className="mt-10 text-center">
           <h3 className="text-xl font-bold mb-4">Available Languages & Subtitles</h3>
           <div className="flex flex-wrap justify-center gap-3">
             {["English", "Yoruba 🇳🇬", "Igbo 🇳🇬", "Hausa 🇳🇬", "Swahili 🇰🇪", "Zulu 🇿🇦", "Français 🇸🇳", "Amharic 🇪🇹"].map((lang) => (

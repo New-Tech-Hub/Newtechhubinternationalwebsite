@@ -3,10 +3,10 @@ import { Card } from "@/components/ui/card";
 
 const About = () => {
   return (
-    <section id="about" className="py-20 bg-secondary" aria-labelledby="about-heading">
+    <section id="about" className="py-16 bg-secondary" aria-labelledby="about-heading">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <div className="max-w-4xl mx-auto">
-          <header className="text-center mb-12">
+          <header className="text-center mb-10">
             <h2 id="about-heading" className="text-3xl sm:text-4xl lg:text-5xl font-bold text-foreground mb-6">
               About New Tech Hub International
             </h2>

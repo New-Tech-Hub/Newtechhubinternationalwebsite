@@ -73,7 +73,7 @@ const Impact = () => {
   ];
 
   return (
-    <section id="impact" className="py-24 bg-background">
+    <section id="impact" className="py-16 bg-secondary">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         {/* Large Prominent Stats Section - Inspired by iHifix */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-12 mb-20 text-center">

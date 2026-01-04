@@ -50,9 +50,9 @@ const Contact = () => {
   };
 
   return (
-    <section id="contact" className="py-20 bg-secondary" aria-labelledby="contact-heading">
+    <section id="contact" className="py-16 bg-secondary" aria-labelledby="contact-heading">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-        <header className="text-center mb-16">
+        <header className="text-center mb-12">
           <h2 id="contact-heading" className="text-3xl sm:text-4xl lg:text-5xl font-bold text-foreground mb-4">
             Get In Touch
           </h2>

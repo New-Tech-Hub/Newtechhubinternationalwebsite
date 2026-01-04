@@ -36,12 +36,12 @@ const Index = () => {
   }, [location]);
 
   return (
-    <div className="min-h-screen scroll-smooth snap-y snap-mandatory overflow-y-auto">
+    <div className="min-h-screen scroll-smooth overflow-y-auto">
       <Navigation />
       <main id="main-content">
         <Hero />
         <Suspense fallback={
-          <div className="min-h-[60vh] flex items-center justify-center bg-background">
+          <div className="py-16 flex items-center justify-center bg-background">
             <div className="text-center space-y-4">
               <Loader2 className="h-10 w-10 animate-spin text-primary mx-auto" />
               <p className="text-sm text-muted-foreground">Loading...</p>
