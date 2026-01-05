@@ -1,21 +1,45 @@
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Clock, Users, Loader2, Play, Search, Filter } from "lucide-react";
+import { Clock, Users, Play, Search, Filter } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "@/hooks/useAuth";
 import { toast } from "sonner";
-import { useState, useEffect, useMemo } from "react";
+import { useState, useEffect, useMemo, useCallback, memo } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { Analytics } from "@/lib/analytics";
 import { useScrollAnimation } from "@/hooks/useScrollAnimation";
 import { CourseCardSkeleton } from "@/components/SkeletonLoader";
+
+// Static image imports for faster initial load
 import marketingImage from "@/assets/course-marketing-new.jpg";
 import webdevImage from "@/assets/course-webdev-new.jpg";
 import aiImage from "@/assets/course-ai-new.jpg";
 import designImage from "@/assets/course-design-new.jpg";
 
-const Courses = () => {
+const imageMap: Record<string, string> = {
+  'digital_marketing': marketingImage,
+  'web_development': webdevImage,
+  'ai_data': aiImage,
+  'graphic_design': designImage,
+  'cybersecurity': webdevImage,
+  'freelancing': marketingImage,
+  'video_editing': designImage,
+};
+
+const categories = [
+  { value: "all", label: "All Courses" },
+  { value: "digital_marketing", label: "Digital Marketing" },
+  { value: "web_development", label: "Web Development" },
+  { value: "graphic_design", label: "Graphic Design" },
+  { value: "ai_data", label: "AI & Data" },
+  { value: "cybersecurity", label: "Cybersecurity" },
+  { value: "video_editing", label: "Video Editing" },
+  { value: "freelancing", label: "Freelancing" },
+];
+
+const Courses = memo(() => {
+
   const navigate = useNavigate();
   const { user } = useAuth();
   const [courses, setCourses] = useState<any[]>([]);
@@ -24,37 +48,15 @@ const Courses = () => {
   const [selectedCategory, setSelectedCategory] = useState<string>("all");
   const { elementRef, isVisible } = useScrollAnimation();
 
-  const categories = [
-    { value: "all", label: "All Courses" },
-    { value: "digital_marketing", label: "Digital Marketing" },
-    { value: "web_development", label: "Web Development" },
-    { value: "graphic_design", label: "Graphic Design" },
-    { value: "ai_data", label: "AI & Data" },
-    { value: "cybersecurity", label: "Cybersecurity" },
-    { value: "video_editing", label: "Video Editing" },
-    { value: "freelancing", label: "Freelancing" },
-  ];
-
   useEffect(() => {
     const fetchCourses = async () => {
       try {
         const { data, error } = await supabase
           .from('courses')
-          .select('*')
+          .select('id, title, description, category, video_preview_url, estimated_hours, difficulty_level, price')
           .eq('published', true);
 
         if (error) throw error;
-
-        // Map to course format with images
-        const imageMap: Record<string, any> = {
-          'digital_marketing': marketingImage,
-          'web_development': webdevImage,
-          'ai_data': aiImage,
-          'graphic_design': designImage,
-          'cybersecurity': webdevImage,
-          'freelancing': marketingImage,
-          'video_editing': designImage,
-        };
 
         const coursesWithImages = (data || []).map(course => ({
           id: course.id,
@@ -82,10 +84,10 @@ const Courses = () => {
     fetchCourses();
   }, []);
 
-  const handleEnroll = (courseId: string, courseTitle: string) => {
+  const handleEnroll = useCallback((courseId: string, courseTitle: string) => {
     Analytics.courseCardClick(courseId, courseTitle);
     navigate(`/course/${courseId}`);
-  };
+  }, [navigate]);
 
   // Filter courses based on search and category
   const filteredCourses = useMemo(() => {
@@ -305,6 +307,8 @@ const Courses = () => {
       </section>
     </>
   );
-};
+});
+
+Courses.displayName = 'Courses';
 
 export default Courses;
