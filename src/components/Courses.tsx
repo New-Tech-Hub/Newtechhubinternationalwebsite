@@ -207,18 +207,16 @@ const Courses = memo(() => {
             <p className="text-sm text-muted-foreground">Try adjusting your search or filter criteria</p>
           </div>
         ) : (
-          <div ref={elementRef} className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-12">
+          <div ref={elementRef} className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
             {filteredCourses.map((course, index) => (
             <Card
               key={course.id}
-              className={`overflow-hidden shadow-xl group transition-all duration-500 hover:-translate-y-2 hover:shadow-2xl ${
-                isVisible ? 'animate-fade-in' : 'opacity-0'
-              } ${
+              className={`overflow-hidden shadow-xl group transition-all duration-500 hover:-translate-y-2 hover:shadow-2xl animate-fade-in ${
                 course.isPremium 
                   ? 'border-2 border-primary/50 bg-gradient-to-br from-background via-background to-primary/5' 
                   : 'border-none'
               }`}
-              style={{ animationDelay: `${index * 100}ms` }}
+              style={{ animationDelay: `${Math.min(index, 7) * 50}ms` }}
             >
               <div 
                 className="relative h-48 overflow-hidden group/video cursor-pointer"
