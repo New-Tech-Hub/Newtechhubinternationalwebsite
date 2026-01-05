@@ -1,73 +1,70 @@
 import { Button } from "@/components/ui/button";
 import { ArrowRight } from "lucide-react";
 import { useNavigate } from "react-router-dom";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback, memo } from "react";
 import heroImage from "@/assets/hero-learning.jpg";
-import heroWebDev from "@/assets/hero-webdev-training.jpg";
-import heroAI from "@/assets/hero-ai-training.jpg";
-import heroMarketing from "@/assets/hero-marketing-training.jpg";
-import heroDesign from "@/assets/hero-design-training.jpg";
-import heroCybersecurity from "@/assets/hero-cybersecurity-training.jpg";
 import { Analytics } from "@/lib/analytics";
 
-const Hero = () => {
+// Lazy load secondary images
+const heroImages = [
+  { src: heroImage, alt: "African students collaborating and learning digital technology skills together" },
+];
+
+const Hero = memo(() => {
   const navigate = useNavigate();
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
-  const [isHovering, setIsHovering] = useState(false);
+  const [imagesLoaded, setImagesLoaded] = useState(false);
+  const [allImages, setAllImages] = useState(heroImages);
 
-  const trainingImages = [
-    { 
-      src: heroImage, 
-      alt: "African students collaborating and learning digital technology skills together in modern educational setting",
-      loading: "eager" as const
-    },
-    { 
-      src: heroWebDev, 
-      alt: "African lecturer teaching web development programming to engaged students in modern computer lab",
-      loading: "lazy" as const
-    },
-    { 
-      src: heroAI, 
-      alt: "African students collaborating on AI and machine learning projects with data visualizations",
-      loading: "lazy" as const
-    },
-    { 
-      src: heroMarketing, 
-      alt: "Young African female instructor teaching digital marketing with social media analytics",
-      loading: "lazy" as const
-    },
-    { 
-      src: heroDesign, 
-      alt: "African students in UI/UX design workshop working with design software",
-      loading: "lazy" as const
-    },
-    { 
-      src: heroCybersecurity, 
-      alt: "African cybersecurity instructor demonstrating network security concepts to focused students",
-      loading: "lazy" as const
-    }
-  ];
+  // Load additional images after initial render
+  useEffect(() => {
+    const loadImages = async () => {
+      const [webDev, ai, marketing, design, cyber] = await Promise.all([
+        import("@/assets/hero-webdev-training.jpg"),
+        import("@/assets/hero-ai-training.jpg"),
+        import("@/assets/hero-marketing-training.jpg"),
+        import("@/assets/hero-design-training.jpg"),
+        import("@/assets/hero-cybersecurity-training.jpg"),
+      ]);
+      
+      setAllImages([
+        heroImages[0],
+        { src: webDev.default, alt: "African lecturer teaching web development programming" },
+        { src: ai.default, alt: "African students collaborating on AI and machine learning projects" },
+        { src: marketing.default, alt: "Young African instructor teaching digital marketing" },
+        { src: design.default, alt: "African students in UI/UX design workshop" },
+        { src: cyber.default, alt: "African cybersecurity instructor demonstrating network security" },
+      ]);
+      setImagesLoaded(true);
+    };
+    
+    // Delay loading secondary images
+    const timer = setTimeout(loadImages, 1000);
+    return () => clearTimeout(timer);
+  }, []);
 
   useEffect(() => {
+    if (!imagesLoaded) return;
+    
     const interval = setInterval(() => {
-      setCurrentImageIndex((prev) => (prev + 1) % trainingImages.length);
-    }, 3000);
+      setCurrentImageIndex((prev) => (prev + 1) % allImages.length);
+    }, 4000);
 
     return () => clearInterval(interval);
-  }, [trainingImages.length]);
+  }, [imagesLoaded, allImages.length]);
 
-  const scrollToCourses = () => {
+  const scrollToCourses = useCallback(() => {
     Analytics.heroCtaClick('Start Learning Now');
     const element = document.getElementById('courses');
     if (element) {
       element.scrollIntoView({ behavior: 'smooth', block: 'start' });
     }
-  };
+  }, []);
 
-  const showCourseVideos = () => {
+  const showCourseVideos = useCallback(() => {
     Analytics.heroCtaClick('Explore Free Courses');
     navigate('/courses-preview');
-  };
+  }, [navigate]);
   // Generate JSON-LD structured data for organization
   const organizationSchema = {
     "@context": "https://schema.org",
@@ -93,21 +90,20 @@ const Hero = () => {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationSchema) }}
       />
-      <section className="relative min-h-[90vh] flex items-center overflow-hidden scroll-smooth bg-gradient-to-br from-primary via-primary to-primary/90" aria-label="Hero section">
+      <section className="relative min-h-[90vh] flex items-center overflow-hidden bg-gradient-to-br from-primary via-primary to-primary/90" aria-label="Hero section">
         {/* Background Image with Overlay - Auto-rotating training scenes */}
-        <div 
-          className="absolute inset-0 z-0 transition-all duration-700"
-          onMouseEnter={() => setIsHovering(true)}
-          onMouseLeave={() => setIsHovering(false)}
-        >
+        <div className="absolute inset-0 z-0">
           <div className="relative w-full h-full opacity-20">
-            {trainingImages.map((image, index) => (
+            {/* Only render current and next image for performance */}
+            {allImages.slice(0, imagesLoaded ? allImages.length : 1).map((image, index) => (
               <img
                 key={index}
                 src={image.src}
                 alt={image.alt}
                 loading={index === 0 ? "eager" : "lazy"}
-                className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-1000 ${
+                decoding={index === 0 ? "sync" : "async"}
+                fetchPriority={index === 0 ? "high" : "low"}
+                className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-1000 will-change-opacity ${
                   index === currentImageIndex ? 'opacity-100' : 'opacity-0'
                 }`}
                 width="1920"
@@ -161,6 +157,8 @@ const Hero = () => {
       </section>
     </>
   );
-};
+});
+
+Hero.displayName = 'Hero';
 
 export default Hero;
