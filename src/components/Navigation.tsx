@@ -12,6 +12,7 @@ const Navigation = () => {
 
   const navLinks = ["Courses", "About", "Pricing", "Contact"];
   const externalLinks = [
+    { label: "Team", path: "/team" },
     { label: "Community", path: "/community" },
     ...(user ? [
       { label: "Certificates", path: "/my-certificates" },
