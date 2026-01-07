@@ -100,7 +100,7 @@ const CourseComparison = () => {
             <CardHeader className="bg-accent/5">
               <CardTitle className="text-xl text-center">Standard</CardTitle>
               <p className="text-center text-muted-foreground text-sm mt-2">
-                ₦120,000 - ₦300,000
+                ₦96,000 - ₦240,000
               </p>
             </CardHeader>
             <CardContent className="space-y-4">
@@ -131,7 +131,7 @@ const CourseComparison = () => {
                 ⭐ Premium Bootcamp
               </CardTitle>
               <p className="text-center text-muted-foreground text-sm mt-2">
-                ₦400,000+
+                ₦320,000+
               </p>
             </CardHeader>
             <CardContent className="space-y-4">
