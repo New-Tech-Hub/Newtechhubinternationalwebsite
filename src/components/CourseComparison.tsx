@@ -96,11 +96,17 @@ const CourseComparison = () => {
           </Card>
 
           {/* Standard Column */}
-          <Card className="border-border/50 hover:shadow-lg transition-shadow">
+          <Card className="border-border/50 hover:shadow-lg transition-shadow relative">
+            <div className="absolute -top-3 right-4">
+              <span className="bg-destructive text-destructive-foreground px-3 py-1 rounded-full text-xs font-semibold animate-pulse">
+                50% OFF
+              </span>
+            </div>
             <CardHeader className="bg-accent/5">
               <CardTitle className="text-xl text-center">Standard</CardTitle>
               <p className="text-center text-muted-foreground text-sm mt-2">
-                ₦96,000 - ₦240,000
+                <span className="line-through text-muted-foreground/50 mr-2">₦100,000</span>
+                <span className="text-accent font-semibold">₦50,000</span>
               </p>
             </CardHeader>
             <CardContent className="space-y-4">
@@ -121,9 +127,12 @@ const CourseComparison = () => {
 
           {/* Premium Column */}
           <Card className="border-2 border-primary/50 bg-gradient-to-br from-background via-background to-primary/5 hover:shadow-xl transition-shadow relative">
-            <div className="absolute -top-3 left-1/2 transform -translate-x-1/2">
+            <div className="absolute -top-3 left-1/2 transform -translate-x-1/2 flex gap-2">
               <span className="bg-primary text-primary-foreground px-4 py-1 rounded-full text-xs font-semibold">
                 RECOMMENDED
+              </span>
+              <span className="bg-destructive text-destructive-foreground px-3 py-1 rounded-full text-xs font-semibold animate-pulse">
+                50% OFF
               </span>
             </div>
             <CardHeader className="bg-primary/10">
@@ -131,7 +140,8 @@ const CourseComparison = () => {
                 ⭐ Premium Bootcamp
               </CardTitle>
               <p className="text-center text-muted-foreground text-sm mt-2">
-                ₦320,000+
+                <span className="line-through text-muted-foreground/50 mr-2">₦200,000</span>
+                <span className="text-primary font-semibold">₦100,000</span>
               </p>
             </CardHeader>
             <CardContent className="space-y-4">
