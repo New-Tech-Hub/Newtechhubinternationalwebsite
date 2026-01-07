@@ -1,7 +1,41 @@
-import { Check, X } from "lucide-react";
+import { Check, X, Clock } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { useState, useEffect } from "react";
 
 const CourseComparison = () => {
+  // Set expiration to 7 days from now (you can change this date)
+  const [timeLeft, setTimeLeft] = useState({
+    days: 0,
+    hours: 0,
+    minutes: 0,
+    seconds: 0,
+  });
+
+  useEffect(() => {
+    // Set expiration date to 7 days from component mount
+    const expirationDate = new Date();
+    expirationDate.setDate(expirationDate.getDate() + 7);
+
+    const calculateTimeLeft = () => {
+      const now = new Date().getTime();
+      const distance = expirationDate.getTime() - now;
+
+      if (distance > 0) {
+        setTimeLeft({
+          days: Math.floor(distance / (1000 * 60 * 60 * 24)),
+          hours: Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)),
+          minutes: Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60)),
+          seconds: Math.floor((distance % (1000 * 60)) / 1000),
+        });
+      }
+    };
+
+    calculateTimeLeft();
+    const timer = setInterval(calculateTimeLeft, 1000);
+
+    return () => clearInterval(timer);
+  }, []);
+
   const features = [
     {
       name: "Core Curriculum",
@@ -72,9 +106,33 @@ const CourseComparison = () => {
           <h2 className="text-3xl md:text-4xl font-bold mb-4 bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
             Course Tiers Comparison
           </h2>
-          <p className="text-muted-foreground max-w-2xl mx-auto">
+          <p className="text-muted-foreground max-w-2xl mx-auto mb-6">
             Choose the learning experience that fits your career goals and budget
           </p>
+          
+          {/* Countdown Timer */}
+          <div className="inline-flex items-center gap-3 bg-destructive/10 border border-destructive/30 rounded-xl px-6 py-4">
+            <Clock className="w-5 h-5 text-destructive animate-pulse" />
+            <span className="text-sm font-medium text-destructive">Offer expires in:</span>
+            <div className="flex gap-2">
+              <div className="bg-destructive text-destructive-foreground px-3 py-2 rounded-lg text-center min-w-[50px]">
+                <span className="text-lg font-bold">{timeLeft.days}</span>
+                <p className="text-[10px] uppercase">Days</p>
+              </div>
+              <div className="bg-destructive text-destructive-foreground px-3 py-2 rounded-lg text-center min-w-[50px]">
+                <span className="text-lg font-bold">{timeLeft.hours.toString().padStart(2, '0')}</span>
+                <p className="text-[10px] uppercase">Hours</p>
+              </div>
+              <div className="bg-destructive text-destructive-foreground px-3 py-2 rounded-lg text-center min-w-[50px]">
+                <span className="text-lg font-bold">{timeLeft.minutes.toString().padStart(2, '0')}</span>
+                <p className="text-[10px] uppercase">Mins</p>
+              </div>
+              <div className="bg-destructive text-destructive-foreground px-3 py-2 rounded-lg text-center min-w-[50px]">
+                <span className="text-lg font-bold">{timeLeft.seconds.toString().padStart(2, '0')}</span>
+                <p className="text-[10px] uppercase">Secs</p>
+              </div>
+            </div>
+          </div>
         </div>
 
         <div className="grid md:grid-cols-3 gap-6">
