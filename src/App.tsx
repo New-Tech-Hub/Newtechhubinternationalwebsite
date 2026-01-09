@@ -6,6 +6,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { Loader2 } from "lucide-react";
 import Index from "./pages/Index";
+import { useCopyProtection } from "./hooks/useCopyProtection";
 
 // Lazy load route components for better performance (Index is loaded normally as it uses router hooks)
 const Auth = lazy(() => import("./pages/Auth"));
@@ -28,9 +29,11 @@ const LoadingSpinner = () => (
 
 const queryClient = new QueryClient();
 
-const App = () => (
-  <QueryClientProvider client={queryClient}>
-    <TooltipProvider>
+const AppContent = () => {
+  useCopyProtection();
+  
+  return (
+    <>
       <Toaster />
       <Sonner />
       <BrowserRouter>
@@ -52,6 +55,14 @@ const App = () => (
           </Routes>
         </Suspense>
       </BrowserRouter>
+    </>
+  );
+};
+
+const App = () => (
+  <QueryClientProvider client={queryClient}>
+    <TooltipProvider>
+      <AppContent />
     </TooltipProvider>
   </QueryClientProvider>
 );
