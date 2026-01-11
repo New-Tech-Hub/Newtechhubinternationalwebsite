@@ -1,9 +1,14 @@
+import { useState } from "react";
+import { ChevronDown, ChevronUp, Info } from "lucide-react";
+
 interface VideoPlayerProps {
   videoUrl: string;
   title: string;
 }
 
 export const VideoPlayer = ({ videoUrl, title }: VideoPlayerProps) => {
+  const [showDisclaimer, setShowDisclaimer] = useState(true);
+
   // Extract video ID and add parameters to disable share button
   const getSecureVideoUrl = (url: string) => {
     try {
@@ -28,11 +33,29 @@ export const VideoPlayer = ({ videoUrl, title }: VideoPlayerProps) => {
 
   return (
     <div className="space-y-3">
-      {/* Video Disclaimer */}
-      <div className="bg-muted/50 border border-border rounded-lg p-3 text-xs text-muted-foreground">
-        <p className="leading-relaxed">
-          <span className="font-semibold text-foreground">Disclaimer:</span> The following video is embedded from YouTube and remains the intellectual property of its original creator. This course includes original instructional materials and selected embedded third-party videos used for illustrative and educational purposes only. No ownership is claimed over third-party content.
-        </p>
+      {/* Collapsible Video Disclaimer */}
+      <div className="bg-muted/50 border border-border rounded-lg overflow-hidden">
+        <button
+          onClick={() => setShowDisclaimer(!showDisclaimer)}
+          className="w-full flex items-center justify-between p-3 text-xs text-muted-foreground hover:bg-muted/70 transition-colors"
+        >
+          <div className="flex items-center gap-2">
+            <Info className="h-4 w-4" />
+            <span className="font-semibold text-foreground">Video Disclaimer</span>
+          </div>
+          {showDisclaimer ? (
+            <ChevronUp className="h-4 w-4" />
+          ) : (
+            <ChevronDown className="h-4 w-4" />
+          )}
+        </button>
+        {showDisclaimer && (
+          <div className="px-3 pb-3 text-xs text-muted-foreground">
+            <p className="leading-relaxed">
+              The following video is embedded from YouTube and remains the intellectual property of its original creator. This course includes original instructional materials and selected embedded third-party videos used for illustrative and educational purposes only. No ownership is claimed over third-party content.
+            </p>
+          </div>
+        )}
       </div>
       
       {/* Video Player */}

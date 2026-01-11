@@ -107,6 +107,19 @@ const Footer = () => {
           </div>
         </div>
 
+        {/* Video Content Disclaimer */}
+        <div className="border-t border-white/10 pt-8 mb-8">
+          <div className="bg-white/5 rounded-lg p-4">
+            <h4 className="text-sm font-semibold mb-2 flex items-center gap-2">
+              <span className="w-1.5 h-1.5 bg-accent rounded-full"></span>
+              Video Content Disclaimer
+            </h4>
+            <p className="text-white/60 text-xs leading-relaxed">
+              This course includes original instructional materials and selected embedded third-party videos used for illustrative and educational purposes only. Videos embedded from YouTube remain the intellectual property of their original creators. No ownership is claimed over third-party content.
+            </p>
+          </div>
+        </div>
+
         {/* Social Media & Copyright */}
         <div className="border-t border-white/10 pt-8">
           <div className="flex flex-col md:flex-row justify-between items-center gap-6">
