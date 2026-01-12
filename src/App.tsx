@@ -20,6 +20,8 @@ const MyCertificates = lazy(() => import("./pages/MyCertificates"));
 const RedeemAccessCode = lazy(() => import("./pages/RedeemAccessCode"));
 const MyPayments = lazy(() => import("./pages/MyPayments"));
 const Team = lazy(() => import("./pages/Team"));
+const TermsOfService = lazy(() => import("./pages/TermsOfService"));
+const PrivacyPolicy = lazy(() => import("./pages/PrivacyPolicy"));
 
 const LoadingSpinner = () => (
   <div className="flex items-center justify-center min-h-screen">
@@ -50,6 +52,8 @@ const AppContent = () => {
             <Route path="/redeem-access/:courseId" element={<RedeemAccessCode />} />
             <Route path="/my-payments" element={<MyPayments />} />
             <Route path="/team" element={<Team />} />
+            <Route path="/terms-of-service" element={<TermsOfService />} />
+            <Route path="/privacy-policy" element={<PrivacyPolicy />} />
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
             <Route path="*" element={<NotFound />} />
           </Routes>

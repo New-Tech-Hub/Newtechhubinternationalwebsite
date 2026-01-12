@@ -3,6 +3,7 @@ import { Facebook, Instagram, Twitter, Linkedin, Mail, Phone, MapPin } from "luc
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { toast } from "sonner";
+import { Link } from "react-router-dom";
 
 const Footer = () => {
   const currentYear = new Date().getFullYear();
@@ -117,6 +118,24 @@ const Footer = () => {
             <p className="text-white/60 text-xs leading-relaxed">
               This course includes original instructional materials and selected embedded third-party videos used for illustrative and educational purposes only. Videos embedded from YouTube remain the intellectual property of their original creators. No ownership is claimed over third-party content.
             </p>
+          </div>
+        </div>
+
+        {/* Legal Links */}
+        <div className="border-t border-white/10 pt-8 mb-8">
+          <div className="flex flex-wrap justify-center gap-6 text-sm">
+            <Link 
+              to="/terms-of-service" 
+              className="text-white/70 hover:text-white transition-colors"
+            >
+              Terms of Service
+            </Link>
+            <Link 
+              to="/privacy-policy" 
+              className="text-white/70 hover:text-white transition-colors"
+            >
+              Privacy Policy
+            </Link>
           </div>
         </div>
 
