@@ -7,6 +7,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { Loader2 } from "lucide-react";
 import Index from "./pages/Index";
 import { useCopyProtection } from "./hooks/useCopyProtection";
+import CookieConsent from "./components/CookieConsent";
 
 // Lazy load route components for better performance (Index is loaded normally as it uses router hooks)
 const Auth = lazy(() => import("./pages/Auth"));
@@ -38,6 +39,7 @@ const AppContent = () => {
     <>
       <Toaster />
       <Sonner />
+      <CookieConsent />
       <BrowserRouter>
         <Suspense fallback={<LoadingSpinner />}>
           <Routes>
