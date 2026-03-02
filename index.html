@@ -57,8 +57,15 @@
   </head>
 
   <body>
+    <noscript>You need to enable JavaScript to run this app.</noscript>
     <div id="root"></div>
     <script type="module" src="/src/main.tsx"></script>
+    <script>
+      // Prevent clickjacking
+      if (window.self !== window.top) {
+        document.body.innerHTML = '<h1>Access Denied</h1>';
+      }
+    </script>
     
     <!-- JSON-LD Structured Data for Organization -->
     <script type="application/ld+json">

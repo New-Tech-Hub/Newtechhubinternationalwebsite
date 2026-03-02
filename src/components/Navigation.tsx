@@ -12,6 +12,7 @@ const Navigation = () => {
 
   const navLinks = ["Courses", "About", "Pricing", "Contact"];
   const externalLinks = [
+    { label: "Academy", path: "/academy" },
     { label: "Team", path: "/team" },
     { label: "Community", path: "/community" },
     ...(user ? [
@@ -29,9 +30,9 @@ const Navigation = () => {
   };
 
   const scrollToSection = (sectionId: string) => {
-    // If not on home page, navigate to home first
-    if (window.location.pathname !== '/') {
-      navigate('/', { state: { scrollTo: sectionId.toLowerCase() } });
+    // If not on academy page, navigate to academy first
+    if (window.location.pathname !== '/academy') {
+      navigate('/academy', { state: { scrollTo: sectionId.toLowerCase() } });
       return;
     }
     
@@ -126,7 +127,13 @@ const Navigation = () => {
             
             <Button 
               type="button"
-              onClick={() => scrollToSection('courses')}
+              onClick={() => {
+                if (window.location.pathname === '/academy') {
+                  scrollToSection('courses');
+                } else {
+                  navigate('/academy', { state: { scrollTo: 'courses' } });
+                }
+              }}
               size="sm"
               className="bg-primary hover:bg-primary/90 text-white font-bold shadow-md hover:shadow-lg transition-all duration-300 px-6"
             >

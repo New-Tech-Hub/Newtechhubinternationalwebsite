@@ -3,16 +3,19 @@ import { Facebook, Instagram, Twitter, Linkedin, Mail, Phone, MapPin } from "luc
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { toast } from "sonner";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { sanitizeEmail } from "@/lib/security";
 
 const Footer = () => {
   const currentYear = new Date().getFullYear();
   const [email, setEmail] = useState("");
+  const navigate = useNavigate();
 
   const handleSubscribe = (e: React.FormEvent) => {
     e.preventDefault();
-    if (!email) {
-      toast.error("Please enter your email");
+    const cleanEmail = sanitizeEmail(email);
+    if (!cleanEmail) {
+      toast.error("Please enter a valid email");
       return;
     }
     toast.success("Successfully subscribed!", {
@@ -22,6 +25,10 @@ const Footer = () => {
   };
 
   const scrollToSection = (sectionId: string) => {
+    if (window.location.pathname !== '/academy') {
+      navigate('/academy', { state: { scrollTo: sectionId } });
+      return;
+    }
     const element = document.getElementById(sectionId);
     if (element) {
       element.scrollIntoView({ behavior: 'smooth', block: 'start' });
