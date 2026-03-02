@@ -5,11 +5,13 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { Loader2 } from "lucide-react";
-import Index from "./pages/Index";
+import Home from "./pages/Home";
 import { useCopyProtection } from "./hooks/useCopyProtection";
 import CookieConsent from "./components/CookieConsent";
+import SecurityHeaders from "./components/SecurityHeaders";
 
-// Lazy load route components for better performance (Index is loaded normally as it uses router hooks)
+// Lazy load route components for better performance
+const Academy = lazy(() => import("./pages/Index"));
 const Auth = lazy(() => import("./pages/Auth"));
 const Admin = lazy(() => import("./pages/Admin"));
 const NotFound = lazy(() => import("./pages/NotFound"));
@@ -37,13 +39,15 @@ const AppContent = () => {
   
   return (
     <>
+      <SecurityHeaders />
       <Toaster />
       <Sonner />
       <BrowserRouter>
         <CookieConsent />
         <Suspense fallback={<LoadingSpinner />}>
           <Routes>
-            <Route path="/" element={<Index />} />
+            <Route path="/" element={<Home />} />
+            <Route path="/academy" element={<Academy />} />
             <Route path="/auth" element={<Auth />} />
             <Route path="/admin" element={<Admin />} />
             <Route path="/course/:id" element={<CourseDetail />} />
