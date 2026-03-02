@@ -8,6 +8,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Alert, AlertDescription } from '@/components/ui/alert';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import logo from '@/assets/newtech-hub-logo.jpg';
+import { sanitizeInput, sanitizeEmail, checkRateLimit } from '@/lib/security';
 
 const Auth = () => {
   const navigate = useNavigate();
@@ -27,12 +28,22 @@ const Auth = () => {
   const handleSignIn = async (e: React.FormEvent) => {
     e.preventDefault();
     setError('');
-    setLoading(true);
 
-    const { error } = await signIn(email, password);
-    
+    if (!checkRateLimit('auth-signin', 5, 60000)) {
+      setError('Too many attempts. Please wait a minute.');
+      return;
+    }
+
+    const cleanEmail = sanitizeEmail(email);
+    if (!cleanEmail) {
+      setError('Please enter a valid email address');
+      return;
+    }
+
+    setLoading(true);
+    const { error } = await signIn(cleanEmail, password);
     if (error) {
-      setError(error.message);
+      setError('Invalid email or password');
     }
     setLoading(false);
   };
@@ -40,16 +51,30 @@ const Auth = () => {
   const handleSignUp = async (e: React.FormEvent) => {
     e.preventDefault();
     setError('');
-    setLoading(true);
 
-    if (!fullName.trim()) {
-      setError('Please enter your full name');
-      setLoading(false);
+    if (!checkRateLimit('auth-signup', 3, 120000)) {
+      setError('Too many attempts. Please wait before trying again.');
       return;
     }
 
-    const { error } = await signUp(email, password, fullName);
-    
+    const cleanName = sanitizeInput(fullName, 100);
+    const cleanEmail = sanitizeEmail(email);
+
+    if (!cleanName) {
+      setError('Please enter your full name');
+      return;
+    }
+    if (!cleanEmail) {
+      setError('Please enter a valid email address');
+      return;
+    }
+    if (password.length < 8) {
+      setError('Password must be at least 8 characters');
+      return;
+    }
+
+    setLoading(true);
+    const { error } = await signUp(cleanEmail, password, cleanName);
     if (error) {
       setError(error.message);
     }
@@ -137,7 +162,7 @@ const Auth = () => {
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
                     required
-                    minLength={6}
+                    minLength={8}
                   />
                 </div>
                 {error && (
