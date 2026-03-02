@@ -10,6 +10,7 @@ import { toast } from 'sonner';
 import { Loader2, Lock } from 'lucide-react';
 import Navigation from '@/components/Navigation';
 import Footer from '@/components/Footer';
+import { sanitizeInput, checkRateLimit } from '@/lib/security';
 
 const RedeemAccessCode = () => {
   const { courseId } = useParams();
@@ -20,6 +21,11 @@ const RedeemAccessCode = () => {
 
   const handleRedeem = async (e: React.FormEvent) => {
     e.preventDefault();
+
+    if (!checkRateLimit('redeem-code', 5, 60000)) {
+      toast.error('Too many attempts. Please wait a minute.');
+      return;
+    }
     
     if (!user) {
       toast.error('Please sign in to redeem access code');
@@ -32,6 +38,8 @@ const RedeemAccessCode = () => {
       return;
     }
 
+    const cleanCode = sanitizeInput(accessCode, 50).toUpperCase();
+
     setLoading(true);
 
     try {
@@ -39,7 +47,7 @@ const RedeemAccessCode = () => {
       const { data: codeData, error: codeError } = await supabase
         .from('course_access_codes')
         .select('*')
-        .eq('access_code', accessCode.trim().toUpperCase())
+        .eq('access_code', cleanCode)
         .eq('course_id', courseId)
         .eq('is_active', true)
         .single();

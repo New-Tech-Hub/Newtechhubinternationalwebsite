@@ -6,6 +6,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Mail, Phone, MapPin, Send } from "lucide-react";
 import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
+import { sanitizeInput, sanitizeEmail, checkRateLimit } from "@/lib/security";
 
 const Contact = () => {
   const [formData, setFormData] = useState({
@@ -19,9 +20,21 @@ const Contact = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    
-    if (!formData.name || !formData.email || !formData.message) {
-      toast.error("Please fill in all required fields");
+
+    // Rate limiting
+    if (!checkRateLimit("contact-form", 3, 60000)) {
+      toast.error("Too many submissions. Please wait a minute before trying again.");
+      return;
+    }
+
+    // Sanitize inputs
+    const name = sanitizeInput(formData.name, 100);
+    const email = sanitizeEmail(formData.email);
+    const subject = sanitizeInput(formData.subject, 200);
+    const message = sanitizeInput(formData.message, 2000);
+
+    if (!name || !email || !message) {
+      toast.error("Please fill in all required fields with valid data");
       return;
     }
 
@@ -29,7 +42,7 @@ const Contact = () => {
 
     try {
       const { error } = await supabase.functions.invoke('send-contact-email', {
-        body: formData
+        body: { name, email, subject, message }
       });
 
       if (error) throw error;
@@ -48,7 +61,6 @@ const Contact = () => {
       setIsSubmitting(false);
     }
   };
-
   return (
     <section id="contact" className="py-16 bg-secondary" aria-labelledby="contact-heading">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
@@ -143,6 +155,8 @@ const Contact = () => {
                   onChange={(e) => setFormData({ ...formData, name: e.target.value })}
                   placeholder="John Doe"
                   required
+                  maxLength={100}
+                  autoComplete="name"
                 />
               </div>
 
@@ -157,6 +171,8 @@ const Contact = () => {
                   onChange={(e) => setFormData({ ...formData, email: e.target.value })}
                   placeholder="john@example.com"
                   required
+                  maxLength={255}
+                  autoComplete="email"
                 />
               </div>
 
@@ -170,6 +186,7 @@ const Contact = () => {
                   value={formData.subject}
                   onChange={(e) => setFormData({ ...formData, subject: e.target.value })}
                   placeholder="How can we help?"
+                  maxLength={200}
                 />
               </div>
 
@@ -184,6 +201,7 @@ const Contact = () => {
                   placeholder="Tell us what you need..."
                   rows={5}
                   required
+                  maxLength={2000}
                 />
               </div>
 

@@ -6,6 +6,7 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import { Card } from "@/components/ui/card";
 import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
+import { sanitizeInput, checkRateLimit } from "@/lib/security";
 
 interface Message {
   role: "user" | "assistant";
@@ -146,9 +147,16 @@ const Chatbot = () => {
   };
 
   const handleSend = async () => {
-    if (!input.trim() || isLoading) return;
+    const sanitized = sanitizeInput(input, 500);
+    if (!sanitized || isLoading) return;
 
-    const userMessage: Message = { role: "user", content: input };
+    // Rate limit: 10 messages per minute
+    if (!checkRateLimit("chatbot", 10, 60000)) {
+      toast.error("Please slow down. Try again in a moment.");
+      return;
+    }
+
+    const userMessage: Message = { role: "user", content: sanitized };
     const newMessages = [...messages, userMessage];
     setMessages(newMessages);
     setInput("");
