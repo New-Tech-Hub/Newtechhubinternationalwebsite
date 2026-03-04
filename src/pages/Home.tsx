@@ -229,6 +229,9 @@ const Home = memo(() => {
           </div>
         </section>
 
+        {/* About Us */}
+        <About />
+
         {/* CTA to Academy */}
         <section className="py-20 bg-secondary">
           <div className="container mx-auto px-4 sm:px-6 lg:px-8 text-center">
