@@ -23,6 +23,8 @@ import {
 import Navigation from "@/components/Navigation";
 import Footer from "@/components/Footer";
 import About from "@/components/About";
+import jerryGumaProfile from "@/assets/jerry-guma-profile.png";
+import { AvatarImage } from "@/components/ui/avatar";
 
 const competencies = [
   { icon: Briefcase, label: "Product & Project Management" },
@@ -65,9 +67,7 @@ const Home = memo(() => {
                 <div className="relative">
                   <div className="w-56 h-56 sm:w-64 sm:h-64 rounded-full bg-gradient-to-br from-accent to-accent/60 p-1.5 shadow-[0_0_60px_hsl(17,100%,60%,0.35)]">
                     <Avatar className="w-full h-full">
-                      <AvatarFallback className="bg-primary/80 text-white text-5xl sm:text-6xl font-bold">
-                        JG
-                      </AvatarFallback>
+                      <AvatarImage src={jerryGumaProfile} alt="Jerry Guma - Founder & CEO" className="object-cover" />
                     </Avatar>
                   </div>
                   <div className="absolute -bottom-3 left-1/2 -translate-x-1/2 bg-accent text-white text-xs font-bold px-4 py-1.5 rounded-full shadow-lg">
