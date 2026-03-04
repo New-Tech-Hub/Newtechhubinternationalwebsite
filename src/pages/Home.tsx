@@ -189,32 +189,6 @@ const Home = memo(() => {
           </div>
         </section>
 
-        {/* Notable Projects */}
-        <section className="py-20 bg-background">
-          <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="max-w-4xl mx-auto">
-              <div className="text-center mb-12">
-                <h2 className="text-3xl sm:text-4xl font-bold text-foreground mb-4">
-                  Notable Projects
-                </h2>
-                <div className="w-20 h-1 bg-accent mx-auto rounded-full" />
-              </div>
-
-              <div className="space-y-4">
-                {notableProjects.map((project, i) => (
-                  <Card key={i} className="p-5 border-none bg-card shadow-sm flex items-start gap-4">
-                    <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-accent to-[hsl(5,85%,58%)] flex items-center justify-center flex-shrink-0">
-                      <Award className="h-5 w-5 text-white" />
-                    </div>
-                    <p className="text-foreground font-medium text-sm sm:text-base leading-relaxed pt-1.5">
-                      {project}
-                    </p>
-                  </Card>
-                ))}
-              </div>
-            </div>
-          </div>
-        </section>
 
         {/* Vision Statement */}
         <section className="py-20 bg-primary text-white">
