@@ -22,6 +22,7 @@ import {
 } from "lucide-react";
 import Navigation from "@/components/Navigation";
 import Footer from "@/components/Footer";
+import About from "@/components/About";
 
 const competencies = [
   { icon: Briefcase, label: "Product & Project Management" },
@@ -227,6 +228,9 @@ const Home = memo(() => {
             </div>
           </div>
         </section>
+
+        {/* About Us */}
+        <About />
 
         {/* CTA to Academy */}
         <section className="py-20 bg-secondary">
