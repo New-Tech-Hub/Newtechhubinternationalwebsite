@@ -3,22 +3,20 @@ import { useLocation } from "react-router-dom";
 import Navigation from "@/components/Navigation";
 import Hero from "@/components/Hero";
 
-// Lazy load heavy components below the fold with preload hints
 const Features = lazy(() => import("@/components/Features"));
 const Courses = lazy(() => import("@/components/Courses"));
-const CourseComparison = lazy(() => import("@/components/CourseComparison"));
+const About = lazy(() => import("@/components/About"));
 const Testimonials = lazy(() => import("@/components/Testimonials"));
 const Impact = lazy(() => import("@/components/Impact"));
-const Localization = lazy(() => import("@/components/Localization"));
-const About = lazy(() => import("@/components/About"));
-const Partnerships = lazy(() => import("@/components/Partnerships"));
-const BusinessModel = lazy(() => import("@/components/BusinessModel"));
 const Pricing = lazy(() => import("@/components/Pricing"));
 const Contact = lazy(() => import("@/components/Contact"));
+const CourseComparison = lazy(() => import("@/components/CourseComparison"));
+const Localization = lazy(() => import("@/components/Localization"));
+const Partnerships = lazy(() => import("@/components/Partnerships"));
+const BusinessModel = lazy(() => import("@/components/BusinessModel"));
 const Footer = lazy(() => import("@/components/Footer"));
 const Chatbot = lazy(() => import("@/components/Chatbot"));
 
-// Minimal skeleton for lazy sections
 const SectionSkeleton = memo(() => (
   <div className="py-16 bg-background animate-pulse">
     <div className="container mx-auto px-4">
@@ -27,14 +25,12 @@ const SectionSkeleton = memo(() => (
     </div>
   </div>
 ));
-
 SectionSkeleton.displayName = 'SectionSkeleton';
 
 const Index = () => {
   const location = useLocation();
 
   useEffect(() => {
-    // Handle scrolling to section when navigating from other pages
     if (location.state?.scrollTo) {
       const sectionId = location.state.scrollTo;
       requestAnimationFrame(() => {
@@ -60,14 +56,24 @@ const Index = () => {
           <Courses />
         </Suspense>
         <Suspense fallback={<SectionSkeleton />}>
-          <CourseComparison />
-          <Testimonials />
-          <Impact />
-          <Localization />
           <About />
+        </Suspense>
+        <Suspense fallback={<SectionSkeleton />}>
+          <CourseComparison />
+        </Suspense>
+        <Suspense fallback={<SectionSkeleton />}>
+          <Testimonials />
+        </Suspense>
+        <Suspense fallback={<SectionSkeleton />}>
+          <Impact />
+        </Suspense>
+        <Suspense fallback={<SectionSkeleton />}>
+          <Pricing />
+        </Suspense>
+        <Suspense fallback={<SectionSkeleton />}>
+          <Localization />
           <Partnerships />
           <BusinessModel />
-          <Pricing />
           <Contact />
         </Suspense>
       </main>
