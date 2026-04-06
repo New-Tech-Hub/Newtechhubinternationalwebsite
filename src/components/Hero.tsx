@@ -152,7 +152,7 @@ const Hero = memo(() => {
                     alt={image.alt}
                     loading={index === 0 ? "eager" : "lazy"}
                     decoding={index === 0 ? "sync" : "async"}
-                    fetchPriority={index === 0 ? "high" : "low"}
+                    {...(index === 0 ? { fetchPriority: "high" } : { fetchPriority: "low" }) as React.ImgHTMLAttributes<HTMLImageElement>}
                     className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-1000 ${
                       index === currentImageIndex ? 'opacity-100' : 'opacity-0'
                     }`}
