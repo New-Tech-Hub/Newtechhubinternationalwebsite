@@ -67,14 +67,14 @@ const Home = memo(() => {
                 </p>
 
                 {/* Social Links & CTA */}
-                <div className="flex items-center gap-4 justify-center lg:justify-start animate-fade-in" style={{ animationDelay: "0.35s" }}>
+                <div className="flex flex-wrap items-center gap-3 sm:gap-4 justify-center lg:justify-start animate-fade-in" style={{ animationDelay: "0.35s" }}>
                   <a href="https://www.linkedin.com/in/jerry-guma-pmiim-caip-cdst-424000121/" target="_blank" rel="noopener noreferrer" className="w-12 h-12 rounded-full bg-white/10 hover:bg-white/25 backdrop-blur-sm flex items-center justify-center transition-all duration-300 hover:scale-110" aria-label="LinkedIn">
                     <Linkedin className="h-5 w-5 text-white" />
                   </a>
                   <a href="https://web.facebook.com/JerryGuma01" target="_blank" rel="noopener noreferrer" className="w-12 h-12 rounded-full bg-white/10 hover:bg-white/25 backdrop-blur-sm flex items-center justify-center transition-all duration-300 hover:scale-110" aria-label="Facebook">
                     <Facebook className="h-5 w-5 text-white" />
                   </a>
-                  <Button onClick={() => navigate("/academy")} size="lg" className="bg-accent hover:bg-accent/90 text-white font-bold text-base px-8 py-6 group hover:scale-105 shadow-lg hover:shadow-[0_20px_60px_-10px_hsl(17,100%,60%,0.5)] transition-all duration-300 ml-4">
+                  <Button onClick={() => navigate("/academy")} size="lg" className="bg-accent hover:bg-accent/90 text-white font-bold text-base px-6 sm:px-8 py-6 group hover:scale-105 shadow-lg hover:shadow-[0_20px_60px_-10px_hsl(17,100%,60%,0.5)] transition-all duration-300 sm:ml-2">
                     Visit Academy
                     <ArrowRight className="ml-2 h-5 w-5 group-hover:translate-x-2 transition-transform" />
                   </Button>
