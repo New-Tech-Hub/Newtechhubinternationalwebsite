@@ -65,13 +65,14 @@
       if (window.self !== window.top) {
         try {
           var parentHost = document.referrer ? new URL(document.referrer).hostname : '';
-          var allowed = ['lovable.app', 'lovable.dev', 'localhost', 'newtechproject.lovable.app', 'newtekhub.com'];
-          var isAllowed = allowed.some(function(h) { return parentHost === h || parentHost.endsWith('.' + h); });
+          var allowed = ['lovable.app', 'lovable.dev', 'lovableproject.com', 'gptengineer.app', 'localhost', 'newtekhub.com'];
+          // Allow empty referrer (parent may strip it) — only block when we can identify a non-allowed parent
+          var isAllowed = !parentHost || allowed.some(function(h) { return parentHost === h || parentHost.endsWith('.' + h); });
           if (!isAllowed) {
             document.body.innerHTML = '<h1>Access Denied</h1>';
           }
         } catch(e) {
-          document.body.innerHTML = '<h1>Access Denied</h1>';
+          // On error, fail open to avoid blocking legitimate previews
         }
       }
     </script>
