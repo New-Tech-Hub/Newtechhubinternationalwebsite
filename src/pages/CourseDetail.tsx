@@ -106,7 +106,8 @@ const CourseDetail = () => {
       window.location.href = data.authorizationUrl;
     } catch (error: any) {
       console.error('Error enrolling:', error);
-      toast.error(error.message || 'Failed to process enrollment');
+      console.error('Enrollment error:', error);
+      toast.error('Unable to process enrollment. Please try again or contact support.');
       setEnrolling(false);
     }
   };
