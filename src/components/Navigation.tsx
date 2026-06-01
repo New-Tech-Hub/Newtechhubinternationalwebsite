@@ -12,10 +12,11 @@ const Navigation = () => {
 
   const navLinks = ["Courses", "About", "Pricing", "Contact"];
   const externalLinks = [
-    { label: "Academy", path: "/academy" },
+    { label: "News", path: "/news" },
     { label: "Team", path: "/team" },
     { label: "Community", path: "/community" },
     ...(user ? [
+      { label: "Founder", path: "/founder" },
       { label: "Certificates", path: "/my-certificates" },
       { label: "My Payments", path: "/my-payments" }
     ] : []),
@@ -30,12 +31,13 @@ const Navigation = () => {
   };
 
   const scrollToSection = (sectionId: string) => {
-    // If not on academy page, navigate to academy first
-    if (window.location.pathname !== '/academy') {
-      navigate('/academy', { state: { scrollTo: sectionId.toLowerCase() } });
+    const path = window.location.pathname;
+    // Academy lives on both "/" and "/academy"
+    if (path !== '/academy' && path !== '/') {
+      navigate('/', { state: { scrollTo: sectionId.toLowerCase() } });
       return;
     }
-    
+
     const element = document.getElementById(sectionId.toLowerCase());
     if (element) {
       element.scrollIntoView({ behavior: 'smooth', block: 'start' });

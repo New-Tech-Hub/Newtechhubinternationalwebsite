@@ -5,13 +5,14 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { Loader2 } from "lucide-react";
-import Home from "./pages/Home";
+import Academy from "./pages/Index";
 import { useCopyProtection } from "./hooks/useCopyProtection";
 import CookieConsent from "./components/CookieConsent";
 import SecurityHeaders from "./components/SecurityHeaders";
+import ProtectedRoute from "./components/ProtectedRoute";
 
 // Lazy load route components for better performance
-const Academy = lazy(() => import("./pages/Index"));
+const Home = lazy(() => import("./pages/Home"));
 const Auth = lazy(() => import("./pages/Auth"));
 const Admin = lazy(() => import("./pages/Admin"));
 const NotFound = lazy(() => import("./pages/NotFound"));
@@ -25,6 +26,7 @@ const MyPayments = lazy(() => import("./pages/MyPayments"));
 const Team = lazy(() => import("./pages/Team"));
 const TermsOfService = lazy(() => import("./pages/TermsOfService"));
 const PrivacyPolicy = lazy(() => import("./pages/PrivacyPolicy"));
+const News = lazy(() => import("./pages/News"));
 
 const LoadingSpinner = () => (
   <div className="flex items-center justify-center min-h-screen">
@@ -36,7 +38,7 @@ const queryClient = new QueryClient();
 
 const AppContent = () => {
   useCopyProtection();
-  
+
   return (
     <>
       <SecurityHeaders />
@@ -46,8 +48,10 @@ const AppContent = () => {
         <CookieConsent />
         <Suspense fallback={<LoadingSpinner />}>
           <Routes>
-            <Route path="/" element={<Home />} />
+            <Route path="/" element={<Academy />} />
             <Route path="/academy" element={<Academy />} />
+            <Route path="/founder" element={<ProtectedRoute><Home /></ProtectedRoute>} />
+            <Route path="/news" element={<News />} />
             <Route path="/auth" element={<Auth />} />
             <Route path="/admin" element={<Admin />} />
             <Route path="/course/:id" element={<CourseDetail />} />
