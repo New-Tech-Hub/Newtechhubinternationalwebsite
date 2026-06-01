@@ -9,20 +9,19 @@ interface VideoPlayerProps {
 export const VideoPlayer = ({ videoUrl, title }: VideoPlayerProps) => {
   const [showDisclaimer, setShowDisclaimer] = useState(true);
 
-  // Extract video ID and add parameters to disable share button
+  // Extract video ID; use youtube-nocookie + params that suppress branding & "Watch on YouTube" overlay
   const getSecureVideoUrl = (url: string) => {
     try {
-      // Handle YouTube URLs
       if (url.includes('youtube.com') || url.includes('youtu.be')) {
-        const videoId = url.includes('embed') 
+        const videoId = url.includes('embed')
           ? url.split('embed/')[1]?.split('?')[0]
           : url.includes('youtu.be')
           ? url.split('youtu.be/')[1]?.split('?')[0]
           : url.split('v=')[1]?.split('&')[0];
-        
+
         if (videoId) {
-          // Disable controls that allow sharing and external viewing
-          return `https://www.youtube.com/embed/${videoId}?modestbranding=1&rel=0&showinfo=0&fs=0&controls=1`;
+          // nocookie domain + modestbranding hides the YouTube logo/share/watch-on-youtube link
+          return `https://www.youtube-nocookie.com/embed/${videoId}?modestbranding=1&rel=0&showinfo=0&fs=0&controls=1&iv_load_policy=3&disablekb=1`;
         }
       }
       return url;
