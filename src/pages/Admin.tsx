@@ -107,7 +107,8 @@ const Admin = () => {
 
       setUsers(usersWithRoles);
     } catch (error: any) {
-      toast.error('Failed to fetch users: ' + error.message);
+      console.error('fetchUsers error:', error);
+      toast.error('Failed to fetch users');
     } finally {
       setLoadingUsers(false);
     }
@@ -128,7 +129,8 @@ const Admin = () => {
       toast.success('User role updated successfully');
       fetchUsers();
     } catch (error: any) {
-      toast.error('Failed to update role: ' + error.message);
+      console.error('updateUserRole error:', error);
+      toast.error('Failed to update role');
     }
   };
 
@@ -142,7 +144,8 @@ const Admin = () => {
       if (error) throw error;
       setCourses(data || []);
     } catch (error: any) {
-      toast.error('Failed to fetch courses: ' + error.message);
+      console.error('fetchCourses error:', error);
+      toast.error('Failed to fetch courses');
     } finally {
       setLoadingCourses(false);
     }
@@ -179,7 +182,8 @@ const Admin = () => {
       });
       fetchCourses();
     } catch (error: any) {
-      toast.error('Failed to save course: ' + error.message);
+      console.error('saveCourse error:', error);
+      toast.error('Failed to save course');
     }
   };
 
@@ -209,7 +213,8 @@ const Admin = () => {
       toast.success('Course deleted successfully');
       fetchCourses();
     } catch (error: any) {
-      toast.error('Failed to delete course: ' + error.message);
+      console.error('deleteCourse error:', error);
+      toast.error('Failed to delete course');
     }
   };
 
