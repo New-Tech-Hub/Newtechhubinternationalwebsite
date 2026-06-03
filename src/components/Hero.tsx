@@ -118,7 +118,7 @@ const Hero = memo(() => {
                 <span className="text-accent">Launch Your Career</span>
               </h1>
               <p className="text-lg sm:text-xl text-white/85 mb-8 leading-relaxed animate-fade-in font-medium" style={{ animationDelay: "0.15s" }}>
-                Learn. Intern. Work. Get real work experience and opportunities to land tech jobs across Africa.
+                We breathe innovation and solutions.
               </p>
               <div className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start animate-fade-in" style={{ animationDelay: "0.3s" }}>
                 <Button
