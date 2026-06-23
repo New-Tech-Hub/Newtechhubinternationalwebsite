@@ -91,7 +91,7 @@ const Impact = () => {
           
           <div className="animate-fade-in" style={{ animationDelay: "0.1s" }}>
             <div className="text-6xl md:text-7xl font-bold text-primary mb-3">
-              {stats.totalLearners > 0 ? stats.totalLearners.toLocaleString() : '5K'}+
+              {(stats.totalLearners > 0 ? stats.totalLearners : 200).toLocaleString()}+
             </div>
             <div className="text-xl font-semibold text-foreground mb-2">
               Learners
