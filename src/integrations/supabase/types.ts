@@ -14,6 +14,39 @@ export type Database = {
   }
   public: {
     Tables: {
+      activity_events: {
+        Row: {
+          created_at: string
+          event_category: string | null
+          event_label: string | null
+          event_type: string
+          id: string
+          metadata: Json | null
+          session_id: string | null
+          user_id: string | null
+        }
+        Insert: {
+          created_at?: string
+          event_category?: string | null
+          event_label?: string | null
+          event_type: string
+          id?: string
+          metadata?: Json | null
+          session_id?: string | null
+          user_id?: string | null
+        }
+        Update: {
+          created_at?: string
+          event_category?: string | null
+          event_label?: string | null
+          event_type?: string
+          id?: string
+          metadata?: Json | null
+          session_id?: string | null
+          user_id?: string | null
+        }
+        Relationships: []
+      }
       certifications: {
         Row: {
           certificate_number: string
@@ -582,6 +615,45 @@ export type Database = {
           is_free?: boolean | null
           title?: string
           updated_at?: string | null
+        }
+        Relationships: []
+      }
+      page_views: {
+        Row: {
+          browser: string | null
+          country: string | null
+          created_at: string
+          device_type: string | null
+          id: string
+          path: string
+          referrer: string | null
+          session_id: string
+          user_agent: string | null
+          user_id: string | null
+        }
+        Insert: {
+          browser?: string | null
+          country?: string | null
+          created_at?: string
+          device_type?: string | null
+          id?: string
+          path: string
+          referrer?: string | null
+          session_id: string
+          user_agent?: string | null
+          user_id?: string | null
+        }
+        Update: {
+          browser?: string | null
+          country?: string | null
+          created_at?: string
+          device_type?: string | null
+          id?: string
+          path?: string
+          referrer?: string | null
+          session_id?: string
+          user_agent?: string | null
+          user_id?: string | null
         }
         Relationships: []
       }
