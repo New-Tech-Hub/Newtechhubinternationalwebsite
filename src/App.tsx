@@ -38,6 +38,11 @@ const LoadingSpinner = () => (
 
 const queryClient = new QueryClient();
 
+const RouteTracker = () => {
+  usePageTracking();
+  return null;
+};
+
 const AppContent = () => {
   useCopyProtection();
 
@@ -47,8 +52,10 @@ const AppContent = () => {
       <Toaster />
       <Sonner />
       <BrowserRouter>
+        <RouteTracker />
         <CookieConsent />
         <Suspense fallback={<LoadingSpinner />}>
+
           <Routes>
             <Route path="/" element={<Academy />} />
             <Route path="/academy" element={<Academy />} />
