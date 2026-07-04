@@ -7,7 +7,9 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { Loader2 } from "lucide-react";
 import Academy from "./pages/Index";
 import { useCopyProtection } from "./hooks/useCopyProtection";
+import { usePageTracking } from "./hooks/usePageTracking";
 import CookieConsent from "./components/CookieConsent";
+
 import SecurityHeaders from "./components/SecurityHeaders";
 import ProtectedRoute from "./components/ProtectedRoute";
 
