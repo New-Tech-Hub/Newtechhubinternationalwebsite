@@ -1,6 +1,8 @@
 import { useState, useEffect } from 'react';
 import { User, Session } from '@supabase/supabase-js';
 import { supabase } from '@/integrations/supabase/client';
+import { trackEvent } from '@/lib/tracker';
+
 
 export const useAuth = () => {
   const [user, setUser] = useState<User | null>(null);
@@ -67,6 +69,7 @@ export const useAuth = () => {
         },
       },
     });
+    if (!error) trackEvent('sign_up', { category: 'auth', label: email });
     return { error };
   };
 
@@ -75,13 +78,16 @@ export const useAuth = () => {
       email,
       password,
     });
+    if (!error) trackEvent('sign_in', { category: 'auth', label: email });
     return { error };
   };
 
   const signOut = async () => {
+    trackEvent('sign_out', { category: 'auth' });
     const { error } = await supabase.auth.signOut();
     return { error };
   };
+
 
   return {
     user,

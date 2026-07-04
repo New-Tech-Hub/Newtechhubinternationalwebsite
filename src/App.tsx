@@ -7,7 +7,9 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { Loader2 } from "lucide-react";
 import Academy from "./pages/Index";
 import { useCopyProtection } from "./hooks/useCopyProtection";
+import { usePageTracking } from "./hooks/usePageTracking";
 import CookieConsent from "./components/CookieConsent";
+
 import SecurityHeaders from "./components/SecurityHeaders";
 import ProtectedRoute from "./components/ProtectedRoute";
 
@@ -36,6 +38,11 @@ const LoadingSpinner = () => (
 
 const queryClient = new QueryClient();
 
+const RouteTracker = () => {
+  usePageTracking();
+  return null;
+};
+
 const AppContent = () => {
   useCopyProtection();
 
@@ -45,8 +52,10 @@ const AppContent = () => {
       <Toaster />
       <Sonner />
       <BrowserRouter>
+        <RouteTracker />
         <CookieConsent />
         <Suspense fallback={<LoadingSpinner />}>
+
           <Routes>
             <Route path="/" element={<Academy />} />
             <Route path="/academy" element={<Academy />} />
