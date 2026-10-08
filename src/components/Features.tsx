@@ -1,6 +1,7 @@
 import { Code, TrendingUp, Palette, BrainCircuit } from "lucide-react";
 import { Card } from "@/components/ui/card";
 import { useScrollAnimation } from "@/hooks/useScrollAnimation";
+import { useNavigate } from "react-router-dom";
 
 const categories = [
   {
@@ -34,13 +35,11 @@ const categories = [
 ];
 
 const Features = () => {
+  const navigate = useNavigate();
   const { elementRef, isVisible } = useScrollAnimation();
 
   const scrollToCourses = () => {
-    const coursesSection = document.getElementById('courses');
-    if (coursesSection) {
-      coursesSection.scrollIntoView({ behavior: 'smooth' });
-    }
+    navigate('/academy');
   };
 
   return (

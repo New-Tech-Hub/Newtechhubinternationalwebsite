@@ -85,7 +85,7 @@ const Courses = memo(() => {
 
   const handleEnroll = useCallback((courseId: string, courseTitle: string) => {
     Analytics.courseCardClick(courseId, courseTitle);
-    navigate(`/course/${courseId}`);
+    navigate(`/academy/course/${courseId}`);
   }, [navigate]);
 
   // Filter courses based on search and category

@@ -34,7 +34,7 @@ const UpsellOffer = ({ currentCourseId, onDismiss }: UpsellOfferProps) => {
         // Fetch 2 related courses from the same category
         const { data, error } = await supabase
           .from('courses')
-          .select('*')
+          .select('id, title, description, price, estimated_hours')
           .eq('published', true)
           .eq('category', currentCourse.category)
           .neq('id', currentCourseId)

@@ -43,71 +43,17 @@ const RedeemAccessCode = () => {
     setLoading(true);
 
     try {
-      // Verify the access code
-      const { data: codeData, error: codeError } = await supabase
-        .from('course_access_codes')
-        .select('*')
-        .eq('access_code', cleanCode)
-        .eq('course_id', courseId)
-        .eq('is_active', true)
-        .single();
-
-      if (codeError || !codeData) {
-        toast.error('Invalid or expired access code');
-        setLoading(false);
-        return;
-      }
-
-      // Check if code has reached max uses
-      if (codeData.max_uses && codeData.current_uses >= codeData.max_uses) {
-        toast.error('This access code has reached its maximum usage limit');
-        setLoading(false);
-        return;
-      }
-
-      // Check if code has expired
-      if (codeData.expires_at && new Date(codeData.expires_at) < new Date()) {
-        toast.error('This access code has expired');
-        setLoading(false);
-        return;
-      }
-
-      // Check if user already has access
-      const { data: existingAccess } = await supabase
-        .from('user_course_access')
-        .select('*')
-        .eq('user_id', user.id)
-        .eq('course_id', courseId)
-        .single();
-
-      if (existingAccess) {
-        toast.info('You already have access to this course');
-        navigate(`/course/${courseId}`);
-        return;
-      }
-
-      // Grant access to user
-      const { error: accessError } = await supabase
-        .from('user_course_access')
-        .insert({
-          user_id: user.id,
-          course_id: courseId,
-          access_code_id: codeData.id,
-        });
-
-      if (accessError) throw accessError;
-
-      // Update code usage count
-      await supabase
-        .from('course_access_codes')
-        .update({ current_uses: codeData.current_uses + 1 })
-        .eq('id', codeData.id);
+      const { error } = await supabase.rpc('redeem_course_access_code', {
+        _course_id: courseId,
+        _access_code: cleanCode,
+      });
+      if (error) throw error;
 
       toast.success('Access code redeemed successfully! You now have access to the course.');
-      navigate(`/course/${courseId}`);
+      navigate(`/academy/course/${courseId}`);
     } catch (error: any) {
       console.error('Error redeeming access code:', error);
-      toast.error(error.message || 'Failed to redeem access code');
+      toast.error('Unable to redeem this code. Check that it is valid for this course and tier.');
     } finally {
       setLoading(false);
     }
