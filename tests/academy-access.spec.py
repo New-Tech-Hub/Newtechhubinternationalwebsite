@@ -27,6 +27,8 @@ async def main():
    if key and session:
     await page.evaluate('(args)=>localStorage.setItem(args.key,args.session)',{'key':key,'session':session})
     await page.reload()
+    await page.goto("http://localhost:8080/academy/course/69a7910d-568c-461b-989e-639a7805c8df")
+    course_id="69a7910d-568c-461b-989e-639a7805c8df"
     await page.locator('iframe').wait_for(timeout=30000)
     signed=await query('const a=await supabase.from("courses").select("video_preview_url").eq("id",args.id); const b=await supabase.rpc("get_course_video",{_course_id:args.id}); const c=await supabase.rpc("redeem_course_access_code",{_course_id:args.id,_access_code:"INVALID-TEST-CODE-000"}); return {directDenied:!!a.error,playAllowed:!!b.data&&!b.error,invalidDenied:!!c.error};')
     assert signed['directDenied'] and signed['playAllowed'] and signed['invalidDenied'],signed
