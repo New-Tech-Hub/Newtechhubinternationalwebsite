@@ -15,6 +15,7 @@ import ProtectedRoute from "./components/ProtectedRoute";
 
 // Lazy load route components for better performance
 const Home = lazy(() => import("./pages/Home"));
+const AcademyCatalog = lazy(() => import("./pages/Academy"));
 const Auth = lazy(() => import("./pages/Auth"));
 const Admin = lazy(() => import("./pages/Admin"));
 const NotFound = lazy(() => import("./pages/NotFound"));
@@ -58,7 +59,7 @@ const AppContent = () => {
 
           <Routes>
             <Route path="/" element={<Academy />} />
-            <Route path="/academy" element={<Academy />} />
+            <Route path="/academy" element={<AcademyCatalog />} />
             <Route path="/founder" element={<ProtectedRoute><Home /></ProtectedRoute>} />
             <Route path="/news" element={<News />} />
             <Route path="/auth" element={<Auth />} />
