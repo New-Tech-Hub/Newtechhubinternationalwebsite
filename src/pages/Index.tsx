@@ -4,7 +4,6 @@ import Navigation from "@/components/Navigation";
 import Hero from "@/components/Hero";
 
 const Features = lazy(() => import("@/components/Features"));
-const Courses = lazy(() => import("@/components/Courses"));
 const About = lazy(() => import("@/components/About"));
 const Testimonials = lazy(() => import("@/components/Testimonials"));
 const Impact = lazy(() => import("@/components/Impact"));
@@ -51,9 +50,6 @@ const Index = () => {
         <Hero />
         <Suspense fallback={<SectionSkeleton />}>
           <Features />
-        </Suspense>
-        <Suspense fallback={<SectionSkeleton />}>
-          <Courses />
         </Suspense>
         <Suspense fallback={<SectionSkeleton />}>
           <About />

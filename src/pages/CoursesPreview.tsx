@@ -18,9 +18,8 @@ const CoursesPreview = () => {
       try {
         const { data, error } = await supabase
           .from('courses')
-          .select('*')
-          .eq('published', true)
-          .not('video_preview_url', 'is', null);
+          .select('id, title, description, estimated_hours')
+          .eq('published', true);
 
         if (error) throw error;
 
@@ -28,7 +27,6 @@ const CoursesPreview = () => {
           id: course.id,
           title: course.title,
           description: course.description,
-          videoUrl: course.video_preview_url,
           duration: `${course.estimated_hours || 8} weeks`,
         }));
 
@@ -110,15 +108,6 @@ const CoursesPreview = () => {
                         <p className="text-sm text-muted-foreground mt-2">Payment required</p>
                       </div>
                     </div>
-                    <iframe
-                      width="100%"
-                      height="100%"
-                      src={`${course.videoUrl}?modestbranding=1&rel=0&showinfo=0&fs=0&controls=0`}
-                      title={`${course.title} preview`}
-                      frameBorder="0"
-                      className="w-full h-full pointer-events-none"
-                      loading="lazy"
-                    />
                   </div>
                   <div className="flex justify-between items-center">
                     <span className="text-sm text-muted-foreground">Duration: {course.duration}</span>

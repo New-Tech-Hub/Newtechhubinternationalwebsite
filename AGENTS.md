@@ -1,3 +1,4 @@
 # Architecture rules
 
-- Reuse the Courses catalog on the dedicated Academy page so course listings, category filters, and course-detail links stay consistent with the homepage.
+- Keep the Courses catalog exclusively on Academy; public homepage category links lead there without loading video embeds.
+- Playback URLs are fetched only through an authenticated, course-entitlement-checking function; public course column grants exclude playback URLs, and code redemption is atomic and derives ownership from auth.uid().

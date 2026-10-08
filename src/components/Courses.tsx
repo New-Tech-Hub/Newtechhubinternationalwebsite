@@ -53,7 +53,7 @@ const Courses = memo(() => {
       try {
         const { data, error } = await supabase
           .from('courses')
-          .select('id, title, description, category, video_preview_url, estimated_hours, difficulty_level, price')
+          .select('id, title, description, category, estimated_hours, difficulty_level, price')
           .eq('published', true);
 
         if (error) throw error;
@@ -64,7 +64,6 @@ const Courses = memo(() => {
           description: course.description,
           category: course.category,
           image: imageMap[course.category] || webdevImage,
-          videoUrl: course.video_preview_url,
           duration: `${course.estimated_hours || 8} weeks`,
           students: "Coming soon",
           level: course.difficulty_level,
@@ -86,7 +85,7 @@ const Courses = memo(() => {
 
   const handleEnroll = useCallback((courseId: string, courseTitle: string) => {
     Analytics.courseCardClick(courseId, courseTitle);
-    navigate(`/course/${courseId}`);
+    navigate(`/academy/course/${courseId}`);
   }, [navigate]);
 
   // Filter courses based on search and category
@@ -222,23 +221,6 @@ const Courses = memo(() => {
                 className="relative h-48 overflow-hidden group/video cursor-pointer"
                 onClick={() => handleEnroll(course.id, course.title)}
               >
-                {course.videoUrl ? (
-                  <>
-                    <iframe
-                      src={course.videoUrl}
-                      title={`${course.title} preview`}
-                      frameBorder="0"
-                      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                      allowFullScreen
-                      className="w-full h-full object-cover pointer-events-none transition-transform duration-300 group-hover/video:scale-105"
-                    />
-                    <div className="absolute inset-0 bg-black/40 flex items-center justify-center group-hover/video:bg-black/50 transition-all duration-300">
-                      <div className="bg-white/90 rounded-full p-4 group-hover/video:scale-110 transition-transform duration-300">
-                        <Play className="h-8 w-8 text-primary" />
-                      </div>
-                    </div>
-                  </>
-                ) : (
                   <img
                     src={course.image}
                     alt={`Learn ${course.title} - ${course.level} level course for African tech professionals covering ${course.description}`}
@@ -248,7 +230,6 @@ const Courses = memo(() => {
                     height="300"
                     className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
                   />
-                )}
                 <div className="absolute top-4 right-4 z-10">
                   <span className={`px-3 py-1 backdrop-blur-sm text-sm font-semibold rounded-full transition-all duration-300 group-hover:scale-105 ${
                     course.isPremium 

@@ -139,9 +139,7 @@ const Admin = () => {
   const fetchCourses = async () => {
     try {
       const { data, error } = await supabase
-        .from('courses')
-        .select('*')
-        .order('created_at', { ascending: false });
+        .rpc('get_admin_courses');
 
       if (error) throw error;
       setCourses(data || []);

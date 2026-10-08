@@ -67,11 +67,8 @@ const Hero = memo(() => {
 
   const scrollToCourses = useCallback(() => {
     Analytics.heroCtaClick('Apply Now');
-    const element = document.getElementById('courses');
-    if (element) {
-      element.scrollIntoView({ behavior: 'smooth', block: 'start' });
-    }
-  }, []);
+    navigate('/academy');
+  }, [navigate]);
 
   const showCourseVideos = useCallback(() => {
     Analytics.heroCtaClick('View Courses');

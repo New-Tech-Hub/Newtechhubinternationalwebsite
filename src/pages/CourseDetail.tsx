@@ -20,6 +20,7 @@ const CourseDetail = () => {
   const { user } = useAuth();
   const { hasAccess, isAdmin, loading: accessLoading } = useCourseAccess(id);
   const [course, setCourse] = useState<any>(null);
+  const [videoUrl, setVideoUrl] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
   const [enrolling, setEnrolling] = useState(false);
   const [paymentPlans, setPaymentPlans] = useState<any[]>([]);
@@ -35,6 +36,16 @@ const CourseDetail = () => {
   }, [id]);
 
   useEffect(() => {
+    let active = true;
+    setVideoUrl(null);
+    if (!id || !user || accessLoading || (!hasAccess && !isAdmin)) return;
+    supabase.rpc('get_course_video', { _course_id: id }).then(({ data, error }) => {
+      if (active && !error) setVideoUrl(data);
+    });
+    return () => { active = false; };
+  }, [id, user, accessLoading, hasAccess, isAdmin]);
+
+  useEffect(() => {
     if (course) {
       Analytics.courseDetailView(course.id, course.title, course.price);
     }
@@ -44,7 +55,7 @@ const CourseDetail = () => {
     try {
       const { data, error } = await supabase
         .from('courses')
-        .select('*')
+        .select('id, title, description, price, category, difficulty_level, estimated_hours, thumbnail_url')
         .eq('id', id)
         .single();
 
@@ -166,7 +177,7 @@ const CourseDetail = () => {
         <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-6xl">
           <Button
             variant="ghost"
-            onClick={() => navigate('/')}
+            onClick={() => navigate('/academy')}
             className="mb-6"
             aria-label="Go back to courses page"
           >
@@ -177,11 +188,11 @@ const CourseDetail = () => {
         <div className="grid lg:grid-cols-3 gap-8">
           <article className="lg:col-span-2">
             {/* Video or locked video player */}
-            {course.video_preview_url && (
+            {(
               <div className="mb-6">
-                {hasAccess || isAdmin ? (
+                {videoUrl && user && (hasAccess || isAdmin) ? (
                   <VideoPlayer 
-                    videoUrl={course.video_preview_url}
+                    videoUrl={videoUrl}
                     title={course.title}
                   />
                 ) : (
@@ -195,15 +206,6 @@ const CourseDetail = () => {
               </div>
             )}
             
-            {course.thumbnail_url && !course.video_preview_url && (
-              <img
-                src={course.thumbnail_url}
-                alt={`${course.title} - Complete ${course.difficulty_level} level course covering ${course.description}`}
-                className="w-full h-64 object-cover rounded-lg mb-6"
-                width="800"
-                height="400"
-              />
-            )}
             
             <h1 className="text-4xl font-bold mb-4">{course.title}</h1>
             
