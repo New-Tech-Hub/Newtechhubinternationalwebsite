@@ -1,0 +1,13 @@
+{
+  "version": "7",
+  "dialect": "postgresql",
+  "entries": [
+    {
+      "idx": 0,
+      "version": "7",
+      "when": 1791474411167,
+      "tag": "0000_protect_academy_video_sources_and_redeem_codes",
+      "breakpoints": true
+    }
+  ]
+}

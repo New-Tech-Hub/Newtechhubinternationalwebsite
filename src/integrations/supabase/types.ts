@@ -1199,7 +1199,11 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      get_course_video: { Args: { _course_id: string }; Returns: string }
+      redeem_course_access_code: {
+        Args: { _access_code: string; _course_id: string }
+        Returns: boolean
+      }
     }
     Enums: {
       app_role: "admin" | "moderator" | "user"
