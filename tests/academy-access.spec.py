@@ -32,6 +32,7 @@ async def main():
     await page.locator('iframe').wait_for(timeout=30000)
     signed=await query('const a=await supabase.from("courses").select("video_preview_url").eq("id",args.id); const b=await supabase.rpc("get_course_video",{_course_id:args.id}); const c=await supabase.rpc("redeem_course_access_code",{_course_id:args.id,_access_code:"INVALID-TEST-CODE-000"}); return {directDenied:!!a.error,playAllowed:!!b.data&&!b.error,invalidDenied:!!c.error};')
     assert signed['directDenied'] and signed['playAllowed'] and signed['invalidDenied'],signed
+    await page.screenshot(path="/tmp/browser/academy-access/authorized.png")
     print('PASS: signed-in authorized playback; invalid course code rejected')
   await page.goto('http://localhost:8080/')
   assert await page.locator('iframe').count()==0
