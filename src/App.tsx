@@ -3,7 +3,7 @@ import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { Loader2 } from "lucide-react";
 import Academy from "./pages/Index";
 import { useCopyProtection } from "./hooks/useCopyProtection";
@@ -21,7 +21,6 @@ const Admin = lazy(() => import("./pages/Admin"));
 const NotFound = lazy(() => import("./pages/NotFound"));
 const CourseDetail = lazy(() => import("./pages/CourseDetail"));
 const PaymentSuccess = lazy(() => import("./pages/PaymentSuccess"));
-const CoursesPreview = lazy(() => import("./pages/CoursesPreview"));
 const Community = lazy(() => import("./pages/Community"));
 const MyCertificates = lazy(() => import("./pages/MyCertificates"));
 const RedeemAccessCode = lazy(() => import("./pages/RedeemAccessCode"));
@@ -64,9 +63,10 @@ const AppContent = () => {
             <Route path="/news" element={<News />} />
             <Route path="/auth" element={<Auth />} />
             <Route path="/admin" element={<Admin />} />
+            <Route path="/academy/course/:id" element={<CourseDetail />} />
             <Route path="/course/:id" element={<CourseDetail />} />
             <Route path="/payment-success" element={<PaymentSuccess />} />
-            <Route path="/courses-preview" element={<CoursesPreview />} />
+            <Route path="/courses-preview" element={<Navigate to="/academy" replace />} />
             <Route path="/community" element={<Community />} />
             <Route path="/my-certificates" element={<MyCertificates />} />
             <Route path="/redeem-access/:courseId" element={<RedeemAccessCode />} />

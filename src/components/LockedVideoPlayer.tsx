@@ -22,7 +22,7 @@ export const LockedVideoPlayer = ({
     if (!isLoggedIn) {
       navigate('/auth', { state: { returnTo: `/course/${courseId}` } });
     } else {
-      navigate(`/course/${courseId}#enrollment`);
+      navigate(`/redeem-access/${courseId}`);
     }
   };
 
@@ -42,15 +42,14 @@ export const LockedVideoPlayer = ({
         <h3 className="text-2xl font-bold mb-2">Course Content Locked</h3>
         <p className="text-muted-foreground mb-6 max-w-md">
           {isLoggedIn 
-            ? "Complete your payment and receive your access code from the admin to unlock this course."
-            : "Please sign in and complete payment to access this course content."}
+            ? "Enter the access code issued for this course and tier to unlock the videos."
+            : "Register or sign in, then redeem your course access code to view the videos."}
         </p>
         <Button 
           size="lg" 
           onClick={handleUnlock}
-          className="bg-gradient-to-r from-[hsl(17,100%,60%)] to-[hsl(5,85%,58%)] hover:shadow-lg transition-all duration-300"
         >
-          {isLoggedIn ? 'Complete Payment' : 'Sign In to Access'}
+          {isLoggedIn ? 'Redeem Access Code' : 'Sign In to Access'}
         </Button>
       </div>
     </Card>
