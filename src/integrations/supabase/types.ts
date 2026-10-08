@@ -1199,6 +1199,41 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      get_admin_courses: {
+        Args: never
+        Returns: {
+          category: Database["public"]["Enums"]["course_category"]
+          certificate_available: boolean | null
+          created_at: string | null
+          created_by: string | null
+          description: string | null
+          difficulty_level: Database["public"]["Enums"]["difficulty_level"]
+          estimated_hours: number | null
+          file_size_mb: number | null
+          id: string
+          instructor_id: string | null
+          is_free: boolean | null
+          is_offline_available: boolean | null
+          language: string | null
+          learning_outcomes: string[] | null
+          prerequisites: string[] | null
+          price: number
+          published: boolean | null
+          real_world_projects: string[] | null
+          subtitles_available: string[] | null
+          target_audience: string | null
+          thumbnail_url: string | null
+          title: string
+          updated_at: string | null
+          video_preview_url: string | null
+        }[]
+        SetofOptions: {
+          from: "*"
+          to: "courses"
+          isOneToOne: false
+          isSetofReturn: true
+        }
+      }
       get_course_video: { Args: { _course_id: string }; Returns: string }
       redeem_course_access_code: {
         Args: { _access_code: string; _course_id: string }
