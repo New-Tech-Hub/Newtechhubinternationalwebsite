@@ -110,31 +110,6 @@ const CourseComparison = () => {
             Choose the learning experience that fits your career goals and budget
           </p>
           
-          {/* Countdown Timer */}
-          <div className="inline-flex max-w-full flex-wrap justify-center items-center gap-3 bg-destructive/10 border border-destructive/30 rounded-xl px-3 sm:px-6 py-4">
-            <div className="flex items-center gap-2">
-              <Clock className="w-5 h-5 shrink-0 text-destructive animate-pulse" />
-              <span className="text-sm font-medium text-destructive">Offer expires in:</span>
-            </div>
-            <div className="grid grid-cols-4 gap-2">
-              <div className="bg-destructive text-destructive-foreground px-3 py-2 rounded-lg text-center min-w-[50px]">
-                <span className="text-lg font-bold">{timeLeft.days}</span>
-                <p className="text-[10px] uppercase">Days</p>
-              </div>
-              <div className="bg-destructive text-destructive-foreground px-3 py-2 rounded-lg text-center min-w-[50px]">
-                <span className="text-lg font-bold">{timeLeft.hours.toString().padStart(2, '0')}</span>
-                <p className="text-[10px] uppercase">Hours</p>
-              </div>
-              <div className="bg-destructive text-destructive-foreground px-3 py-2 rounded-lg text-center min-w-[50px]">
-                <span className="text-lg font-bold">{timeLeft.minutes.toString().padStart(2, '0')}</span>
-                <p className="text-[10px] uppercase">Mins</p>
-              </div>
-              <div className="bg-destructive text-destructive-foreground px-3 py-2 rounded-lg text-center min-w-[50px]">
-                <span className="text-lg font-bold">{timeLeft.seconds.toString().padStart(2, '0')}</span>
-                <p className="text-[10px] uppercase">Secs</p>
-              </div>
-            </div>
-          </div>
         </div>
 
         <div className="grid md:grid-cols-3 gap-6">
@@ -157,16 +132,10 @@ const CourseComparison = () => {
 
           {/* Standard Column */}
           <Card className="border-border/50 hover:shadow-lg transition-shadow relative">
-            <div className="absolute -top-3 right-4">
-              <span className="bg-destructive text-destructive-foreground px-3 py-1 rounded-full text-xs font-semibold animate-pulse">
-                50% OFF
-              </span>
-            </div>
             <CardHeader className="bg-accent/5">
               <CardTitle className="text-xl text-center">Standard</CardTitle>
               <p className="text-center text-muted-foreground text-sm mt-2">
-                <span className="line-through text-muted-foreground/50 mr-2">₦100,000</span>
-                <span className="text-accent font-semibold">₦50,000</span>
+                <span className="text-accent font-semibold">₦150,000</span>
               </p>
             </CardHeader>
             <CardContent className="space-y-4">
@@ -201,8 +170,7 @@ const CourseComparison = () => {
                 ⭐ Premium Bootcamp
               </CardTitle>
               <p className="text-center text-muted-foreground text-sm mt-2">
-                <span className="line-through text-muted-foreground/50 mr-2">₦200,000</span>
-                <span className="text-primary font-semibold">₦100,000</span>
+                <span className="text-primary font-semibold">Contact admin for pricing</span>
               </p>
             </CardHeader>
             <CardContent className="space-y-4">
