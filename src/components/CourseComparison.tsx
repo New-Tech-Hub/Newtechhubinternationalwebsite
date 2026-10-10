@@ -111,10 +111,12 @@ const CourseComparison = () => {
           </p>
           
           {/* Countdown Timer */}
-          <div className="inline-flex items-center gap-3 bg-destructive/10 border border-destructive/30 rounded-xl px-6 py-4">
-            <Clock className="w-5 h-5 text-destructive animate-pulse" />
-            <span className="text-sm font-medium text-destructive">Offer expires in:</span>
-            <div className="flex gap-2">
+          <div className="inline-flex max-w-full flex-wrap justify-center items-center gap-3 bg-destructive/10 border border-destructive/30 rounded-xl px-3 sm:px-6 py-4">
+            <div className="flex items-center gap-2">
+              <Clock className="w-5 h-5 shrink-0 text-destructive animate-pulse" />
+              <span className="text-sm font-medium text-destructive">Offer expires in:</span>
+            </div>
+            <div className="grid grid-cols-4 gap-2">
               <div className="bg-destructive text-destructive-foreground px-3 py-2 rounded-lg text-center min-w-[50px]">
                 <span className="text-lg font-bold">{timeLeft.days}</span>
                 <p className="text-[10px] uppercase">Days</p>
@@ -171,12 +173,13 @@ const CourseComparison = () => {
               {features.map((feature, index) => (
                 <div
                   key={index}
-                  className="py-3 flex items-center justify-center"
+                  className="py-3 flex items-center justify-between md:justify-center gap-3"
                 >
+                  <span className="md:hidden text-sm">{feature.name}</span>
                   {feature.standard ? (
-                    <Check className="w-5 h-5 text-accent" />
+                    <Check aria-label="Included" className="w-5 h-5 shrink-0 text-accent" />
                   ) : (
-                    <X className="w-5 h-5 text-muted-foreground/30" />
+                    <X aria-label="Not included" className="w-5 h-5 shrink-0 text-muted-foreground/30" />
                   )}
                 </div>
               ))}
@@ -206,12 +209,13 @@ const CourseComparison = () => {
               {features.map((feature, index) => (
                 <div
                   key={index}
-                  className="py-3 flex items-center justify-center"
+                  className="py-3 flex items-center justify-between md:justify-center gap-3"
                 >
+                  <span className="md:hidden text-sm">{feature.name}</span>
                   {feature.premium ? (
-                    <Check className="w-5 h-5 text-primary" />
+                    <Check aria-label="Included" className="w-5 h-5 shrink-0 text-primary" />
                   ) : (
-                    <X className="w-5 h-5 text-muted-foreground/30" />
+                    <X aria-label="Not included" className="w-5 h-5 shrink-0 text-muted-foreground/30" />
                   )}
                 </div>
               ))}

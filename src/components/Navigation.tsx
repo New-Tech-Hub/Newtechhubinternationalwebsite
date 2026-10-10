@@ -1,14 +1,28 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Menu, X, Shield } from "lucide-react";
 import { useAuth } from "@/hooks/useAuth";
-import { useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import logo from "@/assets/newtech-hub-logo.jpg";
 
 const Navigation = () => {
   const [isOpen, setIsOpen] = useState(false);
   const { user, isAdmin, signOut } = useAuth();
   const navigate = useNavigate();
+  const location = useLocation();
+
+  useEffect(() => {
+    setIsOpen(false);
+  }, [location.pathname]);
+
+  useEffect(() => {
+    if (!isOpen) return;
+    const closeOnEscape = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') setIsOpen(false);
+    };
+    window.addEventListener('keydown', closeOnEscape);
+    return () => window.removeEventListener('keydown', closeOnEscape);
+  }, [isOpen]);
 
   const navLinks = ["Academy", "About", "Pricing", "Contact"];
   const externalLinks = [
@@ -51,20 +65,13 @@ const Navigation = () => {
   };
 
   return (
-    <nav className="sticky top-0 z-50 bg-white shadow-sm border-b">
+    <nav className="sticky top-0 z-50 bg-background shadow-sm border-b">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-20">
           {/* Logo */}
-          <div 
+          <Link
+            to="/"
             className="flex-shrink-0 flex items-center gap-3 cursor-pointer" 
-            onClick={() => navigate('/')}
-            role="button"
-            tabIndex={0}
-            onKeyDown={(e) => {
-              if (e.key === 'Enter' || e.key === ' ') {
-                navigate('/');
-              }
-            }}
             aria-label="Go to home page"
           >
             <img 
@@ -74,6 +81,7 @@ const Navigation = () => {
               width="48"
               height="48"
               loading="eager"
+              decoding="async"
             />
             <div className="hidden sm:block">
               <h1 className="text-xl font-bold text-primary leading-tight">
@@ -81,32 +89,34 @@ const Navigation = () => {
               </h1>
               <p className="text-muted-foreground text-xs italic">...we breathe solutions</p>
             </div>
-          </div>
+          </Link>
 
           {/* Desktop Navigation */}
-          <div className="hidden lg:flex items-center gap-6 xl:gap-8">
+          <div className="hidden 2xl:flex items-center gap-3">
             {navLinks.map((link) => (
-              <button
+              <Button
+                variant="ghost"
                 type="button"
                 key={link}
                 onClick={() => scrollToSection(link)}
-                className="text-foreground hover:text-primary font-medium transition-colors duration-200 relative group"
+                className="px-2 text-foreground hover:text-primary relative group"
               >
                 {link}
                 <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-primary transition-all duration-300 group-hover:w-full"></span>
-              </button>
+              </Button>
             ))}
             
             {externalLinks.map((link) => (
-              <button
+              <Button
+                variant="ghost"
                 type="button"
                 key={link.path}
                 onClick={() => navigate(link.path)}
-                className="text-foreground hover:text-primary font-medium transition-colors duration-200 relative group"
+                className="px-2 text-foreground hover:text-primary relative group"
               >
                 {link.label}
                 <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-primary transition-all duration-300 group-hover:w-full"></span>
-              </button>
+              </Button>
             ))}
 
             {isAdmin && (
@@ -115,7 +125,7 @@ const Navigation = () => {
                 onClick={() => navigate('/admin')}
                 variant="outline"
                 size="sm"
-                className="gap-2 border-primary text-primary hover:bg-primary hover:text-white transition-all duration-300"
+                className="gap-2 border-primary text-primary hover:bg-primary hover:text-primary-foreground transition-all duration-300"
               >
                 <Shield className="h-4 w-4" />
                 Admin
@@ -127,7 +137,7 @@ const Navigation = () => {
               onClick={handleAuthClick}
               variant="outline"
               size="sm"
-              className="border-primary text-primary hover:bg-primary hover:text-white transition-all duration-300 font-medium"
+              className="border-primary text-primary hover:bg-primary hover:text-primary-foreground transition-all duration-300 font-medium"
             >
               {user ? 'Sign Out' : 'Sign In'}
             </Button>
@@ -138,49 +148,55 @@ const Navigation = () => {
                 scrollToSection('courses');
               }}
               size="sm"
-              className="bg-primary hover:bg-primary/90 text-white font-bold shadow-md hover:shadow-lg transition-all duration-300 px-6"
+              className="bg-primary hover:bg-primary/90 text-primary-foreground font-bold shadow-md hover:shadow-lg transition-all duration-300 px-4"
             >
               Apply Now
             </Button>
           </div>
 
           {/* Mobile Menu Button */}
-          <button
+          <Button
             type="button"
-            className="lg:hidden text-primary"
+            variant="ghost"
+            size="icon"
+            className="2xl:hidden h-11 w-11 text-primary"
             onClick={() => setIsOpen(!isOpen)}
             aria-label="Toggle menu"
+            aria-expanded={isOpen}
+            aria-controls="mobile-navigation"
           >
             {isOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
-          </button>
+          </Button>
         </div>
 
         {/* Mobile Navigation */}
         {isOpen && (
-          <div className="lg:hidden pb-6 bg-white border-t">
-            <div className="flex flex-col gap-4 pt-4">
+          <div id="mobile-navigation" className="2xl:hidden max-h-[calc(100dvh-5rem)] overflow-y-auto overscroll-contain pb-6 bg-background border-t">
+            <div className="flex flex-col gap-2 pt-4">
               {navLinks.map((link) => (
-                <button
+                <Button
+                  variant="ghost"
                   type="button"
                   key={link}
                   onClick={() => scrollToSection(link)}
-                  className="text-foreground hover:text-primary font-medium transition-colors duration-200 text-left px-2"
+                  className="min-h-11 justify-start text-foreground hover:text-primary text-left px-2"
                 >
                   {link}
-                </button>
+                </Button>
               ))}
               {externalLinks.map((link) => (
-                <button
+                <Button
+                  variant="ghost"
                   type="button"
                   key={link.label}
                   onClick={() => {
                     navigate(link.path);
                     setIsOpen(false);
                   }}
-                  className="text-foreground hover:text-primary font-medium transition-colors duration-200 text-left px-2"
+                  className="min-h-11 justify-start text-foreground hover:text-primary text-left px-2"
                 >
                   {link.label}
-                </button>
+                </Button>
               ))}
               {isAdmin && (
                 <Button
@@ -190,7 +206,7 @@ const Navigation = () => {
                     setIsOpen(false);
                   }}
                   variant="outline"
-                  className="gap-2 border-primary text-primary hover:bg-primary hover:text-white"
+                  className="min-h-11 gap-2 border-primary text-primary hover:bg-primary hover:text-primary-foreground"
                 >
                   <Shield className="h-4 w-4" />
                   Admin
@@ -202,7 +218,7 @@ const Navigation = () => {
                   handleAuthClick();
                   setIsOpen(false);
                 }}
-                className="bg-primary hover:bg-primary/90 text-white font-bold w-full"
+                className="min-h-11 bg-primary hover:bg-primary/90 text-primary-foreground font-bold w-full"
               >
                 {user ? 'Sign Out' : 'Sign In'}
               </Button>
@@ -213,7 +229,7 @@ const Navigation = () => {
                   scrollToSection('courses');
                   setIsOpen(false);
                 }}
-                className="bg-primary hover:bg-primary/90 text-white font-bold w-full"
+                className="min-h-11 bg-primary hover:bg-primary/90 text-primary-foreground font-bold w-full"
               >
                 Apply Now
               </Button>

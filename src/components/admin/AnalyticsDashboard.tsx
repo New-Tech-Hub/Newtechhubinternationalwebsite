@@ -201,8 +201,8 @@ export const AnalyticsDashboard = () => {
   }
 
   return (
-    <div className="space-y-6">
-      <div className="flex items-center justify-between">
+    <div className="min-w-0 space-y-6 [&_.grid>*]:min-w-0">
+      <div className="flex flex-wrap gap-3 items-center justify-between">
         <div>
           <h2 className="text-xl font-semibold">Traffic & Activity</h2>
           <p className="text-sm text-muted-foreground">Who visits the site and what they do</p>
@@ -258,7 +258,7 @@ export const AnalyticsDashboard = () => {
                 {topPaths.length === 0 ? (
                   <TableRow><TableCell colSpan={2} className="text-center text-muted-foreground">No data</TableCell></TableRow>
                 ) : topPaths.map((p) => (
-                  <TableRow key={p.path}><TableCell className="font-mono text-sm">{p.path}</TableCell><TableCell className="text-right">{p.count}</TableCell></TableRow>
+                  <TableRow key={p.path}><TableCell className="font-mono text-sm [overflow-wrap:anywhere]">{p.path}</TableCell><TableCell className="text-right">{p.count}</TableCell></TableRow>
                 ))}
               </TableBody>
             </Table>

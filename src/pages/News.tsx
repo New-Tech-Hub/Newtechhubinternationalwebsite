@@ -66,7 +66,7 @@ const News = () => {
               size="sm"
               variant={active === c ? "default" : "outline"}
               onClick={() => setActive(c)}
-              className={active === c ? "bg-primary text-white" : ""}
+              className={active === c ? "bg-primary text-primary-foreground" : ""}
             >
               {c}
             </Button>
@@ -82,7 +82,7 @@ const News = () => {
         ) : (
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
             {filtered.map((item, i) => (
-              <Card key={i} className="p-5 flex flex-col hover:shadow-xl hover:-translate-y-1 transition-all duration-300">
+              <Card key={i} className="min-w-0 p-5 flex flex-col [overflow-wrap:anywhere] hover:shadow-xl hover:-translate-y-1 transition-all duration-300">
                 <div className="flex items-center gap-2 mb-3">
                   <Badge variant="secondary" className="text-xs">{item.category}</Badge>
                   <span className="text-xs text-muted-foreground truncate">{item.source}</span>
@@ -93,7 +93,7 @@ const News = () => {
                 )}
                 <div className="flex items-center justify-between mt-auto pt-3 border-t">
                   <span className="text-xs text-muted-foreground">
-                    {item.pubDate ? new Date(item.pubDate).toLocaleDateString() : ""}
+                    {item.pubDate && Number.isFinite(Date.parse(item.pubDate)) ? new Date(item.pubDate).toLocaleDateString() : ""}
                   </span>
                   <a
                     href={item.link}

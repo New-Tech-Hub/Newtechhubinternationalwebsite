@@ -234,10 +234,10 @@ const Admin = () => {
   return (
     <div className="min-h-screen bg-gradient-to-br from-background to-muted/20">
       <div className="border-b bg-background/80 backdrop-blur">
-        <div className="container mx-auto px-4 py-4 flex items-center justify-between">
+        <div className="container mx-auto px-4 py-4 flex flex-wrap gap-3 items-center justify-between">
           <div className="flex items-center gap-2">
-            <Shield className="h-6 w-6 text-[hsl(17,100%,60%)]" />
-            <h1 className="text-2xl font-bold">Admin Dashboard</h1>
+            <Shield className="h-6 w-6 shrink-0 text-accent" />
+            <h1 className="text-xl sm:text-2xl font-bold">Admin Dashboard</h1>
           </div>
           <Button onClick={handleSignOut} variant="outline">
             <LogOut className="h-4 w-4 mr-2" />
@@ -248,7 +248,7 @@ const Admin = () => {
 
       <div className="container mx-auto px-4 py-8">
         <Tabs defaultValue="dashboard" className="space-y-6">
-          <TabsList>
+          <TabsList className="h-auto w-full flex flex-wrap justify-start gap-1">
             <TabsTrigger value="dashboard" className="gap-2">
               <LayoutDashboard className="h-4 w-4" />
               Dashboard
@@ -295,7 +295,7 @@ const Admin = () => {
           <TabsContent value="courses">
             <Card>
               <CardHeader>
-                <div className="flex items-center justify-between">
+                <div className="flex flex-wrap gap-3 items-center justify-between">
                   <div>
                     <CardTitle className="flex items-center gap-2">
                       <BookOpen className="h-5 w-5" />
