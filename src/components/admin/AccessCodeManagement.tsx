@@ -175,7 +175,7 @@ export const AccessCodeManagement = () => {
   return (
     <Card>
       <CardHeader>
-        <div className="flex items-center justify-between">
+        <div className="flex flex-wrap gap-3 items-center justify-between">
           <div>
             <CardTitle className="flex items-center gap-2">
               <Key className="h-5 w-5" />
