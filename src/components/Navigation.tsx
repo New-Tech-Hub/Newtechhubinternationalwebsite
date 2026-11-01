@@ -27,6 +27,29 @@ const Navigation = () => {
     return () => window.removeEventListener('keydown', closeOnEscape);
   }, [isOpen]);
 
+  // Highlight the section the visitor is currently reading (home page only).
+  useEffect(() => {
+    if (location.pathname !== '/') {
+      setActiveSection(null);
+      return;
+    }
+    const ids = ['about', 'pricing', 'contact'];
+    if (typeof IntersectionObserver === 'undefined') return;
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) setActiveSection(entry.target.id);
+        });
+      },
+      { rootMargin: '-35% 0px -55% 0px' }
+    );
+    ids.forEach((id) => {
+      const el = document.getElementById(id);
+      if (el) observer.observe(el);
+    });
+    return () => observer.disconnect();
+  }, [location.pathname]);
+
   const navLinks = ["Academy", "About", "Pricing", "Contact"];
   const externalLinks = [
     { label: "News", path: "/news" },
@@ -96,31 +119,54 @@ const Navigation = () => {
 
           {/* Desktop Navigation */}
           <div className="hidden 2xl:flex items-center gap-3">
-            {navLinks.map((link) => (
-              <Button
-                variant="ghost"
-                type="button"
-                key={link}
-                onClick={() => scrollToSection(link)}
-                className="px-2 text-foreground hover:text-primary relative group"
-              >
-                {link}
-                <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-primary transition-all duration-300 group-hover:w-full"></span>
-              </Button>
-            ))}
-            
-            {externalLinks.map((link) => (
-              <Button
-                variant="ghost"
-                type="button"
-                key={link.path}
-                onClick={() => navigate(link.path)}
-                className="px-2 text-foreground hover:text-primary relative group"
-              >
-                {link.label}
-                <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-primary transition-all duration-300 group-hover:w-full"></span>
-              </Button>
-            ))}
+            {navLinks.map((link) => {
+              const isActive =
+                link === 'Academy'
+                  ? location.pathname === '/academy'
+                  : location.pathname === '/' && activeSection === link.toLowerCase();
+              return (
+                <Button
+                  variant="ghost"
+                  type="button"
+                  key={link}
+                  onClick={() => scrollToSection(link)}
+                  aria-current={isActive ? 'true' : undefined}
+                  className={`px-2 relative group ${
+                    isActive ? 'text-primary font-semibold' : 'text-foreground hover:text-primary'
+                  }`}
+                >
+                  {link}
+                  <span
+                    className={`absolute bottom-0 left-0 h-0.5 bg-primary transition-all duration-300 group-hover:w-full ${
+                      isActive ? 'w-full' : 'w-0'
+                    }`}
+                  />
+                </Button>
+              );
+            })}
+
+            {externalLinks.map((link) => {
+              const isActive = location.pathname === link.path;
+              return (
+                <Button
+                  variant="ghost"
+                  type="button"
+                  key={link.path}
+                  onClick={() => navigate(link.path)}
+                  aria-current={isActive ? 'true' : undefined}
+                  className={`px-2 relative group ${
+                    isActive ? 'text-primary font-semibold' : 'text-foreground hover:text-primary'
+                  }`}
+                >
+                  {link.label}
+                  <span
+                    className={`absolute bottom-0 left-0 h-0.5 bg-primary transition-all duration-300 group-hover:w-full ${
+                      isActive ? 'w-full' : 'w-0'
+                    }`}
+                  />
+                </Button>
+              );
+            })}
 
             {isAdmin && (
               <Button
