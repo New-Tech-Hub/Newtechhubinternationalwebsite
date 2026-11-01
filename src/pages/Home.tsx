@@ -21,6 +21,7 @@ import {
 import Navigation from "@/components/Navigation";
 import Footer from "@/components/Footer";
 import About from "@/components/About";
+import Reveal from "@/components/Reveal";
 import jerryGumaProfile from "@/assets/jerry-guma-profile.png";
 
 const competencies = [
@@ -104,16 +105,18 @@ const Home = memo(() => {
         <section className="py-20 bg-background">
           <div className="container mx-auto px-4 sm:px-6 lg:px-8">
             <div className="max-w-4xl mx-auto">
-              <div className="text-center mb-12">
+              <Reveal className="text-center mb-12">
                 <h2 className="text-3xl sm:text-4xl font-bold text-foreground mb-4">About Jerry Guma</h2>
                 <div className="w-20 h-1 bg-accent mx-auto rounded-full" />
-              </div>
+              </Reveal>
+              <Reveal delay={100}>
               <div className="space-y-6 text-muted-foreground text-base sm:text-lg leading-relaxed">
                 <p>Jerry Guma is a seasoned technology strategist, digital transformation expert, and educator with over six years of experience leading innovative projects across Africa's technology and education sectors. As the Product Manager at <strong className="text-foreground">New Tech Hub International</strong> and <strong className="text-foreground">Creative Minds Academy</strong>, Jerry has played a pivotal role in driving Africa's digital evolution.</p>
                 <p>With a strong background in project management, Jerry previously worked with <strong className="text-foreground">Google</strong> under the Google Digital Skills for Africa Program as a Program Manager with MindTheGap, where he trained and empowered thousands of young Africans in digital literacy, entrepreneurship, and online marketing.</p>
                 <p>Beyond his corporate work, Jerry is the founder of <strong className="text-foreground">Creative Minds Academy</strong>, an initiative focused on equipping young Nigerians with practical digital and tech skills to prepare them for the future of work.</p>
                 <p>A fellow of the <strong className="text-foreground">Institute of Information Management Africa (IIM-Africa)</strong>, Jerry is also a blockchain and Web3 consultant, AI chatbot builder, forex strategist, and financial analyst.</p>
               </div>
+              </Reveal>
             </div>
           </div>
         </section>
@@ -121,10 +124,11 @@ const Home = memo(() => {
         {/* Core Competencies */}
         <section className="py-20 bg-secondary">
           <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="text-center mb-12">
+            <Reveal className="text-center mb-12">
               <h2 className="text-3xl sm:text-4xl font-bold text-foreground mb-4">Core Competencies</h2>
               <div className="w-20 h-1 bg-accent mx-auto rounded-full" />
-            </div>
+            </Reveal>
+            <Reveal delay={100}>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 max-w-5xl mx-auto">
               {competencies.map((item, i) => {
                 const Icon = item.icon;
@@ -138,6 +142,7 @@ const Home = memo(() => {
                 );
               })}
             </div>
+            </Reveal>
           </div>
         </section>
 
@@ -145,11 +150,13 @@ const Home = memo(() => {
         <section className="py-20 bg-gradient-to-br from-primary via-[hsl(222,55%,30%)] to-primary/90 text-white">
           <div className="container mx-auto px-4 sm:px-6 lg:px-8">
             <div className="max-w-3xl mx-auto text-center">
+              <Reveal>
               <Target className="h-12 w-12 text-accent mx-auto mb-6" />
               <h2 className="text-3xl sm:text-4xl font-bold mb-6">Vision Statement</h2>
               <p className="text-lg sm:text-xl text-white/90 leading-relaxed italic">
                 "To empower Africa through technology, education, and innovation — creating sustainable solutions that bridge the digital divide and position Africa as a global force in the digital economy."
               </p>
+              </Reveal>
             </div>
           </div>
         </section>
@@ -160,6 +167,7 @@ const Home = memo(() => {
         {/* CTA to Academy */}
         <section className="py-20 bg-secondary">
           <div className="container mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <Reveal delay={100}>
             <div className="max-w-2xl mx-auto">
               <Users className="h-12 w-12 text-accent mx-auto mb-6" />
               <h2 className="text-3xl sm:text-4xl font-bold text-foreground mb-4">Ready to Start Learning?</h2>
@@ -171,6 +179,7 @@ const Home = memo(() => {
                 <ArrowRight className="ml-2 h-5 w-5 group-hover:translate-x-2 transition-transform" />
               </Button>
             </div>
+            </Reveal>
           </div>
         </section>
       </main>
