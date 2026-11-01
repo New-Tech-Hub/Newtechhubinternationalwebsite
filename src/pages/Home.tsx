@@ -21,6 +21,7 @@ import {
 import Navigation from "@/components/Navigation";
 import Footer from "@/components/Footer";
 import About from "@/components/About";
+import Reveal from "@/components/Reveal";
 import jerryGumaProfile from "@/assets/jerry-guma-profile.png";
 
 const competencies = [
@@ -104,10 +105,11 @@ const Home = memo(() => {
         <section className="py-20 bg-background">
           <div className="container mx-auto px-4 sm:px-6 lg:px-8">
             <div className="max-w-4xl mx-auto">
-              <div className="text-center mb-12">
+              <Reveal className="text-center mb-12">
                 <h2 className="text-3xl sm:text-4xl font-bold text-foreground mb-4">About Jerry Guma</h2>
                 <div className="w-20 h-1 bg-accent mx-auto rounded-full" />
-              </div>
+              </Reveal>
+              <Reveal delay={100}>
               <div className="space-y-6 text-muted-foreground text-base sm:text-lg leading-relaxed">
                 <p>Jerry Guma is a seasoned technology strategist, digital transformation expert, and educator with over six years of experience leading innovative projects across Africa's technology and education sectors. As the Product Manager at <strong className="text-foreground">New Tech Hub International</strong> and <strong className="text-foreground">Creative Minds Academy</strong>, Jerry has played a pivotal role in driving Africa's digital evolution.</p>
                 <p>With a strong background in project management, Jerry previously worked with <strong className="text-foreground">Google</strong> under the Google Digital Skills for Africa Program as a Program Manager with MindTheGap, where he trained and empowered thousands of young Africans in digital literacy, entrepreneurship, and online marketing.</p>
