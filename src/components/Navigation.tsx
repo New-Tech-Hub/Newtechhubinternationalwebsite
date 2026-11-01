@@ -285,7 +285,9 @@ const Navigation = () => {
             </div>
           </div>
         )}
+        <ScrollProgress />
       </div>
+      <BackToTop />
     </nav>
   );
 };
