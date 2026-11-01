@@ -127,9 +127,6 @@ const CourseComparison = () => {
               <span className="bg-primary text-primary-foreground px-4 py-1 rounded-full text-xs font-semibold">
                 RECOMMENDED
               </span>
-              <span className="bg-destructive text-destructive-foreground px-3 py-1 rounded-full text-xs font-semibold animate-pulse">
-                50% OFF
-              </span>
             </div>
             <CardHeader className="bg-primary/10">
               <CardTitle className="text-xl text-center text-primary">
