@@ -8,3 +8,4 @@
 - [x] Check phone-sized public pages and signed-in navigation for layout and runtime errors.
 - [x] Fix reproduced countdown, news-card, navigation and admin layout bugs while preserving Academy access restrictions.
 - [x] Recheck seven pages at 320, 375, 768 and 1280px, Academy search-to-course navigation, and five signed-in admin tabs; no runtime errors observed.
+- [x] Add interactivity pass: scroll-reveal sections, reading-progress bar, back-to-top button, and active menu highlighting; verified at 390px with no console errors.
