@@ -117,11 +117,11 @@ const Index = () => {
         <Suspense fallback={<SectionSkeleton />}>
           <Testimonials />
         </Suspense>
-        <Suspense fallback={<SectionSkeleton />}>
-          <div id="pricing">
+        <div id="pricing">
+          <Suspense fallback={<SectionSkeleton />}>
             <CourseComparison />
-          </div>
-        </Suspense>
+          </Suspense>
+        </div>
         <Suspense fallback={<SectionSkeleton />}>
           <Partnerships />
         </Suspense>
