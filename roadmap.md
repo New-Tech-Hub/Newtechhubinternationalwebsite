@@ -17,3 +17,4 @@
 # Basic course pricing and interactivity
 - [x] Set beginner-level course prices to at least ₦120,000 and enforce the floor for future edits in the database and admin editor.
 - [x] Add a Beginner · Basic level filter and visible course difficulty labels; verify selection on a 571px phone-sized preview.
+- [x] Add price-floor rule tests and verify all 13 published beginner courses meet the minimum.

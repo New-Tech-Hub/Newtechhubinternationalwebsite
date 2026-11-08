@@ -1,5 +1,5 @@
 import { describe, expect, it } from "bun:test";
-import { BEGINNER_COURSE_MIN_PRICE, isCoursePriceValidForLevel } from "./coursePricing";
+import { BEGINNER_COURSE_MIN_PRICE, isCoursePriceValidForLevel } from "./coursePricing.ts";
 
 describe("beginner course price floor", () => {
   it("accepts a beginner course priced at ₦120,000", () => {
