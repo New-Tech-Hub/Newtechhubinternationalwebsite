@@ -46,6 +46,7 @@ const Courses = memo(() => {
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedCategory, setSelectedCategory] = useState<string>("all");
+  const [selectedLevel, setSelectedLevel] = useState<string>("all");
   const { elementRef, isVisible } = useScrollAnimation();
 
   useEffect(() => {
@@ -94,9 +95,10 @@ const Courses = memo(() => {
       const matchesSearch = course.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
         course.description.toLowerCase().includes(searchTerm.toLowerCase());
       const matchesCategory = selectedCategory === "all" || course.category === selectedCategory;
-      return matchesSearch && matchesCategory;
+      const matchesLevel = selectedLevel === "all" || course.level === selectedLevel;
+      return matchesSearch && matchesCategory && matchesLevel;
     });
-  }, [courses, searchTerm, selectedCategory]);
+  }, [courses, searchTerm, selectedCategory, selectedLevel]);
 
   useEffect(() => {
     if (courses.length > 0) {
@@ -175,6 +177,33 @@ const Courses = memo(() => {
               />
             </div>
 
+            <div className="space-y-3" aria-labelledby="course-level-filter-label">
+              <div id="course-level-filter-label" className="flex items-center justify-center gap-2 text-sm font-medium text-muted-foreground">
+                <span>Course level</span>
+                <span className="text-border" aria-hidden="true">·</span>
+                <span>Beginner courses start at ₦120,000</span>
+              </div>
+              <div className="flex flex-wrap gap-2 justify-center" role="group" aria-label="Filter by course difficulty">
+                {[
+                  { value: "all", label: "All levels" },
+                  { value: "beginner", label: "Beginner · Basic" },
+                  { value: "intermediate", label: "Intermediate" },
+                  { value: "advanced", label: "Advanced" },
+                ].map((level) => (
+                  <Button
+                    key={level.value}
+                    type="button"
+                    variant={selectedLevel === level.value ? "default" : "outline"}
+                    size="sm"
+                    aria-pressed={selectedLevel === level.value}
+                    onClick={() => setSelectedLevel(level.value)}
+                  >
+                    {level.label}
+                  </Button>
+                ))}
+              </div>
+            </div>
+
             {/* Category Filter Buttons */}
             <div className="flex flex-wrap gap-3 justify-center items-center">
               <div className="flex items-center gap-2 text-sm font-medium text-muted-foreground">
@@ -236,7 +265,7 @@ const Courses = memo(() => {
                       ? 'bg-primary/20 text-primary border border-primary/40 group-hover:bg-primary/30' 
                       : 'bg-accent/10 text-accent group-hover:bg-accent/20'
                   }`}>
-                    {course.isPremium ? '⭐ Premium Bootcamp' : 'Standard'}
+                    {course.isPremium ? '⭐ Premium Bootcamp' : course.level === 'beginner' ? 'Basic · Beginner' : 'Standard'}
                   </span>
                 </div>
               </div>
@@ -246,6 +275,9 @@ const Courses = memo(() => {
                 </h3>
                 <p className="text-muted-foreground mb-4 text-sm line-clamp-3">
                   {course.description}
+                </p>
+                <p className="mb-4 text-sm font-medium capitalize text-muted-foreground">
+                  {course.level} level
                 </p>
                 <div className="flex items-center justify-between mb-4">
                   <div className="flex items-center gap-4 text-sm text-muted-foreground">
