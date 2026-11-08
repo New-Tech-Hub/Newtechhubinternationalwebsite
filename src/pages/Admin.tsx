@@ -31,6 +31,7 @@ import { AccessCodeManagement } from '@/components/admin/AccessCodeManagement';
 import { DashboardMetrics } from '@/components/admin/DashboardMetrics';
 import { AnalyticsDashboard } from '@/components/admin/AnalyticsDashboard';
 import { InstallmentPaymentsManagement } from '@/components/admin/InstallmentPaymentsManagement';
+import { isCoursePriceValidForLevel } from '@/lib/coursePricing';
 
 
 type UserProfile = {
@@ -153,7 +154,7 @@ const Admin = () => {
 
   const handleCourseSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (courseForm.difficulty_level === 'beginner' && courseForm.price < 120000) {
+    if (!isCoursePriceValidForLevel(courseForm.difficulty_level, courseForm.price)) {
       toast.error('Beginner courses must be priced at least ₦120,000.');
       return;
     }
