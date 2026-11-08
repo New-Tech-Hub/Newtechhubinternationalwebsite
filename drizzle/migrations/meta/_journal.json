@@ -15,6 +15,13 @@
       "when": 1791474444284,
       "tag": "0001_preserve_admin_course_management",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1794157421096,
+      "tag": "0002_enforce_beginner_course_price_floor",
+      "breakpoints": true
     }
   ]
 }
