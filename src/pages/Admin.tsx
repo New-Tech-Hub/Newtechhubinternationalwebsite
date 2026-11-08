@@ -69,7 +69,7 @@ const Admin = () => {
     category: 'web_development' as 'web_development' | 'digital_marketing' | 'graphic_design' | 'ai_data' | 'cybersecurity' | 'freelancing' | 'video_editing',
     difficulty_level: 'beginner' as 'beginner' | 'intermediate' | 'advanced',
     estimated_hours: 8,
-    price: 0,
+    price: 120000,
     video_preview_url: '',
     published: true,
   });
@@ -153,6 +153,10 @@ const Admin = () => {
 
   const handleCourseSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (courseForm.difficulty_level === 'beginner' && courseForm.price < 120000) {
+      toast.error('Beginner courses must be priced at least ₦120,000.');
+      return;
+    }
     try {
       if (editingCourse) {
         const { error } = await supabase
@@ -176,7 +180,7 @@ const Admin = () => {
         category: 'web_development' as const,
         difficulty_level: 'beginner' as const,
         estimated_hours: 8,
-        price: 0,
+        price: 120000,
         video_preview_url: '',
         published: true,
       });
@@ -313,7 +317,7 @@ const Admin = () => {
                           category: 'web_development' as const,
                           difficulty_level: 'beginner' as const,
                           estimated_hours: 8,
-                          price: 0,
+                          price: 120000,
                           video_preview_url: '',
                           published: true,
                         });
@@ -370,7 +374,11 @@ const Admin = () => {
                             <Label>Difficulty Level</Label>
                             <Select
                               value={courseForm.difficulty_level}
-                              onValueChange={(value) => setCourseForm({ ...courseForm, difficulty_level: value as any })}
+                              onValueChange={(value) => setCourseForm({
+                                ...courseForm,
+                                difficulty_level: value as any,
+                                price: value === 'beginner' ? Math.max(courseForm.price, 120000) : courseForm.price,
+                              })}
                             >
                               <SelectTrigger>
                                 <SelectValue />
@@ -398,9 +406,13 @@ const Admin = () => {
                             <Input
                               type="number"
                               required
+                              min={courseForm.difficulty_level === 'beginner' ? 120000 : 0}
                               value={courseForm.price}
                               onChange={(e) => setCourseForm({ ...courseForm, price: parseInt(e.target.value) })}
                             />
+                            {courseForm.difficulty_level === 'beginner' && (
+                              <p className="mt-1 text-xs text-muted-foreground">Beginner course minimum: ₦120,000</p>
+                            )}
                           </div>
                         </div>
                         <div>
